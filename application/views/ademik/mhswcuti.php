@@ -130,7 +130,7 @@ if(isset($data[0])){
 
 
    /* function hapus_semster(kode, jurusan, program) {
-    $("#delet_semster").load("<?php echo base_url('index.php/ademik/Smtr_akademik/delete_data/')?>"+jurusan+"/"+program+"/"+kode, function (response, status, xhr) {
+    $("#delet_semster").load("<?php echo base_url('ademik/Smtr_akademik/delete_data/')?>"+jurusan+"/"+program+"/"+kode, function (response, status, xhr) {
       if ( status == "error" ) {
         alert("gagal menghapus");
       }
@@ -163,7 +163,7 @@ if(isset($data[0])){
 
     // if (($data[0]['NIM'] == null ) {
     //   alert("sdflkj");
-    //   $("#cari").load("<?php echo base_url('index.php/ademik/Smtr_akademik/delete_data/')?>");
+    //   $("#cari").load("<?php echo base_url('ademik/Smtr_akademik/delete_data/')?>");
     // }else{
     //   alert("tesss");
     // }

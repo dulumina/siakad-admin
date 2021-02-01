@@ -104,7 +104,7 @@
   }
 
   function validasi_jadwal(IDJadwal) {
-    var url         = "<?php echo base_url('index.php/ademik/Absensi/validasi_jadwal')?>";
+    var url         = "<?php echo base_url('ademik/Absensi/validasi_jadwal')?>";
     var Tahun       = "<?php echo $Tahun ?>";
     var Program     = "<?php echo $Program ?>";
     var KodeJurusan = "<?php echo $KodeJurusan ?>";

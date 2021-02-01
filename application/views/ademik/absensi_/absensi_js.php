@@ -72,7 +72,7 @@
 
 
     function absen_dosen_1(IDJadwal, semester) {
-      var url = "<?= base_url('index.php/ademik/Absensi/absen_dosen')?>";
+      var url = "<?= base_url('ademik/Absensi/absen_dosen')?>";
       
       loading_alert()
         $.post(

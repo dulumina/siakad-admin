@@ -171,7 +171,7 @@
 
     event.preventDefault();
       $.post(
-          "<?php echo base_url('index.php/ademik/Mhswpindah/simpan_mahasiswa_pindah') ?>",data
+          "<?php echo base_url('ademik/Mhswpindah/simpan_mahasiswa_pindah') ?>",data
 
         )
        .done(function (res) {

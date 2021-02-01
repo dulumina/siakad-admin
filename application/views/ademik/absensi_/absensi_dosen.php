@@ -482,7 +482,7 @@
          e.preventDefault();
 
         let fields       = $("#absenDosenHarian").serializeArray();
-        let c_url        = "<?php echo base_url('index.php/ademik/Absensi/update_absen_dosen');?>";
+        let c_url        = "<?php echo base_url('ademik/Absensi/update_absen_dosen');?>";
         let id_jadwal    = "<?php echo $data_absen_dosen[0]['IDJADWAL']?>" ;
           
           $.ajax({
@@ -549,10 +549,10 @@
         var semester  = "<?php echo $data_absen_dosen[0]['Tahun'] ?>";
 
         if (<?= $data_absen_dosen[0]['validasi'];?> == "1") {
-          var url = "<?php echo base_url('index.php/ademik/absensi/absen_mahasiswa_view') ?>";
+          var url = "<?php echo base_url('ademik/absensi/absen_mahasiswa_view') ?>";
         }
         else{
-          var url = "<?php echo base_url('index.php/ademik/absensi/absenKumulatifMahasiswa') ?>";
+          var url = "<?php echo base_url('ademik/absensi/absenKumulatifMahasiswa') ?>";
         }
 
         $.post(
@@ -614,10 +614,10 @@
         var semester  = "<?php echo $data_absen_dosen[0]['Tahun'] ?>";
 
         if (<?php echo $data_absen_dosen[0]['validasi'];?> == "1") {
-          var url = "<?php echo base_url('index.php/ademik/absensi/absen_mahasiswa_view') ?>";
+          var url = "<?php echo base_url('ademik/absensi/absen_mahasiswa_view') ?>";
         }
         else{
-          var url = "<?php echo base_url('index.php/ademik/absensi/absen_mahasiswa') ?>";
+          var url = "<?php echo base_url('ademik/absensi/absen_mahasiswa') ?>";
         }
 
         $.post(
@@ -678,7 +678,7 @@
         }
 
         $.post(
-          "<?php echo base_url('index.php/ademik/Absensi/Update_absen_dosen') ?>",
+          "<?php echo base_url('ademik/Absensi/Update_absen_dosen') ?>",
           {
              status_absen_dosen : absen_hadir_dosen,
              pertemuan_ke       : no,
