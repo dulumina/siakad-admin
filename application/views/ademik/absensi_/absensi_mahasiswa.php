@@ -91,7 +91,7 @@
       //           );
     		loading_alert();
         	$.post(
-              "<?php echo base_url('index.php/ademik/Absensi/update_semua_absen_mahasiswa'); ?>",
+              "<?php echo base_url('ademik/Absensi/update_semua_absen_mahasiswa'); ?>",
               {
                 status_absen  : status_absen,
                 pertemuan     : hari,
@@ -112,7 +112,7 @@
 
       function update_absen(status_absen, nim, hari) {
         $.post(
-          "<?php echo base_url('index.php/ademik/Absensi/update_absen_mahasiswa'); ?>",
+          "<?php echo base_url('ademik/Absensi/update_absen_mahasiswa'); ?>",
           {
             status_absen	:status_absen,
             nim 			    :nim,

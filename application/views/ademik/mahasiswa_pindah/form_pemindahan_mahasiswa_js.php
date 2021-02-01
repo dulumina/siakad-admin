@@ -21,7 +21,7 @@
 			
 	      $body.addClass("loading");
 		    $.post(
-		        "<?php echo base_url('index.php/ademik/Mhswpindah/cek_status_mahasiswa') ?>",
+		        "<?php echo base_url('ademik/Mhswpindah/cek_status_mahasiswa') ?>",
 		        {
 		         nim 	 : nim,
 		         jurusan : jurusan
@@ -32,7 +32,7 @@
           $body.removeClass("loading");
 		     	if (data == "1") {
 		     		// alert("Mahasiswa Berstatus Aktif");
-		      		 $('#load_content').load("<?php echo base_url('index.php/ademik/Mhswpindah/data_mahasiswa_baru/')?>"+nim+"/"+jurusan);
+		      		 $('#load_content').load("<?php echo base_url('ademik/Mhswpindah/data_mahasiswa_baru/')?>"+nim+"/"+jurusan);
 		     	}
 		     	else if (data == "2"){
 		     		alert("Mahasiswa Sudah ada di jurusan yang dipilih");
