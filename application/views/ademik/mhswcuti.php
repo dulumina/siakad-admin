@@ -120,8 +120,8 @@ if(isset($data[0])){
   
   <script src="<?=base_url()?>assets/js/pages/data-table.js"></script>
 
-  <script src="/assets/plugins/jquery_validation/jquery.form.js"></script>
-  <script src="/assets/plugins/jquery_validation/jquery.validate.js"></script>
+  <script src="<?= base_url() ?>assets/plugins/jquery_validation/jquery.form.js"></script>
+  <script src="<?= base_url() ?>assets/plugins/jquery_validation/jquery.validate.js"></script>
   <script type="text/javascript">
     
     function daftar(){
