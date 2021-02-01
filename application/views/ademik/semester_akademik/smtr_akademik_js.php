@@ -1,5 +1,5 @@
-<script src="/assets/plugins/jquery_validation/jquery.form.js"></script>
-<script src="/assets/plugins/jquery_validation/jquery.validate.js"></script>
+<script src="<?=base_url()?>assets/plugins/jquery_validation/jquery.form.js"></script>
+<script src="<?=base_url()?>assets/plugins/jquery_validation/jquery.validate.js"></script>
 
 <script type="text/javascript">
 	jQuery.extend(jQuery.validator.messages, {
@@ -14,7 +14,7 @@
 			
 			//alert("Berhasil Validasi"+program+"  "+jurusan);
 
-			$('#load_content').load("<?php echo base_url('index.php/ademik/Smtr_akademik/get_semester_akademik/')?>"+program+"/"+jurusan);
+			$('#load_content').load("<?php echo base_url('ademik/Smtr_akademik/get_semester_akademik/')?>"+program+"/"+jurusan);
 		}
 	});
 </script>
