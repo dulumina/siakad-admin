@@ -91,16 +91,16 @@
 
   $("#tambah_semster").click(function () {
     $("#modal_tambah_semester").modal("toggle");
-    $("#load_form").load("<?php echo base_url('index.php/ademik/Smtr_akademik/modal_tambah_semster')?>");
+    $("#load_form").load("<?php echo base_url('ademik/Smtr_akademik/modal_tambah_semster')?>");
   });
 
   function edit_semester(kode, jurusan, program) {
     $("#modal_edit_semester").modal("toggle");
-    $("#load_form_2").load("<?php echo base_url('index.php/ademik/Smtr_akademik/modal_edit_semster/')?>"+ jurusan +'/'+ program +'/'+ kode);
+    $("#load_form_2").load("<?php echo base_url('ademik/Smtr_akademik/modal_edit_semster/')?>"+ jurusan +'/'+ program +'/'+ kode);
   }
 
   function hapus_semster(kode, jurusan, program) {
-    $("#delet_semster").load("<?php echo base_url('index.php/ademik/Smtr_akademik/delete_data/')?>"+jurusan+"/"+program+"/"+kode, function (response, status, xhr) {
+    $("#delet_semster").load("<?php echo base_url('ademik/Smtr_akademik/delete_data/')?>"+jurusan+"/"+program+"/"+kode, function (response, status, xhr) {
       if ( status == "error" ) {
         //alert(jurusan+" "+program+" "+kode);
         alert("gagal menghapus");
@@ -216,7 +216,7 @@
           "order"       : [],
 
           "ajax"        : {
-              "url"   : "<?php echo base_url('index.php/ademik/Smtr_akademik/serverside_data_semester/'
+              "url"   : "<?php echo base_url('ademik/Smtr_akademik/serverside_data_semester/'
                               .$data_semester[0]['KodeProgram']
                               .'/'
                               .$data_semester[0]['KodeJurusan'])
