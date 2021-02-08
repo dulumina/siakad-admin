@@ -94,3 +94,12 @@
             display: block;
         }
     </style>
+
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-YC25K6DDZY"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+
+			gtag('config', 'G-YC25K6DDZY');
+		</script>
