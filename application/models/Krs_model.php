@@ -1083,6 +1083,7 @@ class Krs_model extends CI_Model{
 		$kdj=$this->db->escape_str($data['kdj']);
 		$kdp=$this->db->escape_str($data['kdp']);
 		$lev=$this->db->escape_str($data['lev']);
+		$keyWord=$this->db->escape_str($data['keyWord']);
 		$nims=substr($nim,0,6);
 		$nimx=substr($nim,6,3);
 		$nimf=substr($nim,0,1);
@@ -1093,7 +1094,7 @@ class Krs_model extends CI_Model{
 			$qkdp="AND j.Program like 'REG'";
 		}
 
-		$condition = "(j.KodeJurusan='$kdj') and j.Tahun='$semesterAkademik' and j.NotActive='N' $qkdp order by j.Program, j.Hari, j.JamMulai";
+		$condition = "(j.KodeJurusan='$kdj') and j.Tahun='$semesterAkademik' and j.NotActive='N' $qkdp ";
 
 		if($lev == 4 and $semesterAkademik=='20171'){
 			//nim dengan tahun 2014
@@ -1311,9 +1312,15 @@ class Krs_model extends CI_Model{
 
 		}
 
-		$query = $this->db->query("SELECT j.Program, j.IDJADWAL, j.SKS, mk.Kode as KodeMK, j.KodeRuang as kr, j.Keterangan as kt, mk.Nama_Indonesia as MataKuliah, j.NamaMK AS MataKuliahJadwal, TIME_FORMAT(JamMulai, '%H:%i') as jm, TIME_FORMAT(JamSelesai, '%H:%i') as js, h.Nama as HR, concat(d.Name, ', ', d.Gelar) as Dsn, pr.Nama_Indonesia as PRG, mk.Sesi from _v2_jadwal j left outer join _v2_matakuliah mk on j.IDMK=mk.IDMK left outer join _v2_hari h on j.Hari=h.ID left outer join _v2_dosen d on j.IDDosen=d.nip left join _v2_krs20161 k on k.IDJadwal=j.IDJADWAL and k.NIM='$nim' left outer join _v2_program pr on j.Program=pr.Kode LEFT JOIN _v2_kurikulum ku On ku.IdKurikulum=mk.KurikulumID where ku.KodeJurusan='$kdj' ANd ".$condition);
 
-		return $query->result();
+		if ($keyWord!='') {
+			$condition .=" and (mk.Kode like '%$keyWord%' or mk.Nama_Indonesia like '%$keyWord%' or mk.IDMK like '%$keyWord%' )";
+		}
+		$condition .="order by j.Program, j.Hari, j.JamMulai";
+		$query = $this->db->query("SELECT j.Program, j.IDJADWAL, j.SKS, mk.Kode as KodeMK, j.KodeRuang as kr, j.Keterangan as kt, mk.Nama_Indonesia as MataKuliah, j.NamaMK AS MataKuliahJadwal, TIME_FORMAT(JamMulai, '%H:%i') as jm, TIME_FORMAT(JamSelesai, '%H:%i') as js, h.Nama as HR, concat(d.Name, ', ', d.Gelar) as Dsn, pr.Nama_Indonesia as PRG, mk.Sesi from _v2_jadwal j left outer join _v2_matakuliah mk on j.IDMK=mk.IDMK left outer join _v2_hari h on j.Hari=h.ID left outer join _v2_dosen d on j.IDDosen=d.nip left join _v2_krs20161 k on k.IDJadwal=j.IDJADWAL and k.NIM='$nim' left outer join _v2_program pr on j.Program=pr.Kode LEFT JOIN _v2_kurikulum ku On ku.IdKurikulum=mk.KurikulumID where ku.KodeJurusan='$kdj' ANd ".$condition);
+		$res['data']= $query->result();
+		$res['query']=$this->db->last_query();
+		return $res;
 	}
 
 	public function getMataKuliah($KodeMK,$kdj) {

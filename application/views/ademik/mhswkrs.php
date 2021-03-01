@@ -147,8 +147,25 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				<span aria-hidden="true">&times;</span></button>
 			</div>
-			<div class="modal-body" id='isiAddKrs'>
+
+			<div class="modal-body" >
+				<div id="form">
+					<div class="row">
+						<div class="col-md-6 align-self-center">
+							<p class="margin">Matakuliah</p>
+							<div class="input-group input-group-sm">
+								<input type="text" class="form-control" id="CariMk" >
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-info btn-flat" id="getMk">Go!</button>
+									</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br><hr>
+				<div id='isiAddKrs'>
 				
+				</div>
 			</div>
 		</div>
 	</div>
@@ -424,15 +441,18 @@
 			});
 			
 
-			$(document).on("click", "#openModalKrs", function () {
-				var id = $(this).data('id');
-				var name = $(this).data('name');
-				var kdj = $(this).data('kdj');
-				var kdp = $(this).data('kdp');
-				var nim = $(this).data('nim');
-				var semesterAkademik = $(this).data('semester-akademik');
-				var dataku = 'id='+id+'&name='+name+'&kdj='+kdj+'&kdp='+kdp+'&nim='+nim+'&semesterAkademik='+semesterAkademik;
+			$(document).on("click", "#getMk", function () {
+				let addkrsbtn = $('#openModalKrs')
+				var id = addkrsbtn.data('id');
+				var name = addkrsbtn.data('name');
+				var kdj = addkrsbtn.data('kdj');
+				var kdp = addkrsbtn.data('kdp');
+				var nim = addkrsbtn.data('nim');
+				var semesterAkademik = addkrsbtn.data('semester-akademik');
+				let keyWord = $('#CariMk').val();
+				var dataku = 'id='+id+'&name='+name+'&kdj='+kdj+'&kdp='+kdp+'&nim='+nim+'&semesterAkademik='+semesterAkademik+'&keyWord='+keyWord;
 				$body = $("body");
+				console.log(dataku);
 				$body.addClass("loading");
 				$.ajax({
 					url: "<?= base_url('ademik/mhswkrs/addKrs'); ?>",

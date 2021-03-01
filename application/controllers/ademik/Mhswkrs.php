@@ -2697,9 +2697,10 @@ class Mhswkrs extends CI_Controller {
 		$name = $this->input->post('name');
 		$kdj = $this->input->post('kdj');
 		$kdp = $this->input->post('kdp');
+		$keyWord = $this->input->post('keyWord');
 		$lev = $_SESSION['ulevel'];
 		$semesterAkademik = $this->input->post('semesterAkademik');
-		$data = array('name' => $name, 'kdj' => $kdj, 'kdp' => $kdp, 'lev' => $lev, 'semesterAkademik' => $semesterAkademik);
+		$data = array('name' => $name, 'kdj' => $kdj, 'kdp' => $kdp, 'lev' => $lev, 'semesterAkademik' => $semesterAkademik,'keyWord'=>$keyWord);
 		$showAddKrs = $this->krs_model->daftarKrs($nim, $data);
 
 		// $showAddKrs1 = $this->krs_model->daftarKrs1($nim, $data);
@@ -2734,7 +2735,7 @@ class Mhswkrs extends CI_Controller {
 			<tbody>';
 
 		$bodyTable = '';
-		foreach ($showAddKrs as $show) {
+		foreach ($showAddKrs['data'] as $show) {
 			$MK = $show->MataKuliah;
 			$KodeMK = $show->KodeMK;
 			if (empty($MK) OR $MK=="") {
@@ -2795,7 +2796,7 @@ class Mhswkrs extends CI_Controller {
 			<td>'.$show->Sesi.'</td>
 			<td>'.$show->Dsn.'</td>
 			<td>'.$show->HR.'</td>
-			<td>'.$show->jm.'</td>
+			<td>'.$show->jm.'</td> 
 			<td>'.$show->js.'</td>
 			<td>'.$show->kr.'</td>
 			<td>'.$show->kt.'</td>
@@ -2816,6 +2817,7 @@ class Mhswkrs extends CI_Controller {
 		</form>';
 		$dataTable = array(
 			'isi' => $headTable.$bodyTable.$footTable,
+			'query'	=> $showAddKrs['query']
 		);
 		echo json_encode($dataTable);
 	}
