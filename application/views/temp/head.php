@@ -3,7 +3,6 @@
 
 <head>
 	<?php $this->load->view('temp/head_css'); ?>
-  // <script src="<?= base_url('assets/js/anal.js') ?>"></script>
   <!-- Matomo -->
   <script type="text/javascript">
     var _paq = window._paq = window._paq || [];
