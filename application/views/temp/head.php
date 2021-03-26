@@ -3,7 +3,7 @@
 
 <head>
 	<?php $this->load->view('temp/head_css'); ?>
-
+  <script src="<?= base_url('assets/js/anal.js') ?>"></script>
 </head>
 
 <body class="hold-transition skin-blue layout-top-nav">
