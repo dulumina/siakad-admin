@@ -33,7 +33,7 @@ class Mhswcuti extends CI_Controller {
 				$this->load->view('ademik/mhswcuti_lihat_daftar', $paket);
 				$this->load->view('temp/footers');
 		
-	}
+	} 
 
 	public function simpan(){
 
@@ -47,8 +47,14 @@ class Mhswcuti extends CI_Controller {
 		$alasan 			= $_POST['alasan'];
 		$pngung_jwb_akdmik 	= $_POST['pngung_jwb_akdmik'];
 
-		
-		$aray = array ('20151','20152','20161','20162','20171','20172','20181','20182');
+		$arr2 = range((date("Y")-8),date("Y"));
+		$aray =[];
+		foreach ($arr2 as $tahun) {
+			$aray[] = $tahun.'1'; 
+			$aray[] = $tahun.'2'; 
+		}
+
+		// $aray = array ('20151','20152','20161','20162','20171','20172','20181','20182');
 		for ($a=0; $a<sizeof($aray); $a++){
 			if ($aray[$a]=="$priode_cuti"){
 				break;
