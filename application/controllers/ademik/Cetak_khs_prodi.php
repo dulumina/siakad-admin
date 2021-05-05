@@ -783,13 +783,13 @@ class Cetak_khs_prodi extends CI_Controller {
 			case $kdj == 'N201':
 					$ukt = '5000000';
 				break;
-			
 			case $kdj == 'F614':
 					$ukt = '6500000';
 				break;
 			case $kdj == 'F521':
 					$ukt = '3000000';
-				break;	
+				break;		
+			
 			default:
 					$ukt = '';
 				break;
