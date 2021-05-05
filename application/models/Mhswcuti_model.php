@@ -10,7 +10,7 @@ class Mhswcuti_model extends CI_Model {
 										  j.Nama_Indonesia as JUR, 
 										  jj.Nama as JEN, concat(d.Name, ', ', d.Gelar) as DSN from _v2_mhsw m left outer join fakultas f on 
 	  							   		  m.KodeFakultas=f.Kode left outer join _v2_jurusan j on 
-	  							   		  m.KodeJurusan=j.Kode left outer join jenjangps jj on 
+	  							   		  m.KodeJurusan=j.Kode left outer join _v2_jenjangps jj on 
 	  							   		  j.Jenjang=jj.Kode left outer join _v2_dosen d on 
 	  							   		  m.DosenID=d.nip where m.NIM='$nim' ");
 		
