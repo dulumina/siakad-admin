@@ -1616,7 +1616,8 @@ class Jdwlkuliah1 extends CI_Controller {
 			$jur == "C202" or
 			$jur == "C203" or
 			$jur == "C232" or
-			$jur == "D102"
+			$jur == "D102" or
+			$jur == "A232"
 
 			){
 				$ket_jenjang = $row_jur->Ket_Jenjang;
