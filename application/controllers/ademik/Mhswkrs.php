@@ -2693,7 +2693,7 @@ class Mhswkrs extends CI_Controller {
 	}
 
 	public function addKrs() {
-		$nim = $this->input->post('nim');
+		$nim = str_replace(' ','',$this->input->post('nim'));
 		$name = $this->input->post('name');
 		$kdj = $this->input->post('kdj');
 		$kdp = $this->input->post('kdp');
