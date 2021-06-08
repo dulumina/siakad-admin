@@ -10,7 +10,7 @@ class Feeder_untad {
     'host'     => 'http://103.245.72.97',
     'port'     => '8082',
     'username' => '001028p1',
-    'password' => 'bauk2015'
+    'password' => 'bakp2021@#$'
   );
   
   private function runWS($data)
