@@ -234,7 +234,7 @@
               <td>8</td>
               <td>Proses Kirim Data KRS ke dikti</td>
               <td>Image</td>
-              <td class="text-right"><a href="<?=base_url('ademik/siakad_years/feeder_krs/'.$link)?>"><button class="btn btn-social-icon btn-circle btn-bitbucket"><i class="fa fa-bitbucket"></i></button></a></td>
+              <td class="text-right"><a href="<?=base_url('ademik/siakad_years/feeder_krs_all_mhsw/'.$link)?>"><button class="btn btn-social-icon btn-circle btn-bitbucket"><i class="fa fa-bitbucket"></i></button></a></td>
               <td class="text-right">Berfungsi memproses data KRS agar terkirim ke feeder dikti pada semester Akademik Aktif</td>
               <td class="text-right"><!-- <?=$detailperiodeaktif->point8_user;?> --></td>
               <td class="text-right"><!-- <?=$detailperiodeaktif->point8_tgl;?> --></td>
@@ -243,7 +243,7 @@
               <td>9</td>
               <td>Proses Kirim Data KHS ke dikti</td>
               <td>Image</td>
-              <td class="text-right"><a href="<?=base_url('ademik/siakad_years/feeder_khs/'.$link)?>"><button class="btn btn-social-icon btn-circle btn-bitbucket"><i class="fa fa-bitbucket"></i></button></a></td>
+              <td class="text-right"><a href="<?=base_url('ademik/siakad_years/feeder_khs_all_mhsw/'.$link)?>"><button class="btn btn-social-icon btn-circle btn-bitbucket"><i class="fa fa-bitbucket"></i></button></a></td>
               <td class="text-right">Berfungsi memproses data KHS agar terkirim ke feeder dikti pada semester Akademik Aktif</td>
               <td class="text-right"><!-- <?=$detailperiodeaktif->point9_user;?> --></td>
               <td class="text-right"><!-- <?=$detailperiodeaktif->point9_tgl;?> --></td>

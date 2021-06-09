@@ -237,8 +237,11 @@ class Siakad_years extends CI_Controller {
 	}
 
 	//fandu modifikasi proses nya wawan 11 september 2019
-	public function feeder_mhsw(){
-		$tahunaktif = "2019";
+	public function feeder_mhsw($tahunaktif){
+		// $tahunaktif = "2019";
+		if (!$tahunaktif) {
+			exit();
+		}
 		$username = '001028e1';
 		$password = 'az18^^';
 
@@ -433,11 +436,14 @@ class Siakad_years extends CI_Controller {
 	}
 
 	// Fandu Kirim Semua Mahasiswa KRS ke feeder kecuali kedokteran
-	public function feeder_krs_all_mhsw(){
+	public function feeder_krs_all_mhsw($tahunaktif){
 		
-
-		header ('Refresh: 5; URL=https://siakad2.untad.ac.id/ademik/siakad_years/feeder_krs_all_mhsw');
-		$tahunaktif = "20182";
+		if (!$tahunaktif) {
+			exit();
+		}
+		
+		header ("Refresh: 5; URL=".base_url()."ademik/siakad_years/feeder_krs_all_mhsw/".$tahunaktif);
+		// $tahunaktif = "20182";
 
 		echo "<br><br>";
 		echo "<b>=========== GET KRS Mahasiswa Tahun $tahunaktif===========</b>";
@@ -449,7 +455,7 @@ class Siakad_years extends CI_Controller {
 
 		$tbl = "_v2_krs$tahunaktif";
 
-		$query = $this->db->query("SELECT j.id_kelas_kuliah as id_kls, j.IDJADWAL, m.id_reg_pd, m.NIM, m.KodeFakultas, n.ID as IDKRS, n.KodeMK, n.Tahun, n.nilai as nilai_angka, n.GradeNilai as nilai_huruf, n.Bobot as nilai_indeks from _v2_jadwal j,_v2_mhsw m,$tbl n where n.st_feeder NOT IN ('1','3','4') and (n.GradeNilai != '' or n.GradeNilai != 'E') and n.error_code = '' and j.IDJADWAL=n.IDJADWAL and n.NIM=m.NIM and m.KodeFakultas NOT IN ('B','G','L','O','N') order by n.NIM limit 1000");	
+		$query = $this->db->query("SELECT j.id_kelas_kuliah as id_kls, j.IDJADWAL, m.id_reg_pd, m.NIM, m.KodeFakultas, n.ID as IDKRS, n.KodeMK, n.Tahun, n.nilai as nilai_angka, n.GradeNilai as nilai_huruf, n.Bobot as nilai_indeks from _v2_jadwal j,_v2_mhsw m,$tbl n where n.st_feeder NOT IN ('1','3','4') and (n.GradeNilai != '' or n.GradeNilai != 'E') and n.error_code = '' and j.IDJADWAL=n.IDJADWAL and n.NIM=m.NIM and m.KodeFakultas NOT IN ('G','N') order by n.NIM limit 1000");	
 
 		// $query = $this->db->query("SELECT j.id_kelas_kuliah as id_kls, j.IDJADWAL, m.id_reg_pd, m.NIM, m.KodeFakultas, n.ID as IDKRS, n.KodeMK, n.Tahun, n.nilai as nilai_angka, n.GradeNilai as nilai_huruf, n.Bobot as nilai_indeks from _v2_jadwal j,_v2_mhsw m,$tbl n where n.st_feeder NOT IN ('1','3','4') and (n.GradeNilai != '' or n.GradeNilai != 'E') and n.error_code = '' and j.IDJADWAL=n.IDJADWAL and n.NIM=m.NIM and m.KodeFakultas IN ('A') order by n.NIM limit 1");
 
@@ -633,11 +639,15 @@ class Siakad_years extends CI_Controller {
 
 	// langkah 3 untuk kirim ke dikti KHS
 	// Fandu Kirim Semua Mahasiswa KHS ke feeder kecuali kedokteran
-	public function feeder_khs_all_mhsw(){
+	public function feeder_khs_all_mhsw($tahun){
+
+		if (!$tahun) {
+			exit();
+		}
 
 		header ('Refresh: 5; URL=https://siakad2.untad.ac.id/ademik/siakad_years/feeder_khs_all_mhsw');
 
-		$tahun = "20182";
+		// $tahun = "20182";
 
 		$feeder = $this->feeder->getToken_feeder();
 		$temp_token = $feeder['temp_token'];
