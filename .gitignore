@@ -8,8 +8,8 @@ application/logs/*
 
 
 ## config
-application/config/config.php
-application/config/database.php
+#application/config/config.php
+#application/config/database.php
 
 assets/data
 assets/images
