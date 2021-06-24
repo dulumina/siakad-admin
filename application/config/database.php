@@ -78,10 +78,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '103.245.73.158',
-	'port'	   => '3030',
-	'username' => 'lbuntad',
-	'password' => 'l8Unt@dd@123',
+	'hostname' => '10.97.55.244',
+	'port'	   => '3306',
+	'username' => 'siakad',
+	'password' => 'SiaNewK@d2021',
 	'database' => 'siasfo2',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -103,9 +103,9 @@ $db['default'] = array(
 // db1 spc
 $db['spc'] = array(
 	'dsn'	=> '',
-	'hostname' => '36.91.91.54',
-	'username' => 'spcNewSiakad',
-	'password' => '$newSi4kad19',
+	'hostname' => '10.97.55.244',
+	'username' => 'siakad',
+	'password' => 'SiaNewK@d2021',
 	'database' => 'spc',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
