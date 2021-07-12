@@ -732,7 +732,7 @@ class Krs_model extends CI_Model{
 	public function getPrasyaratMk($kodeJurusan,$idMk) {
 		$kodeJurusan=$this->db->escape_str($kodeJurusan);
 		$idMk=$this->db->escape_str($idMk);
-		$query = $this->db->query("select pmk.PraKodeMK, mk.Nama_Indonesia as NamaMK from _v2_prasyaratmk pmk left outer join _v2_matakuliah mk on pmk.PraKodeMK=mk.Kode and mk.KodeJurusan='$kodeJurusan' where pmk.IDMK='$idMk' order by pmk.PraKodeMK");
+		$query = $this->db->query("select pmk.PraKodeMK, mk.Nama_Indonesia as NamaMK from _v2_prasyaratmk pmk left outer join _v2_matakuliah mk on pmk.PraKodeMK=mk.Kode and mk.KodeJurusan='$kodeJurusan' where pmk.IDMK='$idMk' and pmk.NotActive='N' order by pmk.PraKodeMK");
 
         if($query->num_rows() == 0)
 	    {
