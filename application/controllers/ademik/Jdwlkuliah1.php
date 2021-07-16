@@ -1573,7 +1573,7 @@ class Jdwlkuliah1 extends CI_Controller {
 			$jur = $row_jur->KodeJurusan;
 
 			if ($jur == "N210" or $jur == "N101" or $jur == "N111" or 
-			$jur == "P101" or $jur == "P211"
+			$jur == "P101" or $jur == "P211" or
 			$jur == "K2MF111" or
 			$jur == "K2MC201" or
 			$jur == "K2ME281" or 
