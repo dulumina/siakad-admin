@@ -2099,7 +2099,7 @@ class Jdwlkuliah1 extends CI_Controller {
 		$kdj = $this->input->post("kdjvalidasi");*/
 
 		$tbl = "_v2_krs$tahun";
-
+		$text = [];
 		/*$this->db->from('_v2_krs'.$tahun);
 		$this->db->where('IDJadwal', $idjadwal);
 		$this->db->where('(st_feeder = 0 or st_feeder = 5)');
@@ -2164,7 +2164,7 @@ class Jdwlkuliah1 extends CI_Controller {
 					"action" => $action,
 					"tabel" => $table
 				]);
-				$httpg = $this->http_request("https://api.telegram.org/bot1806507201:AAGhQ4U_IvQntAfmzWqiQ2KdhFZSotNcDMc/sendMessage?chat_id=949836438&parse_mode=Markdown&text=$text");
+				// $httpg = $this->http_request("https://api.telegram.org/bot1806507201:AAGhQ4U_IvQntAfmzWqiQ2KdhFZSotNcDMc/sendMessage?chat_id=949836438&parse_mode=Markdown&text=$text");
 				// insert tabel mahasiswa ke feeder
 				$datb = $this->feeder->action_feeder($temp_token,$temp_proxy,$action,$table,$record);
 
@@ -2320,6 +2320,7 @@ class Jdwlkuliah1 extends CI_Controller {
 		$result = array(
 			"ket" => "sukses",
 			"pesan" => $message,
+			"kirim_data" => $text
 		);
 
 		echo json_encode($result);
