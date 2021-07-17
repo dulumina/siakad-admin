@@ -1573,7 +1573,7 @@ class Jdwlkuliah1 extends CI_Controller {
 			$jur = $row_jur->KodeJurusan;
 
 			if ($jur == "N210" or $jur == "N101" or $jur == "N111" or 
-			$jur == "P101" or
+			$jur == "P101" or $jur == "P211" or
 			$jur == "K2MF111" or
 			$jur == "K2MC201" or
 			$jur == "K2ME281" or 
@@ -2069,6 +2069,29 @@ class Jdwlkuliah1 extends CI_Controller {
 	
 	}
 
+	private function http_request($url){
+		// persiapkan curl
+		$ch = curl_init(); 
+
+		// set url 
+		curl_setopt($ch, CURLOPT_URL, $url);
+		
+		// set user agent    
+		curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+
+		// return the transfer as a string 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+
+		// $output contains the output string 
+		$output = curl_exec($ch); 
+
+		// tutup curl 
+		curl_close($ch);      
+
+		// mengembalikan hasil curl
+		return $output;
+	}
+
 	private function proses_kirimnilaidikti($idjadwal, $tahun, $program, $kdj){
 		/*$idjadwal = $this->input->post("idjadwalinnilai");
 		$tahun = $this->input->post("tahunvalidasi");
@@ -2076,7 +2099,7 @@ class Jdwlkuliah1 extends CI_Controller {
 		$kdj = $this->input->post("kdjvalidasi");*/
 
 		$tbl = "_v2_krs$tahun";
-
+		$text = [];
 		/*$this->db->from('_v2_krs'.$tahun);
 		$this->db->where('IDJadwal', $idjadwal);
 		$this->db->where('(st_feeder = 0 or st_feeder = 5)');
@@ -2135,7 +2158,13 @@ class Jdwlkuliah1 extends CI_Controller {
 
 				// action insert ke feeder
 				$action = 'InsertRecord';
-
+				
+				$text = json_encode([
+					"record" => $record,
+					"action" => $action,
+					"tabel" => $table
+				]);
+				// $httpg = $this->http_request("https://api.telegram.org/bot1806507201:AAGhQ4U_IvQntAfmzWqiQ2KdhFZSotNcDMc/sendMessage?chat_id=949836438&parse_mode=Markdown&text=$text");
 				// insert tabel mahasiswa ke feeder
 				$datb = $this->feeder->action_feeder($temp_token,$temp_proxy,$action,$table,$record);
 
@@ -2291,6 +2320,7 @@ class Jdwlkuliah1 extends CI_Controller {
 		$result = array(
 			"ket" => "sukses",
 			"pesan" => $message,
+			"kirim_data" => $text
 		);
 
 		echo json_encode($result);
