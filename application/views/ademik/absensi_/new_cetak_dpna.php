@@ -45,7 +45,7 @@
 						<table width="100%" >
 							<tr>
 								<th align="center">
-                                    <h3>KEMENTERIAN PENDIDIKAN DAN KEBUDAYAAN</h3>
+                                    <h3>KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI </h3>
                                 </th>
 							</tr>
 							<tr>

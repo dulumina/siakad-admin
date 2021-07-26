@@ -21,7 +21,7 @@
 				<tr>
 					<td rowspan="3" width="100px;"><img style="width: 80px" src="./assets/images/Logo_untad.png" /></td>
 					<td style="font-size: 13px; margin-bottom: 0; padding-bottom: 0;  left: -80px; text-align: center;">
-						<b>KEMENTERIAN PENDIDIKAN DAN KEBUDAYAAN</b>
+						<b>KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI</b>
 					</td>
 				</tr>
 				<tr>
