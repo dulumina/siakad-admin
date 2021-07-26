@@ -533,7 +533,7 @@ class Additional_model extends CI_Model {
 
 	// data mahasiswa yg belum byar dan sudah byar dan sudah terbuka atau belum by inal
 	public function get_dt_mhsw_spc($nim) {
-		$data = $this->db1->query("SELECT kode_periode, nomor_induk, waktu_berakhir, kode_bank FROM `tagihan` WHERE nomor_induk='$nim' and kode_periode='20202'");
+		$data = $this->db1->query("SELECT kode_periode, nomor_induk, waktu_berakhir, kode_bank FROM `tagihan` WHERE nomor_induk='$nim' and kode_periode='20211'");
 		return $data->result_array();
 	}
 
