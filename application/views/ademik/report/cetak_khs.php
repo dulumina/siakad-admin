@@ -46,7 +46,7 @@
 								</th>
 								<th style="vertical-align:middle; text-align: center;" class="col-md-11 text-center">
 									<h4><b>
-										KEMENTERIAN PENDIDIKAN DAN KEBUDAYAAN
+										KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI
 									</b></h4>
 									<h3><b>
 										UNIVERSITAS TADULAKO
