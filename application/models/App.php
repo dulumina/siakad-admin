@@ -3,6 +3,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class App extends CI_Model{
 
+	public function cek_login(){
+		$uname=$this->session->userdata('uname');
+		$ulevel=$this->session->userdata('ulevel');
+		if (empty($uname) and empty($ulevel)){
+			$this->session->set_flashdata('konfirmasi','Silahkan login terlebih dahulu...!');
+			redirect(base_url());
+		}
+	}
+
 	public function checksession(){
 		$uname=$this->session->userdata('uname');
 		$ulevel=$this->session->userdata('ulevel');
