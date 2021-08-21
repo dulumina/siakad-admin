@@ -73,7 +73,7 @@
               </div>
             </div>
             <div class="modal-footer">  
-              <a href="https://siakad2.untad.ac.id/ademik/Profil" class="btn btn-danger text-left"> Profile</a>
+              <a href=<?=base_url("ademik/Profil")?> class="btn btn-danger text-left"> Profile</a>
             </div>
           </div>
         </div>

@@ -48,9 +48,10 @@
                   <div class="form-group text-center">
                       <label>Login Sebagai : </label>
                       <select name="loguser" class="form-control">
-                    <option value="">---- Silahkan Pilih ----</option>
+                    <option value="" selected>---- Silahkan Pilih ----</option>
                           <option value="<?= $this->encryption->encrypt('_v2_dosen'); ?>">Dosen</option>
                     <option value="<?= $this->encryption->encrypt('_v2_mhsw'); ?>">Mahasiswa</option>
+                    <option value="<?= $this->encryption->encrypt('_v2_mhsw_pmmdn'); ?>">Mahasiswa PMMDN</option>
                       </select>
                     </div>
                     <!-- <div class="row">
