@@ -289,6 +289,7 @@ class Menu extends CI_Controller {
 	function tmenu($ulevel){
 		$this->cek_session();
 		$res=$this->db->query("SELECT g.GroupModulID, g.GroupModul, m.Modul, m.Link, m.ImgLink, m.ajx FROM groupmodul as g, modul as m WHERE g.Level like '%-$ulevel-%' and m.Level like '%-$ulevel-%' and g.GroupModulID=m.GroupModul and m.NotActive='N' and g.NotActive='N' order by g.GroupModulID, m.ModulID ASC");
+		// echo json_encode($this->db->last_query());exit;
 			$int = 0;
 			foreach ($res->result_array() as $data){
 				$user=array(
