@@ -85,20 +85,24 @@ class prc extends CI_Controller {
 
 		for ($a=0; $a<count($use); $a++){
 			//echo "fandu -- $use[$a] <br>";
-			if ($use[$a]=="_v2_adm"){
+			if ($use[$a]=="_v2_adm"){ // admin pusat
 				$val=",m.KodeUnit as kdf,m.KodeSubunit  as kdj,m.Login, m.Sex, m.Foto, m.count_edit_password";
 				$par="AND m.NotActive='N'";
 				$join="m";
-			} else if ($use[$a]=="_v2_adm_fak"  or $use[$a]=="_v2_dosen"){
+			} else if ($use[$a]=="_v2_adm_fak"  or $use[$a]=="_v2_dosen"){ // admin fakultas dan dosen
 				$val=",m.KodeFakultas as kdf,f.Nama_Indonesia as nmf,m.KodeJurusan  as kdj, j.Nama_Indonesia as nmj,m.Login, m.Sex, m.Foto, m.Name, m.count_edit_password";
 				$par="AND m.KodeFakultas != '' AND m.NotActive='N'";
 				$join="m left join fakultas f on m.KodeFakultas=f.Kode left join _v2_jurusan j on m.KodeJurusan=j.Kode";
-			} else if ($use[$a]=="_v2_adm_jur"){
+			} else if ($use[$a]=="_v2_adm_jur"){ // admin jurusan
 				$val=",m.KodeFakultas as kdf,f.Nama_Indonesia as nmf,m.KodeJurusan as kdj, j.Nama_Indonesia as nmj,m.Login, m.Sex, m.Foto, m.Name, m.count_edit_password";
 				$par="AND m.KodeFakultas != '' AND m.KodeJurusan != '' AND m.NotActive='N' ";
 				$join="m left join fakultas f on m.KodeFakultas=f.Kode left join _v2_jurusan j on m.KodeJurusan=j.Kode";
-			} else if ($use[$a]=="_v2_mhsw" or $use[$a]=="_v2_mhsw_pmmdn"){
-				$val=",m.KodeFakultas as kdf,f.Nama_Indonesia as nmf,m.KodeJurusan as kdj, j.Nama_Indonesia as nmj,m.Login, m.Sex, m.fotoktm as Foto, m.Name, m.count_edit_password";
+			} else if ($use[$a]=="_v2_mhsw"){ // mahasiswa
+				$val=",m.KodeFakultas as kdf,f.Nama_Indonesia as nmf,m.KodeJurusan as kdj, j.Nama_Indonesia as nmj,m.Login, j.jenjang, m.Sex, m.fotoktm as Foto, m.Name, m.count_edit_password";
+				$par="AND m.KodeFakultas != '' AND m.KodeJurusan != '' AND m.status='A' AND m.NotActive='N' $fak";
+				$join="m left join fakultas f on m.KodeFakultas=f.Kode left join _v2_jurusan j on m.KodeJurusan=j.Kode";
+			} else if ($use[$a]=="_v2_mhsw_pmmdn") { // mahasiswa pmmdn
+				$val=",m.KodeFakultas as kdf,f.Nama_Indonesia as nmf,m.KodeJurusan as kdj, j.Nama_Indonesia as nmj,m.Login, m.jenjang, m.Sex, m.fotoktm as Foto, m.Name, m.count_edit_password";
 				$par="AND m.KodeFakultas != '' AND m.KodeJurusan != '' AND m.status='A' AND m.NotActive='N' $fak";
 				$join="m left join fakultas f on m.KodeFakultas=f.Kode left join _v2_jurusan j on m.KodeJurusan=j.Kode";
 			} else {
@@ -207,6 +211,9 @@ class prc extends CI_Controller {
 				"jumlahlogin"=>$count_edit_password,
 				"stat"=>1
 			);
+			if (isset($row[0]['jenjang'])) {
+				$user['jenjang'] = $row[0]['jenjang'];
+			}
 			$this->session->set_userdata($user); // untuk session
 
 			$this->session->set_flashdata('ubahpassword',"$count_edit_password"); // untuk flash session
