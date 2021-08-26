@@ -1,12 +1,12 @@
 
-<div class="content-wrapper">
+<div id="app" class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <div class="row">
       <h1>KRS </h1>
       <div class="col-2">
         <select id="SelectTahunPeriode" name="SelectTahunPeriode" class="form-control">
-          <option >Periode</option>
+          <option value=''>Periode</option>
           <?php foreach ($tahun_semester as $periode) {
           echo "<option value='$periode->kode'>$periode->nama</option>";
             
@@ -33,114 +33,50 @@
             <div class="row">
               <div class="col-12">
                 <div class="form-group row">
-                  <label for="example-search-input" class="col-sm-2 col-form-label">Prodi</label>
+                  <label for="pilihProdi" class="col-sm-2 col-form-label">Prodi</label>
                   <div class="col-sm-10">
-                    <select class="form-control">
-                      <option>Program Studi</option>
+                    <select id="pilihProdi" class="form-control">
+                      <option value="">Program Studi</option>
                       <?php foreach ($daftar_prodi as $prodi) {
-                      echo "<option value='$prodi->kode'>$prodi->nama</option>";
-                        
+                        echo "<option value='$prodi->kode'>$prodi->kode - $prodi->nama</option>";
                       }?>
                     </select>
                   </div>
                 </div>
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-sm-2 col-form-label">Matakuliah</label>
+                <!-- <div class="form-group row">
+                  <label for="cariMk" class="col-sm-2 col-form-label">Matakuliah</label>
                   <div class="col-sm-10">
-                  <input class="form-control" type="text" value="Johen Doe" id="example-text-input">
+                  <input class="form-control" type="text" value="" id="cariMk" disabled>
                   </div>
-                </div>
+                </div> -->
               </div>
               <!-- /.col -->
             </div>
-            <table class="table table-responsive">
-              <tbody>
+            <table id="jadwal" class="table table-responsive">
+              <thead>
                 <tr>
-                  <th style="width: 10px">#</th>
+                  <!-- <th style="width: 10px">#</th> -->
                   <th>Matakuliah</th>
-                  <th>Peserta Kelas</th>
-                  <th style="width: 40px">Ambil</th>
+                  <th>Hari</th>
+                  <th>Ruangan</th>
+                  <th style="width: 10px">SKS</th>
+                  <th style="width: 10px">Ambil</th>
                 </tr>
-                <tr>
-                  <td>1.</td>
-                  <td>Update software</td>
-                  <td>
-                    <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-primary" style="width: 55%"></div>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="form-group">
-                      <div class="checkbox">
-                          <input type="checkbox" id="Checkbox_1">
-                          <label for="Checkbox_1"></label>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2.</td>
-                  <td>Clean database</td>
-                  <td>
-                    <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-success" style="width: 70%"></div>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="form-group">
-                      <div class="checkbox">
-                          <input type="checkbox" id="Checkbox_2">
-                          <label for="Checkbox_2"></label>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>3.</td>
-                  <td>Cron job running</td>
-                  <td>
-                    <div class="progress progress-xs progress-striped active">
-                      <div class="progress-bar progress-bar-red" style="width: 30%"></div>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="form-group">
-                      <div class="checkbox">
-                          <input type="checkbox" id="Checkbox_3">
-                          <label for="Checkbox_3"></label>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4.</td>
-                  <td>Fix and squish bugs</td>
-                  <td>
-                    <div class="progress progress-xs progress-striped active">
-                      <div class="progress-bar progress-bar-warning" style="width: 90%"></div>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="form-group">
-                      <div class="checkbox">
-                          <input type="checkbox" id="Checkbox_4">
-                          <label for="Checkbox_4"></label>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
+              </thead>
+              <tbody id="tbody-kelas">
               </tbody>
             </table>
           </div>
           <!-- /.box-body -->
           <div class="box-footer">
-            <button type="submit" class="btn btn-default">Reset</button>
-            <button type="submit" class="btn btn-info pull-right">Simpan</button>
+            
           </div>
         </div>
         <!-- /.box -->
       </div>
       <!-- /.col -->
+
+      <!-- bagian KRS -->
       <div class="col-md-12 col-lg-6">
         
 
@@ -151,54 +87,67 @@
           </div>
           <!-- /.box-header -->
           <div class="box-body">
-            <table class="table table-hover table-responsive">
-              <tbody><tr>
-                <th style="width: 10px">#</th>
-                <th>Products</th>
-                <th>Popularity</th>
-                <th style="width: 40px">Sales</th>
-              </tr>
-              <tr>
-                <td>1.</td>
-                <td>Milk Powder</td>
-                <td>
-                  <div class="progress progress-xs">
-                    <div class="progress-bar progress-bar-info" style="width: 55%"></div>
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group row">
+                  <label for="nim" class="col-sm-4 col-form-label">NIM</label>
+                  <div class="col-sm-8">
+                  <p id="nim"><?= $profile->nim ?></p>
                   </div>
-                </td>
-                <td><span class="badge bg-blue">55%</span></td>
-              </tr>
-              <tr>
-                <td>2.</td>
-                <td>Air Conditioner</td>
-                <td>
-                  <div class="progress progress-xs">
-                    <div class="progress-bar progress-bar-red" style="width: 70%"></div>
+                </div>
+                <div class="form-group row">
+                  <label for="nama" class="col-sm-4 col-form-label">Nama</label>
+                  <div class="col-sm-8">
+                  <p id="nama"><?= $profile->name ?></p>
                   </div>
-                </td>
-                <td><span class="badge bg-red">70%</span></td>
-              </tr>
-              <tr>
-                <td>3.</td>
-                <td>RC Cars</td>
-                <td>
-                  <div class="progress progress-xs progress-striped active">
-                    <div class="progress-bar progress-bar-yellow" style="width: 30%"></div>
+                </div>
+                <div class="form-group row">
+                  <label for="nama" class="col-sm-4 col-form-label">Total SKS</label>
+                  <div class="col-sm-8">
+                  <p id="totalSKS"><?= $totalSKS ?></p>
                   </div>
-                </td>
-                <td><span class="badge bg-yellow">30%</span></td>
-              </tr>
-              <tr>
-                <td>4.</td>
-                <td>Down Coat</td>
-                <td>
-                  <div class="progress progress-xs progress-striped active">
-                    <div class="progress-bar progress-bar-success" style="width: 90%"></div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group row">
+                  <label for="univAsal" class="col-sm-4 col-form-label">Universitas Asal</label>
+                  <div class="col-sm-8">
+                  <p id="univAsal"><?= $profile->univ_asal ?></p>
                   </div>
-                </td>
-                <td><span class="badge bg-green">90%</span></td>
-              </tr>
-            </tbody></table>
+                </div>
+                <div class="form-group row">
+                  <label for="proAsal" class="col-sm-4 col-form-label">Prodi Asal</label>
+                  <div class="col-sm-8">
+                  <p id="proAsal"><?= $profile->prodi_asal ?></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <table id="krs" class="table table-bordered table-hover display nowrap margin-top-10 table-responsive" cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <th>NO</th>
+                  <th>Matakuliah</th>
+                  <th>SKS</th>
+                  <th>Program Studi</th>
+                  <th>Ruang</th>
+                  <th>Waktu</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>NO</th>
+                  <th>Matakuliah</th>
+                  <th>SKS</th>
+                  <th>Program Studi</th>
+                  <th>Ruang</th>
+                  <th>Waktu</th>
+                </tr>
+              </tfoot>
+              <tbody>
+              </tbody>
+            </table>
           </div>
           <!-- /.box-body -->
         </div>

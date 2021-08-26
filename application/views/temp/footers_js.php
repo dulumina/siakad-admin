@@ -124,6 +124,9 @@
 	<script src="<?=base_url()?>assets/plugins/timepicker/bootstrap-timepicker.min.js"></script>
 	<script src="<?=base_url()?>assets/plugins/jasny/jasny-bootstrap.min.js"></script>
 
+
+	<script src="<?=base_url()?>assets/js/vue@2.js"></script>
+
     <!-- SweetAlert2(P) Wawan Matikan karena sudah di include sweet alert-->
     <!-- <script src="<?=base_url()?>assets/plugins/sweetalert2/dist/sweetalert2.all.min.js"></script>
     <script src="<?=base_url()?>assets/plugins/sweetalert2/dist/sweetalert2.min.js"></script> -->

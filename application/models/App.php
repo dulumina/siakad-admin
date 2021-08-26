@@ -179,6 +179,7 @@ class App extends CI_Model{
 		$this->db->join('_v2_bataskrs','_v2_bataskrs.Tahun=_v2_tahun.Kode AND _v2_tahun.KodeProgram=_v2_bataskrs.KodeProgram AND _v2_bataskrs.KodeJurusan=_v2_jurusan.Kode', 'inner');
 		$this->db->where($where);
 		$this->db->order_by('_v2_tahun.kode','DESC');
+
 		$tabel_periode = $this->db->get('_v2_tahun');
 		if ($bolean) {
 			if ($tabel_periode->num_rows()>0) {
@@ -189,5 +190,30 @@ class App extends CI_Model{
 		}else {
 			return $tabel_periode->result();
 		}
+	}
+
+	public function getKelasPerkuliahan($prodi='',$periode='')
+	{
+		$select = "id_kelas_kuliah,IDJADWAL,id_mk,IDMK,NamaMK,SKS,IDDosen,Hari,JamMulai,JamSelesai,KodeRuang";
+		$where=[];
+		if ($prodi) {
+			$where['_v2_jadwal.KodeJurusan']=$prodi;
+		}
+		if ($periode) {
+			$where['_v2_jadwal.tahun']=$periode;
+		}
+
+		$this->db->select($select);
+		$this->db->select("concat(_v2_hari.Nama,', ',_v2_jadwal.JamMulai,' s/d ',_v2_jadwal.JamSelesai) as waktu");
+		
+		$this->db->join('_v2_jurusan','_v2_jurusan.Kode=_v2_tahun.KodeJurusan','inner');
+		$this->db->join('_v2_bataskrs','_v2_bataskrs.Tahun=_v2_tahun.Kode AND _v2_tahun.KodeProgram=_v2_bataskrs.KodeProgram AND _v2_bataskrs.KodeJurusan=_v2_jurusan.Kode', 'inner');
+		$this->db->join('_v2_jadwal','_v2_jadwal.Tahun=_v2_tahun.Kode AND _v2_jadwal.KodeJurusan=_v2_jurusan.Kode','inner');
+		$this->db->join('_v2_hari','_v2_jadwal.hari=_v2_hari.id','inner');
+		$this->db->where($where);
+		$this->db->order_by('_v2_tahun.kode','DESC');
+		$this->db->group_by('IDJADWAL');
+		$res = $this->db->get('_v2_tahun');
+		return $res->result();
 	}
 }
