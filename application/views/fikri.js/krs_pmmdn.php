@@ -12,6 +12,7 @@ $('#SelectTahunPeriode').on('change',()=>{
 })
 
 $('#pilihProdi').change(()=>{
+  $('body').addClass("loading")
   jadwal.clear();
   jadwal.destroy();
   let prodi = $('#pilihProdi').val();
@@ -41,6 +42,7 @@ $('#pilihProdi').change(()=>{
           },
         }],
       });
+      $('body').removeClass("loading")
     })
   }else{
     jadwal = $('#jadwal').DataTable()
@@ -48,6 +50,8 @@ $('#pilihProdi').change(()=>{
 })
 
 function addMK(idJadwal) {
+  $('body').addClass("loading")
+  $('button').prop('disabled', true);
   let nim = $('#nim').html();
   let periode = $('#SelectTahunPeriode').val();
   $.post("<?= base_url('ademik/krs_pmmdn/addMkKrs')?>",{IDJADWAL:idJadwal,nim:nim,periode:periode})
@@ -58,10 +62,14 @@ function addMK(idJadwal) {
     }
     $('#totalSKS').html(response.totalSKS.toFixed(1))
     renderKRS(response.krs);
+    $('body').removeClass("loading")
+    $('button').prop('disabled', false);
   })
 }
 
 function getKrs(params) {
+  $('body').addClass("loading")
+  $('button').prop('disabled', true);
   let nim = $('#nim').html();
   let periode = $('#SelectTahunPeriode').val();
   $.post("<?= base_url('ademik/krs_pmmdn/getKrs')?>",{nim:nim,periode:periode})
@@ -70,6 +78,8 @@ function getKrs(params) {
     // console.log(response);
     $('#totalSKS').html(response.totalSKS.toFixed(1))
     renderKRS(response.krs);
+    $('body').removeClass("loading")
+    $('button').prop('disabled', false);
   })
 }
 
@@ -102,6 +112,8 @@ function renderKRS(params) {
 }
 
 function removeMK(params) {
+  $('body').addClass("loading")
+  $('button').prop('disabled', true);
   let nim = $('#nim').html();
   let periode = $('#SelectTahunPeriode').val();
   $.post("<?= base_url('ademik/krs_pmmdn/removeMK')?>",{id_krs:params})
@@ -110,6 +122,8 @@ function removeMK(params) {
     // console.log(response);
     $('#totalSKS').html(response.totalSKS.toFixed(1))
     renderKRS(response.krs);
+    $('body').removeClass("loading")
+    $('button').prop('disabled', false);
   })
 }
 
