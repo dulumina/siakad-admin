@@ -116,7 +116,7 @@
 						<tr>
 							<td align="center"><?= $a ?></td>
 							<td><?= $mhsw->NIM ?></td>
-							<td><?= $mhsw->Name ?></td>
+							<td><?= cleanName($mhsw->Name) ?></td>
 							<td align="center"><?= $kehadiran ?> %</td>
 							<td align="center">A  A-  B+  B  B-  C  D  E</td>
 							<!-- <td align="center"><?= $mhsw->GradeNilai ?></td> -->
