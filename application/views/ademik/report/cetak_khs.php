@@ -89,7 +89,7 @@
 							</tr>
 							<tr>
 								<td>Nama Mahasiswa</td>
-								<td>: <?= $show->Name ?></td>
+								<td>: <?= cleanName($show->Name) ?></td>
 								<td></td>
 								<td></td>
 							</tr>
