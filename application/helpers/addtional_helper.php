@@ -134,7 +134,7 @@ function getMajorCollege($nim)
 function cleanName($name){
 	$find=["\'","&#39;"];
 	$replace="'";
-	return = str_replace($find,$replace,$name)
+	return str_replace($find,$replace,$name)
 }
 
 ?>
