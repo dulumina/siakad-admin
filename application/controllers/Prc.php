@@ -66,7 +66,6 @@ class prc extends CI_Controller {
 
     // Toggle Off Ganjil Genap
     $gg = "OFF";
-
     if ($gg = "OFF") {
       $fak = "and m.KodeFakultas in ('F','B','C','D','E','F','L','N','O','K2M','K2T','A','H','P','F','pmmdn')";
     }
