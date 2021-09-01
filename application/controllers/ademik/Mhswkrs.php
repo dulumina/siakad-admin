@@ -2,6 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Mhswkrs extends CI_Controller {
+	public $lnkSurvei = 'https://bit.ly/EVSIS-2021';
 	function __construct(){
 		parent::__construct();
 		$this->load->library('form_validation');
@@ -16,6 +17,10 @@ class Mhswkrs extends CI_Controller {
 	}
 
 	public function index(){
+		$kuesioner = $this->session->userdata('kuesioner');
+		if (!isset($kuesioner)) {
+			$this->session->set_userdata('kuesioner',0);
+		}
 	// cara pertama
 		//	$content = $this->session->userdata('sess_tamplate');
 		//	$this->load->view('temp/head');
@@ -620,6 +625,10 @@ class Mhswkrs extends CI_Controller {
 								'data' => $data,
 								'message' => $sksBolehDiAmbil
 							);
+
+							if($semesterAkademik >= '20211' or true ){
+								$dataView['kuisioner'] = $this->lnkSurvei;
+							}
 							echo json_encode($dataView);
 						}
 					}
@@ -4096,5 +4105,21 @@ class Mhswkrs extends CI_Controller {
 		echo "tes";
 		$result = $this->krs_model->sinkronspp1('N11118029','20182');
 		echo $result;
+	}
+
+	public function directLink($page='')
+	{
+		
+		switch ($page) {
+			case 'kuesioner':
+				header("location: $this->lnkSurvei", true, 301);
+				$this->session->set_userdata('kuesioner',1);
+				break;
+			
+			default:
+				echo "tidak oke";
+				break;
+		}
+		
 	}
 }

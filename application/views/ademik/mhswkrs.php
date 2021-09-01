@@ -92,10 +92,16 @@
 						<h4>Keterangan :</h4>
 						<p>
 							- Fitur ini di gunakan untuk menampilkan dan mengelola KRS per mahasiswa <br>
-							- Cek data di forlap Klik disini <a href="https://forlap.ristekdikti.go.id/mahasiswa">Forlap Ristek Dikti</a> <br>
-							- Pastikan setiap semesternya data terdapat di forlap <br>
+							- Cek data di PDDIKTI Klik disini <a class="text-light bg-warning" href="https://pddikti.kemdikbud.go.id/">PDDIKTI Kemendikbud</a> <br>
+							- Pastikan setiap semesternya data terdapat di PDDIKTI <br>
 							
 						</p>
+					</div>
+					<div class="callout callout-success">
+						<h4>Kuesioner :</h4>
+						<div class="col-6">
+							Bagi seluruh mahasiswa Universitas Tadulako, diharapkan untuk mengisi kuesioner survey kepuasan mahasiswa atas layanan Universitas Tadulako. Kuesioner tersebut untuk mengetahui tingkat kepuasan dan kepentingan dari layanan yang telah diberikan oleh Universitas Tadulako, serta menghimpun pendapat mahasiswa untuk bahan evaluasi dan masukkan dalam penyusunan rencana layanan periode berikutnya. <a class="text-light bg-warning" id="lnkkuisioner" href="<?= base_url('ademik/mhswkrs/directLink/kuesioner') ?>" role="button">Link Kuesioner</a>
+						</div>
 					</div>
 					<!-- <div class="col-12">
 						<div class="form-group row">
@@ -204,6 +210,29 @@
 	</div>
 </div>
 <!-- MODAL REGISTRASI ULANG -->
+
+<!-- Modal kuisioner -->
+<div class="modal fade" id="kuisioner" tabindex="-1" role="dialog" aria-labelledby="kuisionerTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="kuisionerTitle">Kuesioner Kepuasan Mahasiswa</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Bagi seluruh mahasiswa Universitas Tadulako, diharapkan untuk mengisi kuesioner survey kepuasan mahasiswa atas layanan Universitas Tadulako. Kuesioner tersebut untuk mengetahui tingkat kepuasan dan kepentingan dari layanan yang telah diberikan oleh Universitas Tadulako, serta menghimpun pendapat mahasiswa untuk bahan evaluasi dan masukkan dalam penyusunan rencana layanan periode berikutnya.<hr>
+				<div class="col-md-12 text-center">
+            <a class="btn btn-primary" id="lnkkuisioner" href="<?= base_url('ademik/mhswkrs/directLink/kuesioner') ?>" role="button">Link Kuesioner</a>
+        </div>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal kuisioner -->
 
 <script>
 	var i = setInterval(function() {
@@ -332,7 +361,12 @@
 										swal("Lanjutkan", "Lanjutkan pengisian data", "success");
 									}
 								});*/
-							}							
+							}	
+							
+							if(msg.kuisioner){
+								// console.log(msg.kuisioner);
+								$('#kuisioner').modal('toggle');
+							}						
 						},
 						error: function(err){
 							$body.removeClass("loading");
@@ -786,6 +820,16 @@
 					}
 				});
 			});
+			
+			let kuesioner = "<?= $this->session->userdata('kuesioner'); ?>";
+			let unip = "<?= $this->session->userdata('unip'); ?>";
+			$(()=>{
+				localStorage.setItem("mytime", Date.now());
+				if (kuesioner != 1) {
+					$('#kuisioner').modal('toggle');
+				}
+			})
+
 		}
 	}, 100);
 </script>  
