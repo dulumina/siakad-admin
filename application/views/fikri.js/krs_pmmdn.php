@@ -42,10 +42,13 @@ $('#pilihProdi').change(()=>{
           },
         }],
       });
-      $('body').removeClass("loading")
     })
+    .always(function() {
+      $('body').removeClass("loading")
+    });
   }else{
     jadwal = $('#jadwal').DataTable()
+    $('body').removeClass("loading")
   }
 })
 
@@ -62,13 +65,15 @@ function addMK(idJadwal) {
     }
     $('#totalSKS').html(response.totalSKS.toFixed(1))
     renderKRS(response.krs);
-    $('body').removeClass("loading")
     $('button').prop('disabled', false);
   })
+  .always(function() {
+    $('body').removeClass("loading")
+  });
 }
 
 function getKrs(params) {
-  $('body').addClass("loading")
+  // $('body').addClass("loading")
   $('button').prop('disabled', true);
   let nim = $('#nim').html();
   let periode = $('#SelectTahunPeriode').val();
@@ -78,9 +83,11 @@ function getKrs(params) {
     // console.log(response);
     $('#totalSKS').html(response.totalSKS.toFixed(1))
     renderKRS(response.krs);
-    $('body').removeClass("loading")
     $('button').prop('disabled', false);
   })
+  .always(function() {
+    $('body').removeClass("loading")
+  });
 }
 
 function renderKRS(params) {
@@ -122,9 +129,11 @@ function removeMK(params) {
     // console.log(response);
     $('#totalSKS').html(response.totalSKS.toFixed(1))
     renderKRS(response.krs);
-    $('body').removeClass("loading")
     $('button').prop('disabled', false);
   })
+  .always(function() {
+    $('body').removeClass("loading")
+  });
 }
 
 getKrs()

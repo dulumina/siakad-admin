@@ -108,6 +108,14 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+              <hr>
+              <div>
+                <h6>Kuesioner</h6>
+                <p>Bagi seluruh mahasiswa Universitas Tadulako, diharapkan untuk mengisi kuesioner survey kepuasan mahasiswa atas layanan Universitas Tadulako <span class="text-white bg-warning"> sebelum mengisi KRS pada halaman input KRS </span>. </p>
+                  <p>Kuesioner tersebut untuk mengetahui tingkat kepuasan dan kepentingan dari layanan yang telah diberikan oleh Universitas Tadulako, serta menghimpun pendapat mahasiswa untuk bahan evaluasi dan masukkan dalam penyusunan rencana layanan periode berikutnya.</p>
+              </div>
+              <hr>
+              <!--
               <div>
                 <h6 class="text-center">Kuota Internet Gratis</h6>
                 <div style="display: block; margin: 0 auto; text-align: center;">
@@ -133,6 +141,7 @@
                   <li>Tanggal <b>Genap</b>  : <span class="<?= (date('d')%2)==1? "text-red":"text-green" ?>">FISIP, FEKON, FAKUM, FAHUT, FAPERTA, FATEK, KAMPUS 2 MOROWALI, KAMPUS 2 TOUNA, KEDOKTERAN, FAPETKAN </span> </li>
                 </ul>
               </div>
+              -->
             </div>
           </div>
         </section>

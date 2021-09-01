@@ -100,6 +100,10 @@ class Krs_pmmdn extends CI_Controller {
 
 	public function getKrs($return=false)
 	{
+		if (!isset($_SESSION['periode'])) {
+			echo json_encode([]);
+			exit(200);
+		}
 		$nim = $this->session->userdata('unip');
 		$input = $this->input->post();
 		$this->db->select("_v2_jadwal.NamaMK,_v2_jadwal.KodeRuang,_v2_jadwal.SKS,concat(_v2_hari.Nama,', ',_v2_jadwal.JamMulai,' s/d ',_v2_jadwal.JamSelesai) as waktu,_v2_jurusan.Nama_Indonesia prodi");
