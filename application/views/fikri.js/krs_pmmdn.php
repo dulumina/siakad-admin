@@ -94,4 +94,7 @@ function renderKRS(params) {
   } ).draw();
 }
 getKrs()
+$(document).ready(function() {
+    $('select').select2();
+});
 </script>

@@ -35,7 +35,7 @@ class Krs_pmmdn extends CI_Controller {
 		$this->db->select('_v2_jurusan.kode,_v2_jurusan.nama_indonesia nama');
 		$this->db->group_by('_v2_jurusan.kode');
 		$this->db->where('_v2_jurusan.jenjang',$this->session->userdata('jenjang'));
-		$data['daftar_prodi'] = $this->app->getPeriodeKrsProdi();
+		$data['daftar_prodi'] = $this->app->getProdi();
 
 		// echo json_encode($data['daftar_prodi']);exit;
 		$this->load->view('dashbord',$data);
@@ -97,7 +97,7 @@ class Krs_pmmdn extends CI_Controller {
 	}
 
 	public function getKrs($return=false)
-	{
+	{ 
 		$nim = $this->session->userdata('unip');
 		$input = $this->input->post();
 		$this->db->select("_v2_jadwal.NamaMK,_v2_jadwal.KodeRuang,_v2_jadwal.SKS,concat(_v2_hari.Nama,', ',_v2_jadwal.JamMulai,' s/d ',_v2_jadwal.JamSelesai) as waktu,_v2_jurusan.Nama_Indonesia prodi");
