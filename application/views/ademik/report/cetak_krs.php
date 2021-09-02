@@ -52,7 +52,7 @@
 					</tr>
 					<tr>
 						<td>Nama Mahasiswa</td>
-						<td>: <?= strtoupper($amhsw->Name); ?></td>
+						<td>: <?= strtoupper(cleanName($amhsw->Name)); ?></td>
 						<td></td>
 						<td></td>
 					</tr>
