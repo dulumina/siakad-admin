@@ -27,6 +27,7 @@ class Prc_migrasiMaba extends CI_Controller {
 			$noujian	= $this->input->post('noujian');
 			$where = " and ( lulus_pcmb.st_nim =$nim or lulus_pcmb.noujian = $noujian )";
 		}
+		
 		$data_mhsw = $this->M_prcSiakad2->getDaftarulang($where);
 		echo 'Jumlah '.$data_mhsw->num_rows().' <br>';
 		if ($data_mhsw->num_rows()) {
@@ -87,7 +88,7 @@ class Prc_migrasiMaba extends CI_Controller {
 			$kodefakultas = "K2T";
 		}
 		elseif($ket == 3){
-			$kodefakultas = "K2T";
+			$kodefakultas = "K2M";
 		}else{
 			$kodefakultas = $kode;
 		}
