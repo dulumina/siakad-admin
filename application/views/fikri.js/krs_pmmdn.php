@@ -137,4 +137,7 @@ function removeMK(params) {
 }
 
 getKrs()
+$(document).ready(function() {
+    $('select').select2();
+});
 </script>
