@@ -47,7 +47,7 @@
 					</tr>
 					<tr>
 						<td>Nama</td>
-						<td>: <?=$row->Name?></td>
+						<td>: <?= cleanName($row->Name) ?></td>
 						<td>Program Studi</td>
 						<td>: <?=$kodejurusan?> - <?=$namajurusan?></td>
 					</tr>

@@ -125,5 +125,16 @@ function getMajorCollege($nim)
 	return $CI->db->get_where('_v2_mhsw', $where)->row()->KodeJurusan;
 }
 
+/**
+ * function 		: cleanName()
+ * @author 			MOh Dzulfikri
+ * @param string 	$name (name with symbol ' )
+ * @return	string	name without symbol '
+**/
+function cleanName($name){
+	$find=["\'","&#39;"];
+	$replace="'";
+	return str_replace($find,$replace,$name);
+}
 
 ?>

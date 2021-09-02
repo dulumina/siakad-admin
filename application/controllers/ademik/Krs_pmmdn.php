@@ -9,7 +9,7 @@ class Krs_pmmdn extends CI_Controller {
 		parent::__construct();
 		// $this->load->library('form_validation');
     // $this->load->library('encryption');
-    // $this->load->helper('security');
+    $this->load->helper('fikri');
     // $this->load->model('additional_model');
 	  $this->load->library('m_pdf');
 		$this->load->model('KrsPmmdn','pmmdn');
@@ -18,6 +18,8 @@ class Krs_pmmdn extends CI_Controller {
 	}
   
 	public function index() {
+		$sessionData = json_encode(['nim'=>$this->session->userdata('unip'),'periode'=>$this->session->userdata('periode')]);
+		$data['token'] = base64encode($sessionData);
 		$totalSKS ='';
 		$nim = $this->session->userdata('unip');
 		if (isset($_SESSION['periode'])) {
@@ -97,16 +99,20 @@ class Krs_pmmdn extends CI_Controller {
 	}
 
 	public function getKrs($return=false)
-	{ 
+	{
+		if (!isset($_SESSION['periode'])) {
+			echo json_encode([]);
+			exit(200);
+		}
 		$nim = $this->session->userdata('unip');
 		$input = $this->input->post();
 		$this->db->select("_v2_jadwal.NamaMK,_v2_jadwal.KodeRuang,_v2_jadwal.SKS,concat(_v2_hari.Nama,', ',_v2_jadwal.JamMulai,' s/d ',_v2_jadwal.JamSelesai) as waktu,_v2_jurusan.Nama_Indonesia prodi");
 		$this->db->select("_v2_krsmbkm.id");
-		$krs = $this->pmmdn->getKrs($input['nim'],$input['periode']);
+		$krs = $this->pmmdn->getKrs($nim,$_SESSION['periode']);
 
+		// $data['query'] = $this->db->last_query();
 		$data['krs'] = $krs;
 		$data['totalSKS'] = (int)$this->pmmdn->countSKS($nim,$_SESSION['periode']);
-		// $data['query'] = $this->db->last_query();
 		if ($return) {
 			return $data;
 		}else {
@@ -114,23 +120,63 @@ class Krs_pmmdn extends CI_Controller {
 		}
 	}
 
-	public function tes()
+	public function removeMK()
 	{
 		$nim = $this->session->userdata('unip');
-		// echo json_encode((int)$this->pmmdn->countSKS($nim,'20211'));
-		echo json_encode($this->cekMaxSks('C20120211C21201008REGDM4'));
-		// $prodi = $this->input->post('prodi');
-		// echo json_encode($_SESSION);
+		$input = $this->input->post('id_krs');
+		$cekMK = $this->db->get_where('_v2_krsmbkm',['nim'=>$nim,'id'=>$input]);
+		if ($cekMK->num_rows()==1) {
+			$this->db->delete('_v2_krsmbkm', array('id' => $input));
+			$status="1";
+			$msg="success";
+		}else {
+			$status="0";
+			$msg="Gagal menghapus Matakuliah KRS.";
+		}
 
-		// $this->db->select('_v2_jurusan.kode,_v2_jurusan.nama_indonesia nama');
-		// $this->db->group_by('_v2_jurusan.kode');
-		// echo json_encode($this->app->getPeriodeKrsProdi());
-		
-		// $this->app->getPeriodeKrsProdi();
-		// echo $this->db->last_query();
+		$data = $this->getKrs(true);
+		$data['status'] = $status;
+		$data['msg'] = $msg;
+		echo json_encode($data);
+	}
 
+	public function cetakKrs($token)
+	{
+		$sessionData = json_decode(base64decode($token));
+		// falidasi data
+		if (
+			$this->session->userdata('unip') != $sessionData->nim and
+			$this->session->userdata('periode') != $sessionData->periode
+			) {
+				echo "<script> alert('URL token tidak sesuai'); window.location.href='".base_url('ademik/Krs_pmmdn/')."' </script>";
+		}
+		$this->load->library('m_pdf');
 		
-		// echo json_encode($this->app->getKelasPerkuliahan($prodi,$_SESSION['periode']));
+
+		$data=array(
+			'detailKrs' => $this->getKrs(true)['krs'],
+			'periode'	=> $this->db->select('nama_periode')->get_where('_v2_periode_aktif',['periode_aktif'=>$sessionData->periode])->row()->nama_periode,
+			'profile'	=> $this->pmmdn->getProfile($sessionData->nim)
+		);
+		
+		$html = $this->load->view('ademik/report/cetak_krspmmdn', $data,true);
+		$pdf = $this->m_pdf->exp_pdf();
+
+		$pdf->AddPage('P');
+		$pdf->pagenumPrefix = 'Halaman ';
+		$pdf->nbpgPrefix = ' dari ';
+		$pdf->setFooter('{PAGENO}{nbpg}');
+		$pdf->WriteHTML($html);
+
+		$pdf->Output("KRS_$sessionData->nim.pdf", "D");
+
+		exit();
+	}
+
+	public function tes()
+	{
+
+
 	}
 
 }

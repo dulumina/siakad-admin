@@ -1,4 +1,10 @@
 
+<style>
+  .dl-horizontal dt { 
+    text-align: left;
+  }
+</style>
+
 <div id="app" class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -87,7 +93,21 @@
           </div>
           <!-- /.box-header -->
           <div class="box-body">
-            <div class="row">
+            <div class="container callout callout-success row">
+              <dl class="dl-horizontal pull-left">
+                <dt>NIM</dt>
+                <dd id="nim"><?= $profile->nim ?></dd>
+                <dt>Nama</dt>
+                <dd id="nama"><?= $profile->name ?></dd>
+                <dt>Universitas Asal</dt>
+                <dd id="univAsal"><?= $profile->univ_asal ?></dd>
+                <dt>Prodi Asal</dt>
+                <dd id="proAsal"><?= $profile->prodi_asal ?></dd>
+                <dt>Total SKS</dt>
+                <dd id="totalSKS"><?= $totalSKS ?></dd>
+              </dl>
+            </div>
+            <!-- <div class="row">
               <div class="col-6">
                 <div class="form-group row">
                   <label for="nim" class="col-sm-4 col-form-label">NIM</label>
@@ -122,7 +142,11 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
+            
+            <div class="pull-right">
+              <a class="btn btn-block btn-social btn-twitter" href="<?= base_url('ademik/Krs_pmmdn/cetakKrs/'.$token) ?>"><i class="fa fa-download"></i> Download KRS</a>
+            </div><br>
             <hr>
             <table id="krs" class="table table-bordered table-hover display nowrap margin-top-10 table-responsive" cellspacing="0" width="100%">
               <thead>
@@ -133,6 +157,7 @@
                   <th>Program Studi</th>
                   <th>Ruang</th>
                   <th>Waktu</th>
+                  <th>action</th>
                 </tr>
               </thead>
               <tfoot>
@@ -143,6 +168,7 @@
                   <th>Program Studi</th>
                   <th>Ruang</th>
                   <th>Waktu</th>
+                  <th>action</th>
                 </tr>
               </tfoot>
               <tbody>

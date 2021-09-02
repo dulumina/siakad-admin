@@ -64,6 +64,12 @@ class prc extends CI_Controller {
 			$fak = "and m.KodeFakultas in ('F','B','C','D','E','F','L','N','O','K2M','K2T','pmmdn')";
 		}
 
+    // Toggle Off Ganjil Genap
+    $gg = "OFF";
+    if ($gg = "OFF") {
+      $fak = "and m.KodeFakultas in ('F','B','C','D','E','F','L','N','O','K2M','K2T','A','H','P','F','pmmdn')";
+    }
+
 		if(empty($loguser)) $where=" and usr in ('_v2_adm','_v2_adm_fak','_v2_adm_jur','_v2_adm_pusat')"; // untuk selain mahasiswa dan dosen jika loguser kosong
 		else $where=" and usr='$loguser'";
 

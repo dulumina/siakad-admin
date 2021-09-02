@@ -8,10 +8,11 @@ let krs = $('#krs').DataTable();
 let jadwal = $('#jadwal').DataTable();
 
 $('#SelectTahunPeriode').on('change',()=>{
-  window.location.href = "<?= base_url('ademik/krs_pmmdn/Tahun_semester/') ?>"+$('#SelectTahunPeriode').val();
+  window.location.href = "<?= base_url('ademik/Krs_pmmdn/Tahun_semester/') ?>"+$('#SelectTahunPeriode').val();
 })
 
 $('#pilihProdi').change(()=>{
+  $('body').addClass("loading")
   jadwal.clear();
   jadwal.destroy();
   let prodi = $('#pilihProdi').val();
@@ -42,12 +43,18 @@ $('#pilihProdi').change(()=>{
         }],
       });
     })
+    .always(function() {
+      $('body').removeClass("loading")
+    });
   }else{
     jadwal = $('#jadwal').DataTable()
+    $('body').removeClass("loading")
   }
 })
 
 function addMK(idJadwal) {
+  $('body').addClass("loading")
+  $('button').prop('disabled', true);
   let nim = $('#nim').html();
   let periode = $('#SelectTahunPeriode').val();
   $.post("<?= base_url('ademik/krs_pmmdn/addMkKrs')?>",{IDJADWAL:idJadwal,nim:nim,periode:periode})
@@ -58,10 +65,16 @@ function addMK(idJadwal) {
     }
     $('#totalSKS').html(response.totalSKS.toFixed(1))
     renderKRS(response.krs);
+    $('button').prop('disabled', false);
   })
+  .always(function() {
+    $('body').removeClass("loading")
+  });
 }
 
 function getKrs(params) {
+  // $('body').addClass("loading")
+  $('button').prop('disabled', true);
   let nim = $('#nim').html();
   let periode = $('#SelectTahunPeriode').val();
   $.post("<?= base_url('ademik/krs_pmmdn/getKrs')?>",{nim:nim,periode:periode})
@@ -70,7 +83,11 @@ function getKrs(params) {
     // console.log(response);
     $('#totalSKS').html(response.totalSKS.toFixed(1))
     renderKRS(response.krs);
+    $('button').prop('disabled', false);
   })
+  .always(function() {
+    $('body').removeClass("loading")
+  });
 }
 
 function renderKRS(params) {
@@ -85,7 +102,14 @@ function renderKRS(params) {
       {data:'prodi'},
       {data:'KodeRuang'},
       {data:'waktu'},
-    ]
+      {data:'id'},
+    ],
+    columnDefs: [{
+      targets:6,
+      render: function (data, type, row, meta) {
+        return '<button onclick=removeMK("'+row.id+'") class="add btn btn-circle btn-sm"><i class="fa fa-trash"></i></button>';
+      },
+    }],
   })
   krs.on( 'order.dt search.dt', function () {
   krs.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
@@ -93,6 +117,25 @@ function renderKRS(params) {
     } );
   } ).draw();
 }
+
+function removeMK(params) {
+  $('body').addClass("loading")
+  $('button').prop('disabled', true);
+  let nim = $('#nim').html();
+  let periode = $('#SelectTahunPeriode').val();
+  $.post("<?= base_url('ademik/krs_pmmdn/removeMK')?>",{id_krs:params})
+  .done((res)=>{
+    let response = JSON.parse(res);
+    // console.log(response);
+    $('#totalSKS').html(response.totalSKS.toFixed(1))
+    renderKRS(response.krs);
+    $('button').prop('disabled', false);
+  })
+  .always(function() {
+    $('body').removeClass("loading")
+  });
+}
+
 getKrs()
 $(document).ready(function() {
     $('select').select2();
