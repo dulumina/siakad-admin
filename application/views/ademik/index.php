@@ -108,13 +108,18 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <hr>
-              <div>
+              <div class="callout callout-danger">
+                <h6>Himbauan</h6>
+                <ol>
+                  <li>Disampaikan kepada seluruh mahasiswa agar berhati-hati terhadap penipuan yang mengatasnamakan dosen kemudian meminta bantuan berupa uang dan pulsa.</li>
+                  <li>Disampaikan kepada seluruh masyarakat bahwa penerimaan mahasiswa baru Universitas Tadulako tahun 2021 pada jejang Diploma dan Sarjana telah ditutup. Jika ada oknum yang mengatasnamakan Pimpinan Universitas Tadulako menyampaikan bahwa ada penambahan kuota mahasiswa, mohon diabaikan karena sifatnya penipuan.</li>
+                </ol>
+              </div>
+              <div class="callout callout-info">
                 <h6>Kuesioner</h6>
                 <p>Bagi seluruh mahasiswa Universitas Tadulako, diharapkan untuk mengisi kuesioner survey kepuasan mahasiswa atas layanan Universitas Tadulako <span class="text-white bg-warning"> sebelum mengisi KRS pada halaman input KRS </span>. </p>
                   <p>Kuesioner tersebut untuk mengetahui tingkat kepuasan dan kepentingan dari layanan yang telah diberikan oleh Universitas Tadulako, serta menghimpun pendapat mahasiswa untuk bahan evaluasi dan masukkan dalam penyusunan rencana layanan periode berikutnya.</p>
               </div>
-              <hr>
               <!--
               <div>
                 <h6 class="text-center">Kuota Internet Gratis</h6>
