@@ -227,7 +227,7 @@
                     <strong>PENGUMUMAN STATUS PEMBAYARAN UANG SEMESTER</strong>
                   </h2>
                   <h4 class="text-center">
-                    <strong>TAHUN AJARAN GENAP 2020/2021</strong>
+                    <strong>TAHUN AJARAN <?= $periode_spc->periode; ?></strong>
                   </h4><br><br>
                   
                   <h4 class="text-left">
