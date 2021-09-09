@@ -531,9 +531,17 @@ class Additional_model extends CI_Model {
 
 	}
 
+	public function periode_aktif_spc(){
+		$periode = $this->db1->select()
+				   ->where('id_jenis',9)
+				   ->get('periode')
+				   -row();
+		return $periode;
+	}
 	// data mahasiswa yg belum byar dan sudah byar dan sudah terbuka atau belum by inal
 	public function get_dt_mhsw_spc($nim) {
-		$data = $this->db1->query("SELECT kode_periode, nomor_induk, waktu_berakhir, kode_bank FROM `tagihan` WHERE nomor_induk='$nim' and kode_periode='20211'");
+		$periode = $this->periode_aktif_spc()->kode;
+		$data = $this->db1->query("SELECT kode_periode, nomor_induk, waktu_berakhir, total_nilai_tagihan, kode_bank FROM `tagihan` WHERE nomor_induk='$nim' and kode_periode='$periode'");
 		return $data->result_array();
 	}
 
