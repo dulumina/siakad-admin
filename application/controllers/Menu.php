@@ -37,6 +37,7 @@ class Menu extends CI_Controller {
 
 			$data['berita'] = $this->additional_model->getTampilBerita();
 			$data['ukt'] = $this->get_mhsw_spc();
+			$data['periode_spc'] = $this->additional_model->periode_aktif_spc();
 
 			$urutan = 0;
 			$urutantgl = 0;
