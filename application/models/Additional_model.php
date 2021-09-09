@@ -535,7 +535,7 @@ class Additional_model extends CI_Model {
 		$periode = $this->db1->select()
 				   ->where('id_jenis',9)
 				   ->get('periode')
-				   -row();
+				   ->row();
 		return $periode;
 	}
 	// data mahasiswa yg belum byar dan sudah byar dan sudah terbuka atau belum by inal
