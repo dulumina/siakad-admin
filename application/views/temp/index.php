@@ -227,7 +227,7 @@
                     <strong>PENGUMUMAN STATUS PEMBAYARAN UANG SEMESTER</strong>
                   </h2>
                   <h4 class="text-center">
-                    <strong>TAHUN AJARAN <?= $periode_spc->periode; ?></strong>
+                    <strong>TAHUN AJARAN <?= strtoupper($periode_spc->periode); ?></strong>
                   </h4><br><br>
                   
                   <h4 class="text-left">
@@ -250,6 +250,10 @@
                               <td><?php echo $ukt[0]['waktu_berakhir']; ?></td>
                             </tr>
                             <tr>
+                              <td>Nominal Tagihan  </td>
+                              <td><?php echo $ukt[0]['total_nilai_tagihan']; ?></td>
+                            </tr>
+                            <tr>
                               <td>Bank Pembayaran </td>
                               <td><?= ($ukt[0]['kode_bank']=='BMS')? 'Bank Mega Syariah': $ukt[0]['kode_bank']; ?></td>
                             </tr>
@@ -264,7 +268,7 @@
                         <?php 
                         
                       }else{
-                    echo '<p style="font-size: 20px; color: red;" class="text-center">pembayaran spp 20202 anda belum dibuka. mohon menunggu atau tanyakan difakultas masing - masing untuk info lebih lanjut </p>';
+                    echo '<p style="font-size: 20px; color: red;" class="text-center">pembayaran spp '. strtoupper($periode_spc->periode) .' anda belum dibuka. mohon menunggu atau tanyakan difakultas masing - masing untuk info lebih lanjut </p>';
                     }   ?>
                     
                   </h4>
