@@ -533,6 +533,7 @@ class Additional_model extends CI_Model {
 
 	public function periode_aktif_spc(){
 		$periode = $this->db1->select()
+				   ->order_by('kode','DESC')
 				   ->where('id_jenis',9)
 				   ->get('periode')
 				   ->row();
