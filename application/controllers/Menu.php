@@ -34,8 +34,9 @@ class Menu extends CI_Controller {
 		$uname=$this->session->userdata('uname');
 		$ulevel=$this->session->userdata('ulevel');
 		if (!empty($uname) and !empty($ulevel)){
-
+			$nim 	= $this->session->userdata('unip');
 			$data['berita'] = $this->additional_model->getTampilBerita();
+			$data['semester'] = $this->db->select('semester')->get_where('_v2_mhsw',['nim'=>$nim])->row()->semester;
 			$data['ukt'] = $this->get_mhsw_spc();
 			$data['periode_spc'] = $this->additional_model->periode_aktif_spc();
 

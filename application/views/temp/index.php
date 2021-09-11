@@ -219,7 +219,7 @@
                 </div>
 
                 <?php
-                  if ( $this->session->userdata('ulevel') == 1 OR $this->session->userdata('ulevel') == 4 ) {
+                  if ( $this->session->userdata('ulevel') == 1 OR  ( $this->session->userdata('ulevel') == 4 and $periode_spc->periode != $semester) ) {
                 ?>
 
                  <div class="col-md-5 col-lg-5">
@@ -268,7 +268,7 @@
                         <?php 
                         
                       }else{
-                    echo '<p style="font-size: 20px; color: red;" class="text-center">pembayaran spp '. strtoupper($periode_spc->periode) .' anda belum dibuka. mohon menunggu atau tanyakan difakultas masing - masing untuk info lebih lanjut </p>';
+                        echo '<p style="font-size: 20px; color: red;" class="text-center">pembayaran spp '. strtoupper($periode_spc->periode) .' anda belum dibuka. mohon menunggu atau tanyakan difakultas masing - masing untuk info lebih lanjut </p>';
                     }   ?>
                     
                   </h4>
