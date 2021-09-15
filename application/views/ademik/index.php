@@ -68,6 +68,8 @@
                         </div>
                       </div> -->
                       <!-- /.col -->
+                      <?= $recaptcha; ?>
+                      
                       <div class="col-12 text-center">
                         <button type="submit" class="btn btn-info btn-block btn-flat margin-top-10">SIGN IN</button>
                       </div>

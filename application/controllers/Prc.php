@@ -23,6 +23,7 @@ class prc extends CI_Controller {
 	function __construct() {
 	    parent::__construct();
 		$this->load->library('encryption');
+		$this->load->helper('fikri');
 	}
 
 	public function index()
@@ -34,206 +35,215 @@ class prc extends CI_Controller {
 		$username=$this->db->escape($this->input->post('username'));
 		$password=$this->db->escape($this->input->post('password'));
 		$loguser=$this->input->post('loguser');
-		
-		// echo json_encode($this->input->post()); exit;
-		//$komentar=strip_tags($komentar, '<a><b><i>').
-		//$nama=htmlspecialchars($nama, ENT_QUOTES);
-		//htmlentities($string);
-		//$id = filter_var($_POST['id'], FILTER_VALIDATE_INT); // Filter ini berguna untuk mefilter tipe data integer
-		//$nama = filter_var($_POST['nama'], FILTER_SANITIZE_STRING);//untuk tipe string
-		//$username="adminsuperuser";
-		//$password="adminsuperuser";
 
-		$ip_address=$_SERVER['REMOTE_ADDR'];
-		$info=$_SERVER['HTTP_USER_AGENT'];
-		$hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-
-		$stat = "";
-		$loguser=$this->encryption->decrypt($loguser);
-
-		// if ($loguser=='_v2_mhsw') {
-		// 	header('HTTP/1.1 510', true, 510);
-		// 	exit(510);
-		// }
-		// pembagian login ganjil dan genap (by Rocky)
-		$tgl = date('d');
-		$mod = $tgl % 2;
-		if ( $mod == 1 ) {
-			$fak = "and m.KodeFakultas in ('A','H','P','F','pmmdn')";
-		} else {
-			$fak = "and m.KodeFakultas in ('F','B','C','D','E','F','L','N','O','K2M','K2T','pmmdn')";
-		}
-
-    // Toggle Off Ganjil Genap
-    $gg = "OFF";
-    if ($gg = "OFF") {
-      $fak = "and m.KodeFakultas in ('F','B','C','D','E','F','L','N','O','K2M','K2T','A','H','P','F','pmmdn')";
-    }
-
-		if(empty($loguser)) $where=" and usr in ('_v2_adm','_v2_adm_fak','_v2_adm_jur','_v2_adm_pusat')"; // untuk selain mahasiswa dan dosen jika loguser kosong
-		else $where=" and usr='$loguser'";
-
-		$tab_lev = $this->db->query("Select usr,Level FROM level WHERE NotActive='N'$where")->result();
-		// echo json_encode($tab_lev); 		
-		// echo json_encode($this->db->last_query());
-
-		foreach ($tab_lev as $a){
-			$use [] = $a->usr;
-			// if ($a->Level==10) {
-			// 	$lev [] = 4;
-			// }else {
-			// 	$lev [] = $a->Level;
+		$is_valid = $this->recaptcha->is_valid();
+		// dump_d($is_valid);
+		if ($is_valid['success'] != 1) {
+			$this->session->set_flashdata('konfirmasi',"Maaf Captcha Salah");
+			redirect(base_url('menu'));
+		}else {
+			# code...
+			// echo json_encode($this->input->post()); exit;
+			//$komentar=strip_tags($komentar, '<a><b><i>').
+			//$nama=htmlspecialchars($nama, ENT_QUOTES);
+			//htmlentities($string);
+			//$id = filter_var($_POST['id'], FILTER_VALIDATE_INT); // Filter ini berguna untuk mefilter tipe data integer
+			//$nama = filter_var($_POST['nama'], FILTER_SANITIZE_STRING);//untuk tipe string
+			//$username="adminsuperuser";
+			//$password="adminsuperuser";
+	
+			$ip_address=$_SERVER['REMOTE_ADDR'];
+			$info=$_SERVER['HTTP_USER_AGENT'];
+			$hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+	
+			$stat = "";
+			$loguser=$this->encryption->decrypt($loguser);
+	
+			// if ($loguser=='_v2_mhsw') {
+			// 	header('HTTP/1.1 510', true, 510);
+			// 	exit(510);
 			// }
-			$lev [] = $a->Level;
-
-			//echo $a->Name;
-		}
-
-		for ($a=0; $a<count($use); $a++){
-			//echo "fandu -- $use[$a] <br>";
-			if ($use[$a]=="_v2_adm"){ // admin pusat
-				$val=",m.KodeUnit as kdf,m.KodeSubunit  as kdj,m.Login, m.Sex, m.Foto, m.count_edit_password";
-				$par="AND m.NotActive='N'";
-				$join="m";
-			} else if ($use[$a]=="_v2_adm_fak"  or $use[$a]=="_v2_dosen"){ // admin fakultas dan dosen
-				$val=",m.KodeFakultas as kdf,f.Nama_Indonesia as nmf,m.KodeJurusan  as kdj, j.Nama_Indonesia as nmj,m.Login, m.Sex, m.Foto, m.Name, m.count_edit_password";
-				$par="AND m.KodeFakultas != '' AND m.NotActive='N'";
-				$join="m left join fakultas f on m.KodeFakultas=f.Kode left join _v2_jurusan j on m.KodeJurusan=j.Kode";
-			} else if ($use[$a]=="_v2_adm_jur"){ // admin jurusan
-				$val=",m.KodeFakultas as kdf,f.Nama_Indonesia as nmf,m.KodeJurusan as kdj, j.Nama_Indonesia as nmj,m.Login, m.Sex, m.Foto, m.Name, m.count_edit_password";
-				$par="AND m.KodeFakultas != '' AND m.KodeJurusan != '' AND m.NotActive='N' ";
-				$join="m left join fakultas f on m.KodeFakultas=f.Kode left join _v2_jurusan j on m.KodeJurusan=j.Kode";
-			} else if ($use[$a]=="_v2_mhsw"){ // mahasiswa
-				$val=",m.KodeFakultas as kdf,f.Nama_Indonesia as nmf,m.KodeJurusan as kdj, j.Nama_Indonesia as nmj,m.Login, j.jenjang, m.Sex, m.fotoktm as Foto, m.Name, m.count_edit_password";
-				$par="AND m.KodeFakultas != '' AND m.KodeJurusan != '' AND m.status='A' AND m.NotActive='N' $fak";
-				$join="m left join fakultas f on m.KodeFakultas=f.Kode left join _v2_jurusan j on m.KodeJurusan=j.Kode";
-			} else if ($use[$a]=="_v2_mhsw_pmmdn") { // mahasiswa pmmdn
-				$val=",m.KodeFakultas as kdf,f.Nama_Indonesia as nmf,m.KodeJurusan as kdj, j.Nama_Indonesia as nmj,m.Login, m.jenjang, m.Sex, m.fotoktm as Foto, m.Name, m.count_edit_password";
-				$par="AND m.KodeFakultas != '' AND m.KodeJurusan != '' AND m.status='A' AND m.NotActive='N' $fak";
-				$join="m left join fakultas f on m.KodeFakultas=f.Kode left join _v2_jurusan j on m.KodeJurusan=j.Kode";
+			// pembagian login ganjil dan genap (by Rocky)
+			$tgl = date('d');
+			$mod = $tgl % 2;
+			if ( $mod == 1 ) {
+				$fak = "and m.KodeFakultas in ('A','H','P','F','pmmdn')";
 			} else {
-				$val=",m.KodeUnit as kdf,m.KodeSubunit  as kdj,m.Login, m.Sex, m.Foto, m.Name, m.count_edit_password";
-				$par="AND m.NotActive='N'";
-				$join="m";
+				$fak = "and m.KodeFakultas in ('F','B','C','D','E','F','L','N','O','K2M','K2T','pmmdn')";
 			}
-
-			//echo "SELECT m.ID,m.Name$val FROM $use[$a] $join WHERE m.Login='$username' AND m.Password=left(password('$password'),10) $par";
-			$query=$this->db->query("SELECT m.ID,m.Name$val FROM $use[$a] $join WHERE m.Login=$username AND m.Password=left(password($password),10) $par");
-			//echo $query->num_rows();
-			if($query->num_rows()>0){
-				$stat = $use[$a];
-				$usr_lev = $lev[$a];
-				break;
+	
+			// Toggle Off Ganjil Genap
+			$gg = "OFF";
+			if ($gg = "OFF") {
+				$fak = "and m.KodeFakultas in ('F','B','C','D','E','F','L','N','O','K2M','K2T','A','H','P','F','pmmdn')";
 			}
-		}
-		// echo json_encode($query->result());
-		// echo json_encode($this->db->last_query());exit;
-
-		if($stat == ""  ){ //and $loguser != "_v2_mhsw_pmmdn"){
-			// fandu tambahkan untuk mengecek dimana kesalahannya
-			if ($loguser=="_v2_dosen"){
-				$val=",m.KodeFakultas as kdf,f.Nama_Indonesia as nmf,m.KodeJurusan  as kdj, j.Nama_Indonesia as nmj,m.Login,m.NotActive as NA";
-				//$par="AND m.KodeFakultas != '' AND m.NotActive='N'";
-				$join="m left join fakultas f on m.KodeFakultas=f.Kode left join _v2_jurusan j on m.KodeJurusan=j.Kode";
-			} else if ($loguser=="_v2_mhsw" or $loguser=="_v2_mhsw"){
-				$val=",m.KodeFakultas as kdf,f.Nama_Indonesia as nmf,m.KodeJurusan as kdj, j.Nama_Indonesia as nmj,m.Login,m.status,m.NotActive as NA";
-				//$par="AND m.KodeFakultas != '' AND m.KodeJurusan != '' AND m.status='A'";
-				$join="m left join fakultas f on m.KodeFakultas=f.Kode left join _v2_jurusan j on m.KodeJurusan=j.Kode";
+	
+			if(empty($loguser)) $where=" and usr in ('_v2_adm','_v2_adm_fak','_v2_adm_jur','_v2_adm_pusat')"; // untuk selain mahasiswa dan dosen jika loguser kosong
+			else $where=" and usr='$loguser'";
+	
+			$tab_lev = $this->db->query("Select usr,Level FROM level WHERE NotActive='N'$where")->result();
+			// echo json_encode($tab_lev); 		
+			// echo json_encode($this->db->last_query());
+	
+			foreach ($tab_lev as $a){
+				$use [] = $a->usr;
+				// if ($a->Level==10) {
+				// 	$lev [] = 4;
+				// }else {
+				// 	$lev [] = $a->Level;
+				// }
+				$lev [] = $a->Level;
+	
+				//echo $a->Name;
 			}
-
-			if ($loguser=="_v2_dosen" or $loguser=="_v2_mhsw"){
-				$query_cek=$this->db->query("SELECT m.ID,m.Name$val FROM $loguser $join WHERE m.Login=$username AND m.Password=left(password($password),10)");
-
-				if ($query_cek->num_rows() >= 1){
-
-				  $row_cek=$query_cek->result_array();
-
-				  $pesantambahan = "Terdapat Kesalahan Pada Akun Anda. Silahkan Cek ";
-
-				  if ($loguser == "_v2_dosen"){
-						if($row_cek[0]["kdf"] == '') $pesantambahan .= "Fakultas Anda"; // Mahasiswa dan Dosen
-						if($row_cek[0]["NA"] != 'N') $pesantambahan .= "Status Anda Tidak Aktif"; // Dosen
-				  } else if ($loguser == "_v2_mhsw"){
-						if($row_cek[0]["kdf"] == '') $pesantambahan .= "Fakultas Anda"; // Mahasiswa dan Dosen
-						if($row_cek[0]["kdj"] == '') $pesantambahan .= "Jurusan Anda"; // Mahasiswa
-						if($row_cek[0]["status"] != 'A') {
-							$statmhsw=$this->db->query("SELECT * FROM _v2_statusmhsw where Kode='".$row_cek[0]["status"]."'")->row();
-
-							$pesantambahan .= "Status Mahasiswa Anda, Karena Anda Berstatus <b>".$statmhsw->Nama."</b>";// Nama Status Mahasiswa
-						}
-				  }
-
+	
+			for ($a=0; $a<count($use); $a++){
+				//echo "fandu -- $use[$a] <br>";
+				if ($use[$a]=="_v2_adm"){ // admin pusat
+					$val=",m.KodeUnit as kdf,m.KodeSubunit  as kdj,m.Login, m.Sex, m.Foto, m.count_edit_password";
+					$par="AND m.NotActive='N'";
+					$join="m";
+				} else if ($use[$a]=="_v2_adm_fak"  or $use[$a]=="_v2_dosen"){ // admin fakultas dan dosen
+					$val=",m.KodeFakultas as kdf,f.Nama_Indonesia as nmf,m.KodeJurusan  as kdj, j.Nama_Indonesia as nmj,m.Login, m.Sex, m.Foto, m.Name, m.count_edit_password";
+					$par="AND m.KodeFakultas != '' AND m.NotActive='N'";
+					$join="m left join fakultas f on m.KodeFakultas=f.Kode left join _v2_jurusan j on m.KodeJurusan=j.Kode";
+				} else if ($use[$a]=="_v2_adm_jur"){ // admin jurusan
+					$val=",m.KodeFakultas as kdf,f.Nama_Indonesia as nmf,m.KodeJurusan as kdj, j.Nama_Indonesia as nmj,m.Login, m.Sex, m.Foto, m.Name, m.count_edit_password";
+					$par="AND m.KodeFakultas != '' AND m.KodeJurusan != '' AND m.NotActive='N' ";
+					$join="m left join fakultas f on m.KodeFakultas=f.Kode left join _v2_jurusan j on m.KodeJurusan=j.Kode";
+				} else if ($use[$a]=="_v2_mhsw"){ // mahasiswa
+					$val=",m.KodeFakultas as kdf,f.Nama_Indonesia as nmf,m.KodeJurusan as kdj, j.Nama_Indonesia as nmj,m.Login, j.jenjang, m.Sex, m.fotoktm as Foto, m.Name, m.count_edit_password";
+					$par="AND m.KodeFakultas != '' AND m.KodeJurusan != '' AND m.status='A' AND m.NotActive='N' $fak";
+					$join="m left join fakultas f on m.KodeFakultas=f.Kode left join _v2_jurusan j on m.KodeJurusan=j.Kode";
+				} else if ($use[$a]=="_v2_mhsw_pmmdn") { // mahasiswa pmmdn
+					$val=",m.KodeFakultas as kdf,f.Nama_Indonesia as nmf,m.KodeJurusan as kdj, j.Nama_Indonesia as nmj,m.Login, m.jenjang, m.Sex, m.fotoktm as Foto, m.Name, m.count_edit_password";
+					$par="AND m.KodeFakultas != '' AND m.KodeJurusan != '' AND m.status='A' AND m.NotActive='N' $fak";
+					$join="m left join fakultas f on m.KodeFakultas=f.Kode left join _v2_jurusan j on m.KodeJurusan=j.Kode";
 				} else {
-
-				  $pesantambahan = "Username/Password Anda Salah / Tidak Terdaftar";
-
+					$val=",m.KodeUnit as kdf,m.KodeSubunit  as kdj,m.Login, m.Sex, m.Foto, m.Name, m.count_edit_password";
+					$par="AND m.NotActive='N'";
+					$join="m";
 				}
-
-				/* fandu perbaiki saat cek di untad mobile 09-12-2018
-				$row_cek=$query_cek->result_array();
-
-				$pesantambahan = "";
-
-				if ($loguser == "_v2_dosen"){
-					if($row_cek[0]["kdf"] == '') $pesantambahan .= "/Fakultas"; // Mahasiswa dan Dosen
-					if($row_cek[0]["NA"] != 'N') $pesantambahan .= "/Tidak Aktif"; // Dosen
-				} else if ($loguser == "_v2_mhsw"){
-					if($row_cek[0]["kdf"] == '') $pesantambahan .= "/Fakultas"; // Mahasiswa dan Dosen
-					if($row_cek[0]["kdj"] == '') $pesantambahan .= "/Jurusan"; // Mahasiswa
-					if($row_cek[0]["status"] != 'A') $pesantambahan .= "/Status";// Mahasiswa
-				}*/
+	
+				//echo "SELECT m.ID,m.Name$val FROM $use[$a] $join WHERE m.Login='$username' AND m.Password=left(password('$password'),10) $par";
+				$query=$this->db->query("SELECT m.ID,m.Name$val FROM $use[$a] $join WHERE m.Login=$username AND m.Password=left(password($password),10) $par");
+				//echo $query->num_rows();
+				if($query->num_rows()>0){
+					$stat = $use[$a];
+					$usr_lev = $lev[$a];
+					break;
+				}
 			}
-
-			$this->session->set_flashdata('konfirmasi',"$pesantambahan. Silahkan Cek Kembali dengan Benar Akun Anda");
-			$log_in = "N";
-		} else {
-			$this->rem_menu();
-
-			$row=$query->result_array();
-			$id=$row[0]["ID"];
-			$ulogin=$row[0]["Login"];
-			$name=$row[0]["Name"];
-			$kdf=$row[0]["kdf"];
-			$kdj=$row[0]["kdj"];
-			$foto=$row[0]["Foto"];
-			$sex=$row[0]["Sex"];
-			$nama=$row[0]["Name"];
-			$count_edit_password=$row[0]["count_edit_password"];
-			if ($count_edit_password == 0){
-				$count_edit_password = "editpassword";
+			// echo json_encode($query->result());
+			// echo json_encode($this->db->last_query());exit;
+	
+			if($stat == ""  ){ //and $loguser != "_v2_mhsw_pmmdn"){
+				// fandu tambahkan untuk mengecek dimana kesalahannya
+				if ($loguser=="_v2_dosen"){
+					$val=",m.KodeFakultas as kdf,f.Nama_Indonesia as nmf,m.KodeJurusan  as kdj, j.Nama_Indonesia as nmj,m.Login,m.NotActive as NA";
+					//$par="AND m.KodeFakultas != '' AND m.NotActive='N'";
+					$join="m left join fakultas f on m.KodeFakultas=f.Kode left join _v2_jurusan j on m.KodeJurusan=j.Kode";
+				} else if ($loguser=="_v2_mhsw" or $loguser=="_v2_mhsw"){
+					$val=",m.KodeFakultas as kdf,f.Nama_Indonesia as nmf,m.KodeJurusan as kdj, j.Nama_Indonesia as nmj,m.Login,m.status,m.NotActive as NA";
+					//$par="AND m.KodeFakultas != '' AND m.KodeJurusan != '' AND m.status='A'";
+					$join="m left join fakultas f on m.KodeFakultas=f.Kode left join _v2_jurusan j on m.KodeJurusan=j.Kode";
+				}
+	
+				if ($loguser=="_v2_dosen" or $loguser=="_v2_mhsw"){
+					$query_cek=$this->db->query("SELECT m.ID,m.Name$val FROM $loguser $join WHERE m.Login=$username AND m.Password=left(password($password),10)");
+	
+					if ($query_cek->num_rows() >= 1){
+	
+						$row_cek=$query_cek->result_array();
+	
+						$pesantambahan = "Terdapat Kesalahan Pada Akun Anda. Silahkan Cek ";
+	
+						if ($loguser == "_v2_dosen"){
+							if($row_cek[0]["kdf"] == '') $pesantambahan .= "Fakultas Anda"; // Mahasiswa dan Dosen
+							if($row_cek[0]["NA"] != 'N') $pesantambahan .= "Status Anda Tidak Aktif"; // Dosen
+						} else if ($loguser == "_v2_mhsw"){
+							if($row_cek[0]["kdf"] == '') $pesantambahan .= "Fakultas Anda"; // Mahasiswa dan Dosen
+							if($row_cek[0]["kdj"] == '') $pesantambahan .= "Jurusan Anda"; // Mahasiswa
+							if($row_cek[0]["status"] != 'A') {
+								$statmhsw=$this->db->query("SELECT * FROM _v2_statusmhsw where Kode='".$row_cek[0]["status"]."'")->row();
+	
+								$pesantambahan .= "Status Mahasiswa Anda, Karena Anda Berstatus <b>".$statmhsw->Nama."</b>";// Nama Status Mahasiswa
+							}
+						}
+	
+					} else {
+	
+						$pesantambahan = "Username/Password Anda Salah / Tidak Terdaftar";
+	
+					}
+	
+					/* fandu perbaiki saat cek di untad mobile 09-12-2018
+					$row_cek=$query_cek->result_array();
+	
+					$pesantambahan = "";
+	
+					if ($loguser == "_v2_dosen"){
+						if($row_cek[0]["kdf"] == '') $pesantambahan .= "/Fakultas"; // Mahasiswa dan Dosen
+						if($row_cek[0]["NA"] != 'N') $pesantambahan .= "/Tidak Aktif"; // Dosen
+					} else if ($loguser == "_v2_mhsw"){
+						if($row_cek[0]["kdf"] == '') $pesantambahan .= "/Fakultas"; // Mahasiswa dan Dosen
+						if($row_cek[0]["kdj"] == '') $pesantambahan .= "/Jurusan"; // Mahasiswa
+						if($row_cek[0]["status"] != 'A') $pesantambahan .= "/Status";// Mahasiswa
+					}*/
+				}
+	
+				$this->session->set_flashdata('konfirmasi',"$pesantambahan. Silahkan Cek Kembali dengan Benar Akun Anda");
+				$log_in = "N";
+			} else {
+				$this->rem_menu();
+	
+				$row=$query->result_array();
+				$id=$row[0]["ID"];
+				$ulogin=$row[0]["Login"];
+				$name=$row[0]["Name"];
+				$kdf=$row[0]["kdf"];
+				$kdj=$row[0]["kdj"];
+				$foto=$row[0]["Foto"];
+				$sex=$row[0]["Sex"];
+				$nama=$row[0]["Name"];
+				$count_edit_password=$row[0]["count_edit_password"];
+				if ($count_edit_password == 0){
+					$count_edit_password = "editpassword";
+				}
+				$level = $usr_lev;
+	
+				$user=array(
+					"id"=>$id,
+					"uname"=>$name,
+					"ulevel"=>$level,
+					"unip"=>$ulogin,
+					"kdf"=>$kdf,
+					"kdj"=>$kdj,
+					"foto"=>$foto,
+					"sex"=>$sex,
+					"nama"=>$nama,
+					"jumlahlogin"=>$count_edit_password,
+					"stat"=>1
+				);
+				if (isset($row[0]['jenjang'])) {
+					$user['jenjang'] = $row[0]['jenjang'];
+				}
+				$this->session->set_userdata($user); // untuk session
+	
+				$this->session->set_flashdata('ubahpassword',"$count_edit_password"); // untuk flash session
+			//	echo "$stat -- $usr_lev<br>";
+			//	echo "success";
+				$log_in = "Y";
 			}
-			$level = $usr_lev;
-
-			$user=array(
-				"id"=>$id,
-				"uname"=>$name,
-				"ulevel"=>$level,
-				"unip"=>$ulogin,
-				"kdf"=>$kdf,
-				"kdj"=>$kdj,
-				"foto"=>$foto,
-				"sex"=>$sex,
-				"nama"=>$nama,
-				"jumlahlogin"=>$count_edit_password,
-				"stat"=>1
-			);
-			if (isset($row[0]['jenjang'])) {
-				$user['jenjang'] = $row[0]['jenjang'];
-			}
-			$this->session->set_userdata($user); // untuk session
-
-			$this->session->set_flashdata('ubahpassword',"$count_edit_password"); // untuk flash session
-		//	echo "$stat -- $usr_lev<br>";
-		//	echo "success";
-			$log_in = "Y";
+	
+			//echo "Anda terdeteksi telah melanggar sistem, <br> Dengan segera anda mendapat Amplop cokelat dari kepolisian";
+			$this->db->query("INSERT INTO _v2_log_login (id, log_user, log_pass, time, str, ip_address, info, hostname, sign_in) VALUES ('', $username, '', NOW(), UNIX_TIMESTAMP(NOW()), '$ip_address', '$info', '$hostname', '$log_in')");
+			redirect(base_url('menu'));
 		}
 
-		//echo "Anda terdeteksi telah melanggar sistem, <br> Dengan segera anda mendapat Amplop cokelat dari kepolisian";
-		$this->db->query("INSERT INTO _v2_log_login (id, log_user, log_pass, time, str, ip_address, info, hostname, sign_in) VALUES ('', $username, $password, NOW(), UNIX_TIMESTAMP(NOW()), '$ip_address', '$info', '$hostname', '$log_in')");
-		redirect(base_url('menu'));
 	}
 
-	public function logout (){
+	public function logout(){
 		$this->session->sess_destroy();
 		redirect(base_url('menu'));
 	}
