@@ -34,7 +34,7 @@
                 <!-- /.login-logo -->
                 <div class="login-box-body">
                   <p class="login-box-msg">Sign in</p>
-                <span class="login-box-msg" style='color:red'><?=$this->session->flashdata('konfirmasi')?></span>
+                <span id="flashdata" class="login-box-msg" style='color:red'><?=$this->session->flashdata('konfirmasi')?></span>
                   
                   <form action="<?=base_url()?>prc/prc_login" method="post" class="form-element" id="frm-login">
                     <div class="form-group has-feedback">
@@ -71,7 +71,7 @@
                       <?= $recaptcha; ?>
                       
                       <div class="col-12 text-center">
-                        <button type="submit" class="btn btn-info btn-block btn-flat margin-top-10">SIGN IN</button>
+                        <button id="submit" type="submit" class="btn btn-info btn-block btn-flat margin-top-10">SIGN IN</button>
                       </div>
                       <!-- /.col -->
                     </div>
