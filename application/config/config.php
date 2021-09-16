@@ -544,7 +544,8 @@ $config['url_feeder'] = 'http://103.245.72.97:8082/ws/live.php?wsdl';
 
 $config['url_feeder2'] = 'http://103.245.72.97:8082/ws/live2.php';
 
-$config['telegram_bot_id'] = '650017496';
-$config['telegram_bot_key'] = 'AAGQ2b6vZuvgQDglfSF5cIeexVMglqOHPQQ';
-$config['telegram_bot_name'] = 'siakaduntadbot';
+$config['telegram_bot_id'] = '1925169407';
+$config['telegram_bot_key'] = '1925169407:AAG2Sbac9F5t7nZeNqupR18aJxdaVBN1v9k';
+$config['telegram_bot_name'] = 'ijo';
+$config['telegram_bot_msg_id'] = '-471270830';
 $config['creator'] = '653194938';
