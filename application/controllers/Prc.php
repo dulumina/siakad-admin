@@ -32,16 +32,46 @@ class prc extends CI_Controller {
 	}
 
 	public function prc_login(){
-		$username=$this->db->escape($this->input->post('username'));
-		$password=$this->db->escape($this->input->post('password'));
-		$loguser=$this->input->post('loguser');
+		$pesantambahan ='';
+		
+		// login data
+			$username=$this->db->escape($this->input->post('username'));
+			$password=$this->db->escape($this->input->post('password'));
+			$loguser=$this->input->post('loguser');
+			$ip_address=$_SERVER['REMOTE_ADDR'];
+			$info=$_SERVER['HTTP_USER_AGENT'];
+			$hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+			$log_in = "N";
+		// end login data
+
+		// count failed login
+			$ttl = $_SESSION['timeToLeft'] = 300;
+			$count = $this->session->tempdata('count_error_captcha');
+			$session = $count + 1 ;
+			$this->session->set_tempdata('count_error_captcha',$session,$ttl);		
+			$dataMsg = array(
+				'ip' => $_SERVER['REMOTE_ADDR'],
+				'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+				'uname' => $username,
+				// 'upass' => $password,
+				'ulogin' => $this->encryption->decrypt($loguser)
+			);
+			// $this->session->set_tempdata($dataMsg, $ttl);
+			if ($count>=3) {
+				$pesantambahan = "<br>Maaf anda belum dapat login saat ini.<br>coba kembali setelah 5 menit.<br>tersisa : <b id='timer'>00:30</b><script>startTimer();</script>";
+				$this->session->set_flashdata('konfirmasi',$pesantambahan);
+				sendMessage($dataMsg);
+				redirect(base_url('menu'));
+				exit();
+			}
+		// end count failed login
 
 		$is_valid = $this->recaptcha->is_valid();
-		// dump_d($is_valid);
-		if ($is_valid['success'] != 1) {
-			$this->session->set_flashdata('konfirmasi',"Maaf Captcha Salah");
-			redirect(base_url('menu'));
-		}else {
+		
+		if ($is_valid['success'] != 1) { // jika validasi captcha false
+			$pesantambahan = "Maaf Captcha Salah.".$pesantambahan;
+			$this->session->set_flashdata('konfirmasi',$pesantambahan);
+		}else { // jika validasi captcha true
 			# code...
 			// echo json_encode($this->input->post()); exit;
 			//$komentar=strip_tags($komentar, '<a><b><i>').
@@ -51,10 +81,6 @@ class prc extends CI_Controller {
 			//$nama = filter_var($_POST['nama'], FILTER_SANITIZE_STRING);//untuk tipe string
 			//$username="adminsuperuser";
 			//$password="adminsuperuser";
-	
-			$ip_address=$_SERVER['REMOTE_ADDR'];
-			$info=$_SERVER['HTTP_USER_AGENT'];
-			$hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 	
 			$stat = "";
 			$loguser=$this->encryption->decrypt($loguser);
@@ -193,8 +219,8 @@ class prc extends CI_Controller {
 				}
 	
 				$this->session->set_flashdata('konfirmasi',"$pesantambahan. Silahkan Cek Kembali dengan Benar Akun Anda");
-				$log_in = "N";
 			} else {
+				$this->session->set_tempdata('count_error_captcha',0,$ttl);
 				$this->rem_menu();
 	
 				$row=$query->result_array();
@@ -236,10 +262,11 @@ class prc extends CI_Controller {
 				$log_in = "Y";
 			}
 	
-			//echo "Anda terdeteksi telah melanggar sistem, <br> Dengan segera anda mendapat Amplop cokelat dari kepolisian";
-			$this->db->query("INSERT INTO _v2_log_login (id, log_user, log_pass, time, str, ip_address, info, hostname, sign_in) VALUES ('', $username, '', NOW(), UNIX_TIMESTAMP(NOW()), '$ip_address', '$info', '$hostname', '$log_in')");
-			redirect(base_url('menu'));
 		}
+
+		//echo "Anda terdeteksi telah melanggar sistem, <br> Dengan segera anda mendapat Amplop cokelat dari kepolisian";
+		$this->db->query("INSERT INTO _v2_log_login (id, log_user, log_pass, time, str, ip_address, info, hostname, sign_in) VALUES ('', $username, '', NOW(), UNIX_TIMESTAMP(NOW()), '$ip_address', '$info', '$hostname', '$log_in')");
+		redirect(base_url('menu'));
 
 	}
 

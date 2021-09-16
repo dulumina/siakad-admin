@@ -137,4 +137,24 @@ function cleanName($name){
 	return str_replace($find,$replace,$name);
 }
 
+/**
+ * 
+ */
+function sendMessage($data=[])
+{
+	
+	$ci = get_instance();
+	$config = $ci->config;
+	$bot_key = $config->item('telegram_bot_key');
+	$bot_msg_id = $config->item('telegram_bot_msg_id');
+
+	$data = http_build_query(array(
+		'chat_id' => $bot_msg_id,
+		'text' => json_encode($data)
+	));
+
+	$url = "https://api.telegram.org/bot$bot_key/sendMessage?$data";
+
+	return json_decode(file_get_contents($url));
+}
 ?>
