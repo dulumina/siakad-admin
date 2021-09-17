@@ -56,6 +56,7 @@ class prc extends CI_Controller {
 				// 'upass' => $password,
 				'ulogin' => $this->encryption->decrypt($loguser)
 			);
+
 			if ($count>10) {
 				// $device='';
 				$device = getDevice($info);
@@ -63,6 +64,7 @@ class prc extends CI_Controller {
 				$dataMsg="WARNING : seseorang telah mencoba login lebih dari 10 kali.	$ip_address login sebagai $username menggunakan $device";
 				sendMessage($dataMsg);
 			}
+
 			// $this->session->set_tempdata($dataMsg, $ttl);
 			if ($count>=3) {
 				$pesantambahan = "<br>Maaf anda belum dapat login saat ini.<br>coba kembali setelah 5 menit.<br>tersisa : <b id='timer'>00:30</b><script>startTimer();</script>";
@@ -76,7 +78,8 @@ class prc extends CI_Controller {
 
 		$is_valid = $this->recaptcha->is_valid();
 		
-		if ($is_valid['success'] != 1) { // jika validasi captcha false
+		// if ($is_valid['success'] != 1 ) { // jika validasi captcha false 
+		if (false) { // matikan semestara karena error pada producrtion
 			$pesantambahan = "Maaf Captcha Salah.".$pesantambahan;
 			$this->session->set_flashdata('konfirmasi',$pesantambahan);
 		}else { // jika validasi captcha true
