@@ -37,7 +37,7 @@ class Krs_pmmdn extends CI_Controller {
 		$this->db->select('_v2_jurusan.kode,_v2_jurusan.nama_indonesia nama');
 		$this->db->group_by('_v2_jurusan.kode');
 		$this->db->where('_v2_jurusan.jenjang',$this->session->userdata('jenjang'));
-		$data['daftar_prodi'] = $this->app->getPeriodeKrsProdi();
+		$data['daftar_prodi'] = $this->app->getProdi();
 
 		// echo json_encode($data['daftar_prodi']);exit;
 		$this->load->view('dashbord',$data);

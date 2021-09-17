@@ -34,9 +34,15 @@ class Menu extends CI_Controller {
 		$uname=$this->session->userdata('uname');
 		$ulevel=$this->session->userdata('ulevel');
 		if (!empty($uname) and !empty($ulevel)){
-
+			$nim 	= $this->session->userdata('unip');
 			$data['berita'] = $this->additional_model->getTampilBerita();
+			$mhs = $this->db->select('semester')->get_where('_v2_mhsw',['nim'=>$nim]);
+			$data['semester'] = '';
+			if ($mhs->num_rows() != 0 ) {
+				$data['semester'] = $mhs->row()->semester;
+			}
 			$data['ukt'] = $this->get_mhsw_spc();
+			$data['periode_spc'] = $this->additional_model->periode_aktif_spc();
 
 			$urutan = 0;
 			$urutantgl = 0;
@@ -50,7 +56,11 @@ class Menu extends CI_Controller {
 			$this->load->view('dashbord',$data);
 
 		} else {
-			$this->load->view('login');
+			
+			$recaptcha = $this->recaptcha->create_box();
+			$data['recaptcha'] = $recaptcha;
+
+			$this->load->view('login',$data);
 		}
 	}
 

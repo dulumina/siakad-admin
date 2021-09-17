@@ -100,7 +100,7 @@ class M_prcSiakad2 extends CI_Model {
 			lulus_pcmb.kprodi as KodeJurusan, 
 			'A' as Status, 
 			(CASE WHEN daftar.prog='NONREG' THEN 'RESO' WHEN daftar.prog='NONREGULER' THEN 'RESO' ELSE 'REG' END) as KodeProgram, 
-			(case WHEN jalur = 'AJENJANG' THEN 'J' else 'B' end ) as StatusAwal, 
+			(case WHEN lulus_pcmb.jalur = 'AJENJANG' THEN 'J' else 'B' end ) as StatusAwal, 
 			'20211' as Semester, 
 			'2021' as TahunAkademik
 			FROM lulus_pcmb 
