@@ -25,7 +25,7 @@
 			</div>
 			<div class="col-md-11 text-center">
 				<b style="font-size: 13">
-					KEMENTERIAN PENDIDIKAN DAN KEBUDAYAAN
+					KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI
 				</b><br>
 				<b style="font-size: 15">UNIVERSITAS TADULAKO</b><br>
 				<b style="font-size: 11"><?= $detailJadwal->nmf ?></b>
@@ -116,7 +116,7 @@
 						<tr>
 							<td align="center"><?= $a ?></td>
 							<td><?= $mhsw->NIM ?></td>
-							<td><?= $mhsw->Name ?></td>
+							<td><?= cleanName($mhsw->Name) ?></td>
 							<td align="center"><?= $kehadiran ?> %</td>
 							<td align="center">A  A-  B+  B  B-  C  D  E</td>
 							<!-- <td align="center"><?= $mhsw->GradeNilai ?></td> -->

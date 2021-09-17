@@ -34,7 +34,7 @@
                 <!-- /.login-logo -->
                 <div class="login-box-body">
                   <p class="login-box-msg">Sign in</p>
-                <span class="login-box-msg" style='color:red'><?=$this->session->flashdata('konfirmasi')?></span>
+                <span id="flashdata" class="login-box-msg" style='color:red'><?=$this->session->flashdata('konfirmasi')?></span>
                   
                   <form action="<?=base_url()?>prc/prc_login" method="post" class="form-element" id="frm-login">
                     <div class="form-group has-feedback">
@@ -48,9 +48,10 @@
                   <div class="form-group text-center">
                       <label>Login Sebagai : </label>
                       <select name="loguser" class="form-control">
-                    <option value="">---- Silahkan Pilih ----</option>
+                    <option value="" selected>---- Silahkan Pilih ----</option>
                           <option value="<?= $this->encryption->encrypt('_v2_dosen'); ?>">Dosen</option>
                     <option value="<?= $this->encryption->encrypt('_v2_mhsw'); ?>">Mahasiswa</option>
+                    <option value="<?= $this->encryption->encrypt('_v2_mhsw_pmmdn'); ?>">Mahasiswa PMMDN</option>
                       </select>
                     </div>
                     <!-- <div class="row">
@@ -67,8 +68,10 @@
                         </div>
                       </div> -->
                       <!-- /.col -->
+                      <?= $recaptcha; ?>
+                      
                       <div class="col-12 text-center">
-                        <button type="submit" class="btn btn-info btn-block btn-flat margin-top-10">SIGN IN</button>
+                        <button id="submit" type="submit" class="btn btn-info btn-block btn-flat margin-top-10">SIGN IN</button>
                       </div>
                       <!-- /.col -->
                     </div>
@@ -107,6 +110,19 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+              <div class="callout callout-danger">
+                <h6>Himbauan</h6>
+                <ol>
+                  <li>Disampaikan kepada seluruh mahasiswa agar berhati-hati terhadap penipuan yang mengatasnamakan dosen kemudian meminta bantuan berupa uang dan pulsa.</li>
+                  <li>Disampaikan kepada seluruh masyarakat bahwa penerimaan mahasiswa baru Universitas Tadulako tahun 2021 pada jejang Diploma dan Sarjana telah ditutup. Jika ada oknum yang mengatasnamakan Pimpinan Universitas Tadulako menyampaikan bahwa ada penambahan kuota mahasiswa, mohon diabaikan karena sifatnya penipuan.</li>
+                </ol>
+              </div>
+              <div class="callout callout-info">
+                <h6>Kuesioner</h6>
+                <p>Bagi seluruh mahasiswa Universitas Tadulako, diharapkan untuk mengisi kuesioner survey kepuasan mahasiswa atas layanan Universitas Tadulako <span class="text-white bg-warning"> sebelum mengisi KRS pada halaman input KRS </span>. </p>
+                  <p>Kuesioner tersebut untuk mengetahui tingkat kepuasan dan kepentingan dari layanan yang telah diberikan oleh Universitas Tadulako, serta menghimpun pendapat mahasiswa untuk bahan evaluasi dan masukkan dalam penyusunan rencana layanan periode berikutnya.</p>
+              </div>
+              <!--
               <div>
                 <h6 class="text-center">Kuota Internet Gratis</h6>
                 <div style="display: block; margin: 0 auto; text-align: center;">
@@ -132,6 +148,7 @@
                   <li>Tanggal <b>Genap</b>  : <span class="<?= (date('d')%2)==1? "text-red":"text-green" ?>">FISIP, FEKON, FAKUM, FAHUT, FAPERTA, FATEK, KAMPUS 2 MOROWALI, KAMPUS 2 TOUNA, KEDOKTERAN, FAPETKAN </span> </li>
                 </ul>
               </div>
+              -->
             </div>
           </div>
         </section>

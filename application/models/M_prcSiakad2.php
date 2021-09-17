@@ -99,10 +99,10 @@ class M_prcSiakad2 extends CI_Model {
 			jurusan.KodeFakultas as KodeFakultas, 
 			lulus_pcmb.kprodi as KodeJurusan, 
 			'A' as Status, 
-			(CASE WHEN lulus_pcmb.Jalur='NONREG' THEN 'RESO' WHEN lulus_pcmb.Jalur='NONREGULER' THEN 'RESO' ELSE 'REG' END) as KodeProgram, 
-			(case WHEN Seleksi = 'AJENJANG' THEN 'J' else 'B' end ) as StatusAwal, 
-			'20201' as Semester, 
-			'2020' as TahunAkademik
+			(CASE WHEN daftar.prog='NONREG' THEN 'RESO' WHEN daftar.prog='NONREGULER' THEN 'RESO' ELSE 'REG' END) as KodeProgram, 
+			(case WHEN lulus_pcmb.jalur = 'AJENJANG' THEN 'J' else 'B' end ) as StatusAwal, 
+			'20211' as Semester, 
+			'2021' as TahunAkademik
 			FROM lulus_pcmb 
 			inner JOIN daftar on daftar.noujian=lulus_pcmb.noujian
 			INNER JOIN jurusan ON jurusan.Kode=lulus_pcmb.kprodi

@@ -73,7 +73,7 @@
               </div>
             </div>
             <div class="modal-footer">  
-              <a href="https://siakad2.untad.ac.id/ademik/Profil" class="btn btn-danger text-left"> Profile</a>
+              <a href=<?=base_url("ademik/Profil")?> class="btn btn-danger text-left"> Profile</a>
             </div>
           </div>
         </div>
@@ -219,7 +219,7 @@
                 </div>
 
                 <?php
-                  if ( $this->session->userdata('ulevel') == 1 OR $this->session->userdata('ulevel') == 4 ) {
+                  if ( $this->session->userdata('ulevel') == 1 OR  ( $this->session->userdata('ulevel') == 4 and $periode_spc->kode != $semester) ) {
                 ?>
 
                  <div class="col-md-5 col-lg-5">
@@ -227,7 +227,7 @@
                     <strong>PENGUMUMAN STATUS PEMBAYARAN UANG SEMESTER</strong>
                   </h2>
                   <h4 class="text-center">
-                    <strong>TAHUN AJARAN GENAP 2020/2021</strong>
+                    <strong>TAHUN AJARAN <?= strtoupper($periode_spc->periode); ?></strong>
                   </h4><br><br>
                   
                   <h4 class="text-left">
@@ -250,6 +250,10 @@
                               <td><?php echo $ukt[0]['waktu_berakhir']; ?></td>
                             </tr>
                             <tr>
+                              <td>Nominal Tagihan  </td>
+                              <td><?php echo $ukt[0]['total_nilai_tagihan']; ?></td>
+                            </tr>
+                            <tr>
                               <td>Bank Pembayaran </td>
                               <td><?= ($ukt[0]['kode_bank']=='BMS')? 'Bank Mega Syariah': $ukt[0]['kode_bank']; ?></td>
                             </tr>
@@ -264,7 +268,7 @@
                         <?php 
                         
                       }else{
-                    echo '<p style="font-size: 20px; color: red;" class="text-center">pembayaran spp 20202 anda belum dibuka. mohon menunggu atau tanyakan difakultas masing - masing untuk info lebih lanjut </p>';
+                        echo '<p style="font-size: 20px; color: red;" class="text-center">pembayaran spp '. strtoupper($periode_spc->periode) .' anda belum dibuka. mohon menunggu atau tanyakan difakultas masing - masing untuk info lebih lanjut </p>';
                     }   ?>
                     
                   </h4>
