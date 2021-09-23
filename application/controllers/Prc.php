@@ -61,7 +61,7 @@ class prc extends CI_Controller {
 				// $device='';
 				$device = getDevice($info);
 				// dump_d($device);
-				$dataMsg="WARNING : seseorang telah mencoba login lebih dari 10 kali.	$ip_address login sebagai $username menggunakan $device";
+				$dataMsg="WARNING : seseorang telah mencoba login sebanyak $count kali. $ip_address login sebagai $username menggunakan $device";
 				sendMessage($dataMsg);
 			}
 
