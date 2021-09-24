@@ -96,15 +96,20 @@
             <div class="container callout callout-success row">
               <dl class="dl-horizontal pull-left">
                 <dt>NIM</dt>
-                <input value="<?= $profile->nim ?>" id="nim" disabled >
+                <dd><input value="<?= $profile->nim ?>" id="nim" disabled ></dd>
+                
                 <dt>Nama</dt>
-                <input value="<?= $profile->name ?>" id="nama" disabled >
+                <dd><input value="<?= $profile->name ?>" id="nama" disabled ></dd>
+                
                 <dt>Universitas Asal</dt>
-                <input value="<?= $profile->univ_asal ?>" id="univAsal" disabled >
+                <dd><input value="<?= $profile->univ_asal ?>" id="univAsal" disabled ></dd>
+                
                 <dt>Prodi Asal</dt>
-                <input value="<?= $profile->prodi_asal ?>" id="proAsal" disabled >
+                <dd><input value="<?= $profile->prodi_asal ?>" id="proAsal" disabled ></dd>
+                
                 <dt>Total SKS</dt>
-                <input value="<?= $totalSKS ?>" id="totalSKS" disabled >
+                <dd><input value="<?= $totalSKS ?>" id="totalSKS" disabled ></dd>
+                
               </dl>
             </div>
             
