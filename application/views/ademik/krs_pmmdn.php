@@ -96,53 +96,22 @@
             <div class="container callout callout-success row">
               <dl class="dl-horizontal pull-left">
                 <dt>NIM</dt>
-                <dd id="nim"><?= $profile->nim ?></dd>
+                <dd><input value="<?= $profile->nim ?>" id="nim" disabled style="width: 300px;"></dd>
+                
                 <dt>Nama</dt>
-                <dd id="nama"><?= $profile->name ?></dd>
+                <dd><input value="<?= $profile->name ?>" id="nama" disabled style="width: 300px;"></dd>
+                
                 <dt>Universitas Asal</dt>
-                <dd id="univAsal"><?= $profile->univ_asal ?></dd>
+                <dd><input value="<?= $profile->univ_asal ?>" id="univAsal" disabled style="width: 300px;"></dd>
+                
                 <dt>Prodi Asal</dt>
-                <dd id="proAsal"><?= $profile->prodi_asal ?></dd>
+                <dd><input value="<?= $profile->prodi_asal ?>" id="proAsal" disabled style="width: 300px;"></dd>
+                
                 <dt>Total SKS</dt>
-                <dd id="totalSKS"><?= $totalSKS ?></dd>
+                <dd><input value="<?= $totalSKS ?>" id="totalSKS" disabled style="width: 300px;"></dd>
+                
               </dl>
             </div>
-            <!-- <div class="row">
-              <div class="col-6">
-                <div class="form-group row">
-                  <label for="nim" class="col-sm-4 col-form-label">NIM</label>
-                  <div class="col-sm-8">
-                  <p id="nim"><?= $profile->nim ?></p>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="nama" class="col-sm-4 col-form-label">Nama</label>
-                  <div class="col-sm-8">
-                  <p id="nama"><?= $profile->name ?></p>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="nama" class="col-sm-4 col-form-label">Total SKS</label>
-                  <div class="col-sm-8">
-                  <p id="totalSKS"><?= $totalSKS ?></p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="form-group row">
-                  <label for="univAsal" class="col-sm-4 col-form-label">Universitas Asal</label>
-                  <div class="col-sm-8">
-                  <p id="univAsal"><?= $profile->univ_asal ?></p>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="proAsal" class="col-sm-4 col-form-label">Prodi Asal</label>
-                  <div class="col-sm-8">
-                  <p id="proAsal"><?= $profile->prodi_asal ?></p>
-                  </div>
-                </div>
-              </div>
-            </div> -->
             
             <div class="pull-right">
               <a class="btn btn-block btn-social btn-twitter" href="<?= base_url('ademik/Krs_pmmdn/cetakKrs/'.$token) ?>"><i class="fa fa-download"></i> Download KRS</a>
