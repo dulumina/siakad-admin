@@ -222,4 +222,16 @@ class App extends CI_Model{
 		$res = $this->db->get('_v2_tahun');
 		return $res->result();
 	}
+	public function getTahunAngkatan($prodi=false){
+		$where="";
+		if($prodi){
+			$where = " AND KodeJurusan = $prodi ";
+		}
+
+		$query = "SELECT TahunAkademik 
+		FROM `_v2_mhsw` 
+		WHERE TahunAkademik !='' OR not null $where
+		group by TahunAkademik";
+		return $this->db->query($query)->result_array();
+	}
 }
