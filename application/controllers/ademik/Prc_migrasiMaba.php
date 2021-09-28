@@ -56,7 +56,9 @@ class Prc_migrasiMaba extends CI_Controller {
 		}
 
 	}
-
+	public function commit(){
+		print_r($this->M_prcSiakad2->commitMigrasion());
+	}
 	private function getStatusProgram($ket)
 	{
 		$program = "";
