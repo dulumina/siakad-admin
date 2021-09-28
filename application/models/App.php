@@ -228,7 +228,7 @@ class App extends CI_Model{
 			$where = " AND KodeJurusan = $prodi ";
 		}
 
-		$query = "SELECT TahunAkademik 
+		$query = "SELECT TahunAkademik angkatan
 		FROM `_v2_mhsw` 
 		WHERE TahunAkademik !='' OR not null $where
 		group by TahunAkademik";
