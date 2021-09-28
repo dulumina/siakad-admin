@@ -140,8 +140,11 @@ class M_prcSiakad2 extends CI_Model {
 			$update = "UPDATE _v2_tempMaba SET on_siakad = 1";
 		$this->db->query($update);
 		$this->db->trans_complete();
-
-		return $res->affected_rows();
+		if ($this->db->trans_status() === FALSE)
+		{
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 	public function updateStSiakadInDaftarUlang($data)
