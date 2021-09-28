@@ -87,7 +87,7 @@
 										<option value="">- Pilih Angkatan -</option>
 										<!-- <option name="All">All</option> -->
 										<?php foreach($angkatan as $tahun) : ?>
-											<option name="<?= $tahun; ?>"><?= $tahun; ?></option>
+											<option name="<?= $tahun['angkatan']; ?>"><?= $tahun['angkatan']; ?></option>
     									<?php endforeach; ?>
 									</select>
 								</div>
