@@ -55,7 +55,7 @@ $('#pilihProdi').change(()=>{
 function addMK(idJadwal) {
   $('body').addClass("loading")
   $('button').prop('disabled', true);
-  let nim = $('#nim').html();
+  let nim = $('#nim').val();
   let periode = $('#SelectTahunPeriode').val();
   $.post("<?= base_url('ademik/krs_pmmdn/addMkKrs')?>",{IDJADWAL:idJadwal,nim:nim,periode:periode})
   .done((res)=>{
@@ -63,7 +63,7 @@ function addMK(idJadwal) {
     if (response.status==0) {
       alert(response.msg)
     }
-    $('#totalSKS').html(response.totalSKS.toFixed(1))
+    $('#totalSKS').val(response.totalSKS.toFixed(1))
     renderKRS(response.krs);
     $('button').prop('disabled', false);
   })
@@ -75,13 +75,13 @@ function addMK(idJadwal) {
 function getKrs(params) {
   // $('body').addClass("loading")
   $('button').prop('disabled', true);
-  let nim = $('#nim').html();
+  let nim = $('#nim').val();
   let periode = $('#SelectTahunPeriode').val();
   $.post("<?= base_url('ademik/krs_pmmdn/getKrs')?>",{nim:nim,periode:periode})
   .done((res)=>{
     let response = JSON.parse(res);
     // console.log(response);
-    $('#totalSKS').html(response.totalSKS.toFixed(1))
+    $('#totalSKS').val(response.totalSKS.toFixed(1))
     renderKRS(response.krs);
     $('button').prop('disabled', false);
   })
@@ -121,13 +121,13 @@ function renderKRS(params) {
 function removeMK(params) {
   $('body').addClass("loading")
   $('button').prop('disabled', true);
-  let nim = $('#nim').html();
+  let nim = $('#nim').val();
   let periode = $('#SelectTahunPeriode').val();
   $.post("<?= base_url('ademik/krs_pmmdn/removeMK')?>",{id_krs:params})
   .done((res)=>{
     let response = JSON.parse(res);
     // console.log(response);
-    $('#totalSKS').html(response.totalSKS.toFixed(1))
+    $('#totalSKS').val(response.totalSKS.toFixed(1))
     renderKRS(response.krs);
     $('button').prop('disabled', false);
   })
