@@ -86,7 +86,7 @@
 									<select name="angkatan" id="angkatan" class="form-control select2">
 										<option value="">- Pilih Angkatan -</option>
 										<!-- <option name="All">All</option> -->
-										<?php foreach($angkatan as $tahun) : ?>
+										<?php foreach($tahunAngkatan as $tahun) : ?>
 											<option name="<?= $tahun['angkatan']; ?>"><?= $tahun['angkatan']; ?></option>
     									<?php endforeach; ?>
 									</select>
