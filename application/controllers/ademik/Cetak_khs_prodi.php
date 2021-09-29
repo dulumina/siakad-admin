@@ -25,14 +25,14 @@ class Cetak_khs_prodi extends CI_Controller {
 		if($this->session->ulevel=="7"){
 			$kdj=$this->session->kdj;
 			$a['jurusan'] = $this->cetak_khs_prodi_model->getJurusanKdj($kdj);
-			$a['angkatan'] = $this->app->getTahunAngkatan($kdj);
+			$a['tahunAngkatan'] = $this->app->getTahunAngkatan($kdj);
 		}elseif($this->session->ulevel=="5"){
 			$kdf=$this->session->kdf;
 			$a['jurusan'] = $this->cetak_khs_prodi_model->getJurusanKdf($kdf);
-			$a['angkatan'] = $this->app->getTahunAngkatan();
+			$a['tahunAngkatan'] = $this->app->getTahunAngkatan();
 		}else{
 			$a['jurusan'] = $this->cetak_khs_prodi_model->getJurusan();	
-			$a['angkatan'] = $this->app->getTahunAngkatan();
+			$a['tahunAngkatan'] = $this->app->getTahunAngkatan();
 		}
 		
 		$this->load->view('dashbord',$a);
@@ -57,14 +57,14 @@ class Cetak_khs_prodi extends CI_Controller {
 		if($this->session->ulevel=="7"){
 			$kdj=$this->session->kdj;
 			$data['jurusan'] = $this->cetak_khs_prodi_model->getJurusanKdj($kdj);
-			$data['angkatan'] = $this->app->getTahunAngkatan($kdj);
+			$data['tahunAngkatan'] = $this->app->getTahunAngkatan($kdj);
 		}elseif($this->session->ulevel=="5"){
 			$kdf=$this->session->kdf;
 			$data['jurusan'] = $this->cetak_khs_prodi_model->getJurusanKdf($kdf);
-			$data['angkatan'] = $this->app->getTahunAngkatan();
+			$data['tahunAngkatan'] = $this->app->getTahunAngkatan();
 		}else{
 			$data['jurusan'] = $this->cetak_khs_prodi_model->getJurusan();
-			$data['angkatan'] = $this->app->getTahunAngkatan();
+			$data['tahunAngkatan'] = $this->app->getTahunAngkatan();
 		}
 		
 		$data['footerSection'] = "
