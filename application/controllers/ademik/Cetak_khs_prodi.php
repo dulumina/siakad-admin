@@ -25,11 +25,14 @@ class Cetak_khs_prodi extends CI_Controller {
 		if($this->session->ulevel=="7"){
 			$kdj=$this->session->kdj;
 			$a['jurusan'] = $this->cetak_khs_prodi_model->getJurusanKdj($kdj);
+			$a['tahunAngkatan'] = $this->app->getTahunAngkatan($kdj);
 		}elseif($this->session->ulevel=="5"){
 			$kdf=$this->session->kdf;
 			$a['jurusan'] = $this->cetak_khs_prodi_model->getJurusanKdf($kdf);
+			$a['tahunAngkatan'] = $this->app->getTahunAngkatan();
 		}else{
 			$a['jurusan'] = $this->cetak_khs_prodi_model->getJurusan();	
+			$a['tahunAngkatan'] = $this->app->getTahunAngkatan();
 		}
 		
 		$this->load->view('dashbord',$a);
@@ -54,11 +57,14 @@ class Cetak_khs_prodi extends CI_Controller {
 		if($this->session->ulevel=="7"){
 			$kdj=$this->session->kdj;
 			$data['jurusan'] = $this->cetak_khs_prodi_model->getJurusanKdj($kdj);
+			$data['tahunAngkatan'] = $this->app->getTahunAngkatan($kdj);
 		}elseif($this->session->ulevel=="5"){
 			$kdf=$this->session->kdf;
 			$data['jurusan'] = $this->cetak_khs_prodi_model->getJurusanKdf($kdf);
+			$data['tahunAngkatan'] = $this->app->getTahunAngkatan();
 		}else{
-			$data['jurusan'] = $this->cetak_khs_prodi_model->getJurusan();	
+			$data['jurusan'] = $this->cetak_khs_prodi_model->getJurusan();
+			$data['tahunAngkatan'] = $this->app->getTahunAngkatan();
 		}
 		
 		$data['footerSection'] = "
@@ -954,13 +960,17 @@ class Cetak_khs_prodi extends CI_Controller {
 
 
 			if($field->stprc==2 || $Status =="Cuti"){
+				$color = 'primary';
+				if($field->SKS==0){
+					$color = "danger";
+				}
 				if($field->st_feeder > 0){
 					$act_feeder = "<span style='color:green;'>Data Terkirim</span>";
 				} else if($field->st_feeder == -1){
 					$NIM=$field->NIM;
 					$thn=$field->Tahun;
 					$act_feeder = "<div id='feeder-".$NIM."'><span style='color:orange;'><a href='ademik.php?syxec=mhswkrs_form&act=krs&NIM=$NIM&thn=$thn'>Data Gagal Dikirim Ke DIKTI<br>Kerena Data sks semester tidak sesuai<br>dengan jumlah sks KRS yang di tempuh mahasiswa</a></span>
-					<button class='btn btn-primary' onclick='kirimDikti(\"".$NIM."\",\"".$thn."\")'>Kirim Dikti</button>
+					<button class='btn btn-$color' onclick='kirimDikti(\"".$NIM."\",\"".$thn."\")'>Kirim Dikti</button>
 					</div>";
 					/*<form action='".base_url('ademik/cetak_khs_prodi/import_khs_feeder')."' method='post'>
 				      <input type='hidden' name='nim' value='$NIM' readonly>
@@ -971,7 +981,7 @@ class Cetak_khs_prodi extends CI_Controller {
 					$act_feeder = "<span style='color:red;'>IPS atau IPK Mahasiswa<br>Kosong (00.00)</span>";
 				} else {
 			  $act_feeder = "<div id='feeder-".$field->NIM."'>
-			  <button class='btn btn-primary' onclick='kirimDikti(\"".$field->NIM."\",\"".$field->Tahun."\")'>Kirim Dikti</button>
+			  <button class='btn btn-$color' onclick='kirimDikti(\"".$field->NIM."\",\"".$field->Tahun."\")'>Kirim Dikti</button>
 			  </div>";
 			  /*<form action='".base_url('ademik/cetak_khs_prodi/import_khs_feeder')."' method='post'>
 			      <input type='hidden' name='nim' value='$field->NIM' readonly>

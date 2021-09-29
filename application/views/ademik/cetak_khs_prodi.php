@@ -86,18 +86,9 @@
 									<select name="angkatan" id="angkatan" class="form-control select2">
 										<option value="">- Pilih Angkatan -</option>
 										<!-- <option name="All">All</option> -->
-										<option name="2018">2020</option>
-										<option name="2018">2019</option>
-										<option name="2018">2018</option>
-										<option name="2017">2017</option>
-										<option name="2016">2016</option>
-										<option name="2015">2015</option>
-										<option name="2014">2014</option>
-										<option name="2013">2013</option>
-										<option name="2012">2012</option>
-										<option name="2011">2011</option>
-										<option name="2010">2010</option>
-										<option name="2009">2009</option>
+										<?php foreach($tahunAngkatan as $tahun) : ?>
+											<option name="<?= $tahun['angkatan']; ?>"><?= $tahun['angkatan']; ?></option>
+    									<?php endforeach; ?>
 									</select>
 								</div>
 							</div>
