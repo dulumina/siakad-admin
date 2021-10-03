@@ -32,8 +32,12 @@ class Dashboard extends CI_Controller {
   }
   
   function mhsInbound($periode=''){
-    $this->load->model('KrsPmmdn','mbkm');
-    echo json_encode($this->mbkm->inbound($periode));
+    $data=[];
+    if ($periode){
+      $this->load->model('KrsPmmdn','mbkm');
+      $data = $this->mbkm->inbound($periode);
+    }
+    echo json_encode($data);
     // echo $this->db->last_query();
   }
 }
