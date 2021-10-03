@@ -100,91 +100,39 @@
         <!-- /.col -->
       </div>
 	  <?php $data['status']=1;} ?>
-
-      <div class="row">
-        <div class="col-xl-3 col-md-6 col">
-          <div class="info-box bg-blue">
-            <span class="info-box-icon push-bottom"><i class="ion ion-ios-pricetag-outline"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">Tahun Akademik 20181</span>
-              <span class="info-box-number">45 MK Terkirim</span>
-
-              <div class="progress">
-                <div class="progress-bar" style="width: 45%"></div>
-              </div>
-              <span class="progress-description">
-                    Matakuliah Terkirim Ke DIKTI
-              </span>
+      
+      <div id="card"></div>
+      <div id="tabelData" class="row">
+        <!-- tabel inbound -->
+        <div class="col-6 d-flex align-items-stretch">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Mahasiswa Inbound</h3>
+              <h6 class="box-subtitle">Daftar mahasiswa inbound</h6>
             </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-xl-3 col-md-6 col">
-          <div class="info-box bg-green">
-            <span class="info-box-icon push-bottom"><i class="ion ion-ios-eye-outline"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">Tahun Akademik 20181</span>
-              <span class="info-box-number">40 MK Gagal Terkirim </span>
-
-              <div class="progress">
-                <div class="progress-bar" style="width: 40%"></div>
-              </div>
-              <span class="progress-description">
-                    Matakuliah Gagal Terkirim Ke DIKTI
-                  </span>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="inbound" class="table table-bordered table-hover display nowrap margin-top-10 table-responsive" cellspacing="0" width="100%">
+              </table>
             </div>
-            <!-- /.info-box-content -->
           </div>
-          <!-- /.info-box -->
         </div>
-        <!-- /.col -->
-        <div class="col-xl-3 col-md-6 col">
-          <div class="info-box bg-purple">
-            <span class="info-box-icon push-bottom"><i class="ion ion-ios-cloud-download-outline"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">Tahun Akademik 20181</span>
-              <span class="info-box-number">40 MK Belum Terkirim</span>
-
-              <div class="progress">
-                <div class="progress-bar" style="width: 40%"></div>
-              </div>
-              <span class="progress-description">
-                    Matakuliah Belum di Kirim Ke DIKTI
-                  </span>
+        <!-- Tabel outbound -->
+        <div class="col-6 d-flex align-items-stretch">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Mahasiswa Outbound</h3>
+              <h6 class="box-subtitle">Daftar mahasiswa Outbound</h6>
             </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-xl-3 col-md-6 col">
-          <div class="info-box bg-red">
-            <span class="info-box-icon push-bottom"><i class="ion-ios-chatbubble-outline"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">Tahun Akademik 20181</span>
-              <span class="info-box-number">KHS Terkirim</span>
-
-              <div class="progress">
-                <div class="progress-bar" style="width: 40%"></div>
-              </div>
-              <span class="progress-description">
-                    KHS Terkirim Ke DIKTI
-                  </span>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="outbound" class="table table-bordered table-hover display nowrap margin-top-10 table-responsive" cellspacing="0" width="100%">
+              </table>
+              
             </div>
-            <!-- /.info-box-content -->
           </div>
-          <!-- /.info-box -->
         </div>
-        <!-- /.col -->
       </div>
-      <!-- /.row -->
-
       <div class="row">
         <div class="col">
           <div class="box">
@@ -276,70 +224,6 @@
                 </div>
 
                 <?php } ?>
-<!-- 
-                <div class="col-md-5 col-lg-5">
-                  <h4 class="text-center">
-                    <strong>Admin Penanggung Jawab SIAKAD Baru</strong>
-                  </h4>
-                  <div class="row">
-                    <div class="col-sm-6">
-                      
-                      <p><b>Rocky (Penanggung Jawab SIAKAD)</b><br><i class="fa fa-fw fa-whatsapp"></i>0852-9888-2009</p>
-                      <li>Matakuliah Perjenis</li>
-                      <li>Matakuliah Persemester</li>
-                      <li>Kurikulum</li>
-                      <li>KRS Mahasiswa</li>
-                      <li>Biodata Mahasiswa</li><br>
-                    </div>
-                    
-                    <div class="col-sm-6">
-                      <p><b>Fadly</b><br><i class="fa fa-fw fa-whatsapp"></i>0822-6015-9013</p>
-                      <li>Absensi</li>
-                      <li>Mahasiswa Cuti</li>
-                      <li>Mahasiswa Pindah</li>
-                      <li>Master TTD</li><br>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-sm-6">
-                      
-                      <p><b>Michael</b><br><i class="fa fa-fw fa-whatsapp"></i>0822-5937-1558</p>
-                      <li>KKN</li>
-                      <li>Verifikasi Nilai Kliring (P3S)</li>
-                      <li>Kliring Nilai Mahasiswa</li>
-                      <li>Nilai Transfer</li><br>
-                    </div>
-                    
-                    <div class="col-sm-6">
-                      <p><b>Inal</b><br><i class="fa fa-fw fa-whatsapp"></i>0822-3782-7550</p>
-                      <li>Semester Akademik</li>
-                      <li>Aktivitas Mahasiswa</li>
-                      <li>Cetah KHS Perprodi 2</li>
-                      <li>Ruang Kelas</li><br>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-sm-6">
-                      
-                      <p><b>Ezra</b><br><i class="fa fa-fw fa-whatsapp"></i>0852-4276-9992</p>
-                      <li>Translate Matakuliah</li>
-                      <li>Proses Pembayaran (SPP2)</li>
-                      <li>Merubah Bobot</li>
-                      <li>Penjadwalan</li>
-                      <li>Batas KRS</li><br>
-                    </div>
-                    
-                    <div class="col-sm-6">
-                      <p><b>Jam Kerja : </b></p>
-                      <li>Senin - Kamis : 08:00 - 16:00</li>
-                      <li>Jumat : 08:00 - 16:30</li>
-                      Kami Hanya Melayani Admin Fakultas dan Admin Prodi, untuk panduan Teknis, Trimakasih
-                    </div>
-                  </div>
-                </div>
- -->
               <!-- /.row -->
               </div>
               <!-- ./box-body -->
@@ -354,6 +238,7 @@
 
       <!-- Main row -->
       <div class="row">
+        <?php if($berita) : ?>
         <!-- Left col -->
         <section class="col-xl-6 connectedSortable">
           <!-- interactive chart -->
@@ -393,7 +278,7 @@
           </div>
         </section>
         <!-- /.Left col -->
-
+        <?php endif; ?>
         <!-- right col (We are only adding the ID to make the widgets sortable)-->
         <section class="col-xl-6 connectedSortable">
 
@@ -447,3 +332,33 @@
           </section>
         <!-- /.content -->
       </div>
+<?php
+$ulvl = $this->session->userdata('ulevel');
+if ($ulvl != '4' && $ulvl != '10' && $ulvl ) { ?>
+  <script>
+    const card = document.getElementById("card");
+    window.addEventListener('load', async function () {
+      await fetch("<?=base_url("Dashboard/card/20211");?>")
+              .then(data => data.text() )
+              .then(data => card.innerHTML = data );
+              
+      await fetch("<?=base_url("Dashboard/mhsInbound/20203");?>")
+              .then(data => data.json() )
+              .then(data =>{
+                $('#inbound').DataTable({
+                  data: data,
+                  columns: [
+                    { title: "Prodi", data: (d)=>{
+                      return d.kodeprodi+" - "+d.namaprodi
+                    }},
+                    { title: "NIM", data: "nim"},
+                    { title: "Nama", data: "name"},
+                    { title: "Univ Asal.", data: "univ_asal"},
+                    { title: "Prodi Asal", data: "prodi_asal"},
+                  ]
+                });
+              });
+      
+    })
+  </script>
+<?php } ?>
