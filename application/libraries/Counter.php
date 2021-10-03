@@ -92,8 +92,10 @@ class Counter{
         }
         // $this->CI->db->group_by("$semester.nim");
         // $mhs = $this->CI->db->select("$semester.nim")->get($semester)->num_rows();
-        $this->CI->db->where_in('_v2_mhsw.nim',"Select nim from $semester where tahun = $periode");
-        $mhs = $this->CI->db->select("count(*) jumlah")->get('_v2_mhsw');
+        // $this->CI->db->where_in('_v2_mhsw.nim',"Select nim from $semester where tahun = $periode");
+        // $mhs = $this->CI->db->select("count(*) jumlah")->get('_v2_mhsw');
+        
+        $mhs = $this->CI->db->query("SELECT count(*) jumlah FROM _v2_mhsw WHERE nim IN (Select nim from $semester where tahun = $periode)");
         if ($mhs->num_rows()==0) {
             return 0;
         }
@@ -116,8 +118,9 @@ class Counter{
         }elseif (isset($kdf)) {
             $this->CI->db->where('_v2_mhsw.KodeFakultas',$kdf);
         }
-        $this->CI->db->where_in('_v2_mhsw.nim',"Select nim from _v2_spp2 where tahun = $periode");
-        $mhs = $this->CI->db->select("count(*) jumlah")->get('_v2_mhsw');
+        // $this->CI->db->where_in('_v2_mhsw.nim',"Select nim from _v2_spp2 where tahun = $periode");
+        // $mhs = $this->CI->db->select("count(*) jumlah")->get('_v2_mhsw');
+        $mhs = $this->CI->db->query("SELECT count(*) jumlah FROM _v2_mhsw WHERE nim IN (Select nim from _v2_spp2 where tahun = $periode)");
         if ($mhs->num_rows()==0) {
             return 0;
         }
