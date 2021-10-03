@@ -342,7 +342,7 @@ if ($ulvl != '4' && $ulvl != '10' && $ulvl ) { ?>
               .then(data => data.text() )
               .then(data => card.innerHTML = data );
               
-      await fetch("<?=base_url("Dashboard/mhsInbound/20203");?>")
+      await fetch("<?=base_url("Dashboard/mhsInbound/20211");?>")
               .then(data => data.json() )
               .then(data =>{
                 $('#inbound').DataTable({
