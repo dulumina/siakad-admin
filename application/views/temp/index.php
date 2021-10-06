@@ -107,12 +107,12 @@
         <div class="col-6 d-flex align-items-stretch">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Mahasiswa Inbound</h3>
-              <h6 class="box-subtitle">Daftar mahasiswa inbound</h6>
+              <h3 class="box-title">Periode Aktif Feeder</h3>
+              <h6 class="box-subtitle">Daftar Periode Aktif Feeder</h6>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="inbound" class="table table-bordered table-hover display nowrap margin-top-10 table-responsive" cellspacing="0" width="100%">
+              <table id="periodefdr" class="table table-bordered table-hover display nowrap margin-top-10 table-responsive" cellspacing="0" width="100%">
               </table>
             </div>
           </div>
@@ -121,12 +121,12 @@
         <div class="col-6 d-flex align-items-stretch">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Mahasiswa Outbound</h3>
-              <h6 class="box-subtitle">Daftar mahasiswa Outbound</h6>
+              <h3 class="box-title">Title</h3>
+              <h6 class="box-subtitle">Description</h6>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="outbound" class="table table-bordered table-hover display nowrap margin-top-10 table-responsive" cellspacing="0" width="100%">
+              <table id="tabel" class="table table-bordered table-hover display nowrap margin-top-10 table-responsive" cellspacing="0" width="100%">
               </table>
               
             </div>
@@ -341,24 +341,7 @@ if ($ulvl != '4' && $ulvl != '10' && $ulvl ) { ?>
       await fetch("<?=base_url("Dashboard/card/20211");?>")
               .then(data => data.text() )
               .then(data => card.innerHTML = data );
-              
-      await fetch("<?=base_url("Dashboard/mhsInbound/20211");?>")
-              .then(data => data.json() )
-              .then(data =>{
-                $('#inbound').DataTable({
-                  data: data,
-                  columns: [
-                    { title: "Prodi", data: (d)=>{
-                      return d.kodeprodi+" - "+d.namaprodi
-                    }},
-                    { title: "NIM", data: "nim"},
-                    { title: "Nama", data: "name"},
-                    { title: "Univ Asal.", data: "univ_asal"},
-                    { title: "Prodi Asal", data: "prodi_asal"},
-                  ]
-                });
-              });
-      
+
     })
   </script>
 <?php } ?>
