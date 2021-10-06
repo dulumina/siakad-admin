@@ -51,5 +51,27 @@ class KrsPmmdn extends CI_Model{
   {
     return $this->db->get_where('_v2_mhsw_pmmdn',['nim'=>$nim])->row();
   }
+
+  public function inbound($periode='20211')
+  {
+    
+    $ulevel=$this->session->userdata('ulevel');
+    $kdf=$this->session->userdata('kdf');
+    $kdj=$this->session->userdata('kdj');
+    $this->db->select('_v2_jurusan.kode kodeprodi,_v2_jurusan.Nama_indonesia namaprodi');
+    $this->db->select('_v2_mhsw_pmmdn.nim,_v2_mhsw_pmmdn.name,_v2_mhsw_pmmdn.univ_asal,_v2_mhsw_pmmdn.prodi_asal');
+    if ($kdj) {
+      $this->db->where('_v2_jurusan.kode',$kdj);
+    }elseif ($kdf) {
+      $this->db->where('_v2_jurusan.KodeFakultas',$kdf);
+    }
+    $this->db->where('_v2_krsmbkm.tahun',$periode);
+
+    $this->db->join('_v2_jadwal','_v2_krsmbkm.id_jadwal=_v2_jadwal.IDJADWAL','inner');
+    $this->db->join('_v2_jurusan','_v2_jadwal.KodeJurusan=_v2_jurusan.kode','inner');
+    $this->db->join('_v2_mhsw_pmmdn','_v2_mhsw_pmmdn.nim=_v2_krsmbkm.nim','inner');
+    $this->db->group_by('_v2_mhsw_pmmdn.nim,_v2_jurusan.kode');
+    return $this->db->get('_v2_krsmbkm')->result_array();
+  }
 }
 ?>

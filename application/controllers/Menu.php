@@ -69,7 +69,11 @@ class Menu extends CI_Controller {
 		$uname=$this->session->userdata('uname');
 		$ulevel=$this->session->userdata('ulevel');
 		$tamp = $this->session->userdata('sess_tamplate');
-
+		
+		$data['ukt'] = $this->get_mhsw_spc();
+		$data['periode_spc'] = $this->additional_model->periode_aktif_spc();
+		$recaptcha = $this->recaptcha->create_box();
+		$data['recaptcha'] = $recaptcha;
 		if (!empty($uname) and !empty($ulevel)  and !empty($tamp)){
 
 			$data['berita'] = $this->additional_model->getTampilBerita();
@@ -82,11 +86,12 @@ class Menu extends CI_Controller {
 				$data['tgl'][$urutantgl] = $this->tanggal_indonesia(date('d-m-Y',strtotime($data['berita'][$urutantgl++]->Tgl)));
 			}
 
+
 			$this->load->view('temp/head');
 			$this->load->view('temp/index',$data);
 			$this->load->view('temp/footers');
 		} else {
-			$this->load->view('login');
+			$this->load->view('login',$data);
 		}
 	}
 
