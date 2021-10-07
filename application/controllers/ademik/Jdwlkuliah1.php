@@ -3297,7 +3297,7 @@ class Jdwlkuliah1 extends CI_Controller {
 			# code...
 			$wjadwal2 = array('IDJADWAL'=>$IDJADWAL);
 
-			$jadwal2 = $this->db->select("Tahun,IDJadwal,Program,KodeJurusan,KodeMK,IDMK,NamaMK,Keterangan")
+			$jadwal2 = $this->db->select("Tahun,IDJadwal,Program,KodeJurusan,KodeMK,SKS,IDMK,NamaMK,Keterangan")
 													->get_where('_v2_jadwal',$wjadwal2)
 													->result_array();
 
@@ -3323,6 +3323,7 @@ class Jdwlkuliah1 extends CI_Controller {
 							'IDJadwal'=>$jadwal2[0]['IDJadwal'],
 							'KodeMK'=>$jadwal2[0]['KodeMK'],
 							'IDMK'=>$jadwal2[0]['IDMK']),
+							'SKS'=>$jadwal2[0]['SKS']),
 						array('IDJadwal'=>$jadwal1[0]['IDJadwal'],'Tahun'=>$jadwal2[0]['Tahun'])
 					);
 					$res['dump']['set']		=array('IDJadwal'=>$jadwal2[0]['IDJadwal'],'KodeMK'=>$jadwal2[0]['KodeMK'],'IDMK'=>$jadwal2[0]['IDMK']);
