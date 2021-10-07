@@ -225,7 +225,7 @@ class App extends CI_Model{
 	public function getTahunAngkatan($prodi=false){
 		$where="";
 		if($prodi){
-			$where = " AND KodeJurusan = $prodi ";
+			$where = " AND KodeJurusan = '$prodi' ";
 		}
 
 		$query = "SELECT TahunAkademik angkatan
