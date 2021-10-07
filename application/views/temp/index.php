@@ -107,8 +107,8 @@
         <div class="col-6 d-flex align-items-stretch">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Periode Aktif Feeder</h3>
-              <h6 class="box-subtitle">Daftar Periode Aktif Feeder</h6>
+              <h3 class="box-title">Periode Pelaporan Lampau</h3>
+              <h6 class="box-subtitle">Daftar Periode Pelaporan Lampau</h6>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -340,8 +340,27 @@ if ($ulvl != '4' && $ulvl != '10' && $ulvl ) { ?>
     window.addEventListener('load', async function () {
       await fetch("<?=base_url("Dashboard/card/20211");?>")
               .then(data => data.text() )
-              .then(data => card.innerHTML = data );
+              .then(data => {card.innerHTML = data} );
 
+      await fetch("<?=base_url("Dashboard/periodeFeeder");?>")
+              .then(data => data.json() )
+              .then(data =>{
+                $('#periodefdr').DataTable({
+                  data: data,
+                  columns: [
+                    { title: "Prodi", data: (d)=>{
+                      // return d.kode_prodi+" - "+d.nama_program_studi
+                      return d.program_studi
+                    }},
+                    { title: "Semester", data: "semester"},
+                    { title: "Batas waktu", data: (d)=>{
+                      return d.tanggal_mulai_periode + " s/d " + d.tanggal_selesai_periode
+                    }},
+                    { title: "Tipe periode", data: "tipe_periode"},
+                  ]
+                });
+              });
     })
+    
   </script>
 <?php } ?>
