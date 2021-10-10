@@ -82,18 +82,6 @@ class Counter{
         $kf=$this->CI->session->userdata('kdf');
         $kp=$this->CI->session->userdata('kdj');
         $semester = "_v2_krs$periode";
-
-        // $this->CI->db->join('_v2_mhsw',"$semester.nim=_v2_mhsw.nim",'inner');
-        
-        if (isset($kdj)) {
-            $this->CI->db->where('KodeJurusan',$kdj);
-        }elseif (isset($kdf)) {
-            $this->CI->db->where('KodeFakultas',$kdf);
-        }
-        // $this->CI->db->group_by("$semester.nim");
-        // $mhs = $this->CI->db->select("$semester.nim")->get($semester)->num_rows();
-        // $this->CI->db->where_in('_v2_mhsw.nim',"Select nim from $semester where tahun = $periode");
-        // $mhs = $this->CI->db->select("count(*) jumlah")->get('_v2_mhsw');
         
         $mhs = $this->CI->db->query("SELECT count(*) jumlah FROM _v2_mhsw WHERE nim IN (Select nim from $semester where tahun = $periode)");
         if ($mhs->num_rows()==0) {
@@ -111,23 +99,67 @@ class Counter{
         $kf=$this->CI->session->userdata('kdf');
         $kp=$this->CI->session->userdata('kdj');
         
-        // $this->CI->db->join('_v2_mhsw',"_v2_spp2.nim=_v2_mhsw.nim",'inner');
-        
-        if (isset($kdj)) {
-            $this->CI->db->where('_v2_mhsw.KodeJurusan',$kdj);
-        }elseif (isset($kdf)) {
-            $this->CI->db->where('_v2_mhsw.KodeFakultas',$kdf);
+        if (isset($kp) && $kp!='') {
+            $this->CI->db->where('KodeJurusan',$kp);
+        }elseif (isset($kf) && $kf!='') {
+            $this->CI->db->where('KodeFakultas',$kf);
         }
-        // $this->CI->db->where_in('_v2_mhsw.nim',"Select nim from _v2_spp2 where tahun = $periode");
-        // $mhs = $this->CI->db->select("count(*) jumlah")->get('_v2_mhsw');
         $mhs = $this->CI->db->query("SELECT count(*) jumlah FROM _v2_mhsw WHERE nim IN (Select nim from _v2_spp2 where tahun = $periode)");
         if ($mhs->num_rows()==0) {
             return 0;
         }
-        // echo $this->CI->db->last_query();
-        // print_r($mhs->result());
-        // die;
         return $mhs->row()->jumlah;
+    }
+
+    public function mhswinbon()
+    {
+        return $this->CI->db->select("count(*) jumlah")
+                            ->where('status','A')
+                            ->get('_v2_mhsw_pmmdn')
+                            ->row()->jumlah;
+    }
+
+    public function dosen()
+    {
+        $ulevel=$this->CI->session->userdata('ulevel');
+        if ( $ulevel == '4' || $ulevel == '10') {
+            return 0;
+        }
+        $kf=$this->CI->session->userdata('kdf');
+        $kp=$this->CI->session->userdata('kdj');
+        
+        $where='';
+        if ($kp) {
+            $where = " AND KodeJurusan='$kp' ";
+        }elseif ($kf) {
+            $where = " AND KodeFakultas='$kf' ";
+        }
+        $mhs = $this->CI->db->query("SELECT count(*) jumlah FROM _v2_dosen WHERE NotActive='N' $where");
+        if ($mhs->num_rows()==0) {
+            return 0;
+        }
+        
+        // echo $this->CI->db->last_query();
+        // exit();
+        return $mhs->row()->jumlah;
+    }
+
+    public function matakuliah($periode)
+    {
+        $ulevel=$this->CI->session->userdata('ulevel');
+        if ( $ulevel == '4' || $ulevel == '10') {
+            return 0;
+        }
+        $kf=$this->CI->session->userdata('kdf');
+        $kp=$this->CI->session->userdata('kdj');
+        $where='';
+        $str = "SELECT * FROM `_v2_jadwal` $where GROUP BY `kodeMK`, `kodeJurusan`";
+        $this->CI->db->group_by('kodeMK');
+        $this->CI->db->group_by('kodeJurusan');
+        $count = $this->CI->db->get('_v2_jadwal')->num_rows();
+        // echo $this->CI->db->last_query();
+        // exit();
+        return $count;
     }
 }
 ?>

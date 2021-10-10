@@ -106,11 +106,12 @@ class Mhsw extends CI_Controller {
 					});
 			    </script>";
 
-				$this->load->view('dashbord',$data);
-
+					$this->load->view('dashbord',$data);
+					
+				}
+				
 			}
-
-		}
+			$this->load->view('fikri.js/Mhsw');
 
 	}
 

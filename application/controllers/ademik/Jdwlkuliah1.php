@@ -3322,7 +3322,7 @@ class Jdwlkuliah1 extends CI_Controller {
 						array(
 							'IDJadwal'=>$jadwal2[0]['IDJadwal'],
 							'KodeMK'=>$jadwal2[0]['KodeMK'],
-							'IDMK'=>$jadwal2[0]['IDMK']),
+							'IDMK'=>$jadwal2[0]['IDMK'],
 							'SKS'=>$jadwal2[0]['SKS']),
 						array('IDJadwal'=>$jadwal1[0]['IDJadwal'],'Tahun'=>$jadwal2[0]['Tahun'])
 					);

@@ -94,8 +94,8 @@ class App extends CI_Model{
 		return($result);
 	}
 
-	public function all_val($table){
-		$menu = $this->db->get_where($table);
+	public function all_val($table,$where=[]){
+		$menu = $this->db->get_where($table,$where);
 		return $menu;
 	}
 

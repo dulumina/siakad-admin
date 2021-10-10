@@ -1,6 +1,6 @@
 
       <div class="row">
-        <div class="col-xl-3 col-md-6 col">
+        <div class="col-xl-2 col-md-4 col">
           <div class="info-box bg-blue">
             <span class="info-box-icon push-bottom"><i class="ion ion-ios-people-outline"></i></span>
 
@@ -12,7 +12,7 @@
                 <div class="progress-bar" style="width: 100%"></div>
               </div>
               <span class="progress-description">
-                    <?= "Aktif $countMhsAktif, Cuti $countMhsCuti dan Unregist $countMhsUnregist"?>
+                <marquee><?= "Aktif $countMhsAktif, Cuti $countMhsCuti dan Unregist $countMhsUnregist"?></marquee>
               </span>
             </div>
             <!-- /.info-box-content -->
@@ -20,60 +20,100 @@
           <!-- /.info-box -->
         </div>
         <!-- /.col -->
-        <div class="col-xl-3 col-md-6 col">
+        <div class="col-xl-2 col-md-4 col">
           <div class="info-box bg-green">
             <span class="info-box-icon push-bottom"><i class="ion ion-ios-pricetags-outline"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">MAHASISWA MEMBAYAR </span>
+              <span class="info-box-text">MEMBAYAR </span>
               <span class="info-box-number"><?= $countMhsBayar; ?> Orang </span>
 
               <div class="progress">
-                <div class="progress-bar" style="width: <?= ($countMhsBayar/$countMhs*100) ?>%"></div>
+                <div class="progress-bar" style="width: <?= ($countMhs) ? ($countMhsBayar/$countMhs*100) : "0"?>%"></div>
               </div>
               <span class="progress-description">
-                    Mahasiswa yang membayar UKT <?= $periode; ?>
-                  </span>
+                <marquee>Mahasiswa yang membayar UKT <?= $periode; ?></marquee>
+              </span>
             </div>
             <!-- /.info-box-content -->
           </div>
           <!-- /.info-box -->
         </div>
         <!-- /.col -->
-        <div class="col-xl-3 col-md-6 col">
+        <div class="col-xl-2 col-md-4 col">
           <div class="info-box bg-purple">
             <span class="info-box-icon push-bottom"><i class="ion ion-ios-paper-outline"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">MAHASISWA BERKRS </span>
+              <span class="info-box-text">BERKRS </span>
               <span class="info-box-number"><?= $countMhsKrs; ?> Orang</span>
 
               <div class="progress">
-                <div class="progress-bar" style="width: <?= ($countMhsKrs/$countMhs*100) ?>%"></div>
+                <div class="progress-bar" style="width: <?= ($countMhs) ? ($countMhsKrs/$countMhs*100) : "0" ?>%"></div>
               </div>
               <span class="progress-description">
-                    Mahasiswa berKRS <?= $periode; ?>
-                  </span>
+                <marquee> Mahasiswa berKRS <?= $periode; ?></marquee>
+              </span>
             </div>
             <!-- /.info-box-content -->
           </div>
           <!-- /.info-box -->
         </div>
         <!-- /.col -->
-        <div class="col-xl-3 col-md-6 col">
-          <div class="info-box bg-red">
+        <div class="col-xl-2 col-md-4 col">
+          <div class="info-box bg-orange">
             <span class="info-box-icon push-bottom"><i class="ion-ios-chatbubble-outline"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Tahun Akademik <?= $periode;?> </span>
-              <span class="info-box-number">KHS Terkirim</span>
+              <span class="info-box-text">Inbound </span>
+              <span class="info-box-number"><?= $countMhsinbon ?> Orang</span>
 
               <div class="progress">
-                <div class="progress-bar" style="width: 40%"></div>
+                <div class="progress-bar" style="width: 100%"></div>
               </div>
               <span class="progress-description">
-                    KHS Terkirim Ke DIKTI
-                  </span>
+                <marquee>Jumlah Mahasiswa Inbound</marquee>
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-xl-2 col-md-4 col">
+          <div class="info-box bg-green">
+            <span class="info-box-icon push-bottom"><i class="ion-ios-chatbubble-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Dosen </span>
+              <span class="info-box-number"><?= $countDosen ?> Orang</span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 100%"></div>
+              </div>
+              <span class="progress-description">
+                <marquee>Jumlah Dosen</marquee>
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-xl-2 col-md-4 col">
+          <div class="info-box bg-yellow">
+            <span class="info-box-icon push-bottom"><i class="ion-ios-chatbubble-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Matakuliah </span>
+              <span class="info-box-number"><?= $countMK ?></span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 100%"></div>
+              </div>
+              <span class="progress-description">
+                <marquee>Jumlah matakuliah</marquee>
+              </span>
             </div>
             <!-- /.info-box-content -->
           </div>
