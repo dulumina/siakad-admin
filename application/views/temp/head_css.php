@@ -95,11 +95,24 @@
         }
     </style>
 
-		<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-YC25K6DDZY"></script> -->
-		<!-- <script>
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-YC25K6DDZY"></script>
+		<script>
 			window.dataLayer = window.dataLayer || [];
 			function gtag(){dataLayer.push(arguments);}
 			gtag('js', new Date());
 
 			gtag('config', 'G-YC25K6DDZY');
-		</script> -->
+			
+			function wait$(params) {
+				var i = setInterval(()=>{
+								if ($) {
+									clearInterval(i);
+									<?php if(ENVIRONMENT=='development') : ?>
+									console.log('$ is loaded.');
+									console.log("gunakan wait$(()=>{ tulis blok kode anda yang mengunakan $ disini })");
+									<?php endif; ?>
+									params();
+								}
+							}, 100);
+			}
+		</script>

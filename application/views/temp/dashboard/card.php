@@ -29,7 +29,7 @@
               <span class="info-box-number"><?= $countMhsBayar; ?> Orang </span>
 
               <div class="progress">
-                <div class="progress-bar" style="width: <?= ($countMhsBayar/$countMhs*100) ?>%"></div>
+                <div class="progress-bar" style="width: <?= ($countMhs) ? ($countMhsBayar/$countMhs*100) : "0"?>%"></div>
               </div>
               <span class="progress-description">
                 <marquee>Mahasiswa yang membayar UKT <?= $periode; ?></marquee>
@@ -49,7 +49,7 @@
               <span class="info-box-number"><?= $countMhsKrs; ?> Orang</span>
 
               <div class="progress">
-                <div class="progress-bar" style="width: <?= ($countMhsKrs/$countMhs*100) ?>%"></div>
+                <div class="progress-bar" style="width: <?= ($countMhs) ? ($countMhsKrs/$countMhs*100) : "0" ?>%"></div>
               </div>
               <span class="progress-description">
                 <marquee> Mahasiswa berKRS <?= $periode; ?></marquee>
