@@ -15,6 +15,7 @@ class Module extends CI_Controller {
 	//	$this->load->view('temp/head');
 	//	$this->load->view($content);
 	//	$this->load->view('temp/footers');
+		$a['levels'] = $this->db->query("SELECT * from level where NotActive='N' ")->result();
 		$a['tab'] = $this->app->all_val('groupmodul')->result();
 	//	$a['tab'] = $this->app->select_all_val('modul','')->result();
 		$this->load->view('dashbord',$a);
@@ -40,7 +41,16 @@ class Module extends CI_Controller {
 			$string .= $a."-";
 		}
 		$string = "-".$string;
-		$this->db->query("Insert into groupmodul (GroupModulID,GroupModul,Level,NotActive) values ('','$gropmod','$string','$on')");
+		// print_r($this->input->post());
+		// die;
+		if ($this->input->post('identifier')) {
+			$identifier = $this->input->post('identifier');
+			$kueri = "UPDATE groupmodul SET GroupModul='$gropmod', Level='$string', NotActive='$on' WHERE GroupModulID='$identifier' ";
+			// echo $kueri; die;
+			$this->db->query($kueri);
+		}else {
+			$this->db->query("Insert into groupmodul (GroupModulID,GroupModul,Level,NotActive) values ('','$gropmod','$string','$on')");
+		}
 		redirect(base_url($this->session->userdata('sess_tamplate')));
 	}
 	

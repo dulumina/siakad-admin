@@ -23,6 +23,7 @@
 						<?php
 							if($this->session->ulevel==1){
 						?>
+								<a href="<?= base_url('ademik/useraccess/pimpinanpage'); ?>" class="btn btn-app bg-red" style="margin-bottom: 20px;">Management <br>Pimpinan</a>
 								<a href="<?= base_url('ademik/useraccess/adminpage'); ?>" class="btn btn-app bg-purple" style="margin-bottom: 20px;">Management <br>Admin SU</a>
 								<a href="<?= base_url('ademik/useraccess/adminpusat'); ?>" class="btn btn-app bg-green" style="margin-bottom: 20px;">Management <br>Admin Pusat</a>
 								<!-- <a href="<?= base_url('ademik/useraccess/pegawai'); ?>" class="btn btn-app bg-blue" style="margin-bottom: 20px;">Management <br>Pegawai</a> -->
