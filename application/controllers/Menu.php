@@ -74,7 +74,7 @@ class Menu extends CI_Controller {
 		$data['periode_spc'] = $this->additional_model->periode_aktif_spc();
 		$recaptcha = $this->recaptcha->create_box();
 		$data['recaptcha'] = $recaptcha;
-		if (!empty($uname) and !empty($ulevel)  and !empty($tamp)){
+		if (!empty($uname) and !empty($ulevel)  ){//and !empty($tamp)){
 
 			$data['berita'] = $this->additional_model->getTampilBerita();
 			

@@ -19,10 +19,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         'params'   => array()
 );*/
 
+// $hook['post_controller_constructor'] = array(
+//         'class'    => 'Myclass',
+//         'function' => 'Myfunction',
+//         'filename' => 'Myclass.php',
+//         'filepath' => 'hooks',
+//         'params'   => array()
+// );
 $hook['post_controller_constructor'] = array(
-        'class'    => 'Myclass',
-        'function' => 'Myfunction',
-        'filename' => 'Myclass.php',
+        'class'    => 'Security_check',
+        'function' => 'cek_login',
+        'filename' => 'Security_check.php',
         'filepath' => 'hooks',
         'params'   => array()
 );

@@ -13,6 +13,25 @@ class App extends CI_Model{
 		}
 	}
 
+	public function cek_access()
+	{
+    $class = $this->router->fetch_class();
+    $method = $this->router->fetch_method();
+		
+		$ulevel=$this->session->userdata('ulevel');
+		$modul = $this->db->get_where('modul',['Link'=>$class]);
+
+		if ($modul->num_rows()!=0) {
+			$rule = explode('-',$modul->row()->Level);
+			if (!in_array($ulevel,$rule)) {
+				// echo "okeee";die;
+				$this->session->set_flashdata('konfirmasi','Silahkan login terlebih dahulu...!');
+				redirect(base_url());
+			}
+		}
+
+	}
+
 	public function checksession(){
 		$uname=$this->session->userdata('uname');
 		$ulevel=$this->session->userdata('ulevel');
