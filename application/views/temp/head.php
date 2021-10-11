@@ -1,3 +1,6 @@
+<?php
+  $this->app->cek_access();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
