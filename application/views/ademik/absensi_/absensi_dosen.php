@@ -125,7 +125,9 @@
 
         <hr>  
         <div class="mt-5">
-        <?php if($this->session->userdata('kdf') == 'C' or $this->session->userdata('ulevel') == '1' or $this->session->userdata('kdf') == 'D' or $this->session->userdata('kdf') == 'E'or $this->session->userdata('kdf') == 'B' ){ ?>      
+        <?php $faks=['B','C','D','E','O'];
+          if( $this->session->userdata('ulevel') == '1' or in_array($this->session->userdata('kdf'),$faks) ){ 
+        ?>      
             <button class="btn btn-success btn-circle" id="btn-kumlatif" onclick="showModalAbsenKumulatif()">
                 <i class="fa fa-calculator"></i>
             </button>
