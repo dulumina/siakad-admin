@@ -107,7 +107,7 @@
     <script src="<?=base_url()?>assets/plugins/DataTables-1.10.15/media/js/jquery.dataTables.min.js"></script>
 
 	<!-- maximum_admin for Data Table -->
-	<!-- <script src="<?=base_url()?>assets/js/pages/data-table.js"></script> -->
+	<script src="<?=base_url()?>assets/js/pages/data-table.js"></script>
 
 	<!-- Sweet Alert Wawan -->
 	<script src="<?=base_url()?>assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
