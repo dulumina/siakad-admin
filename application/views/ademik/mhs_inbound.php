@@ -5,7 +5,7 @@
 			Rekap Mahasiswa Inbound
 		</h1>
 		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="<?= base_url(); ?>"><i class="fa fa-dashboard"></i> Rekap</a></li>
+			<li class="breadcrumb-item"><a href="<?= base_url(); ?>"><i class="fa fa-dashboard"></i> Mahasiswa Inbound</a></li>
 			<li class="breadcrumb-item"><a href="<?= $_SESSION['tamplate'] ?>">Mahasiswa Inbound</a></li>
 		</ol>
 	</section>
@@ -84,7 +84,7 @@
 					</tr>
 
 					<?php } ?>   
-
+					
                   </tbody>
                  <tfoot>
 					<tr>
