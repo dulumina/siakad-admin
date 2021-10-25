@@ -17,6 +17,8 @@ class Mhs_inbound extends CI_Controller
 	function index($periode='20211')
 	{
 		$data['mhs'] = $this->KrsPmmdn->inbound($periode='20211');
+		
+		// var_dump($data);
 		$this->load->view('dashbord',$data);
 
 	}

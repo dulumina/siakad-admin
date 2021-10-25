@@ -167,7 +167,7 @@
                 </div>
 
                 <?php
-                  if ( $this->session->userdata('ulevel') == 1 OR  ( $this->session->userdata('ulevel') == 4 and $periode_spc->kode != $semester) ) {
+                  if ( ( $this->session->userdata('ulevel') == 1 OR  ( $this->session->userdata('ulevel') == 4 and $periode_spc->kode != $semester) ) and $ukt ) {
                 ?>
 
                  <div class="col-md-5 col-lg-5">

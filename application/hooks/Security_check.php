@@ -10,9 +10,9 @@ class Security_check
     $base_url = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
     $base_url .= "://".$_SERVER['HTTP_HOST'];
     $base_url .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
-
+    
 		if (!isset($_SESSION['uname']) && !isset($_SESSION['ulevel']) ){
-      if ( !in_array($class,['menu','prc','Prc']) ) {
+      if ( !in_array($class,['menu','prc','Prc','ws']) && $this->CI->uri->segment(1) !='ws' ) {
         session_destroy();
         redirect($base_url);
       }
