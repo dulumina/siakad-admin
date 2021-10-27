@@ -7,7 +7,7 @@ class Feeder_untad {
     * @var array
     */
   private $config = array(
-    'host'     => 'http://103.245.72.97',
+    'host'     => 'http://feeder.untad.ac.id',
     'port'     => '8082',
     'username' => '001028p1',
     'password' => 'bakp2021@#$'
