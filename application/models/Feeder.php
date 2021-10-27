@@ -53,7 +53,7 @@ class Feeder extends CI_Model{
 	public function gettoken_restfull(){
 		$user_feeder = $this->config->item('user_feeder');
 		$password_feeder = $this->config->item('password_feeder');
-		$url = 'http://103.245.72.97:8082/ws/live2.php';
+		$url = 'http://feeder.untad.ac.id:8082/ws/live2.php';
 
 		$data = array (
 			'act' => 'GetToken',
@@ -89,7 +89,7 @@ class Feeder extends CI_Model{
 	public function id_reg_dosen_detailbiodatadosen($Filter){
 
 		$token = $this->gettoken_restfull();
-		$url = 'http://103.245.72.97:8082/ws/live2.php';
+		$url = 'http://feeder.untad.ac.id:8082/ws/live2.php';
 
 		/*$data = array (
 			'act' => 'GetListMahasiswa',
@@ -133,7 +133,7 @@ class Feeder extends CI_Model{
 	public function insertfeeder($namerest,$value){
 
 		$token = $this->gettoken_restfull();
-		$url = 'http://103.245.72.97:8082/ws/live2.php';
+		$url = 'http://feeder.untad.ac.id:8082/ws/live2.php';
 
 		/*$edit = array();
 		$edit['id_registrasi_dosen'] = 'bbe897c1-3997-4008-8c98-90ba40110a38';
@@ -187,7 +187,7 @@ class Feeder extends CI_Model{
 	public function cekdatafeeder($act, $Filter){
 
 		$token = $this->gettoken_restfull();
-		$url = 'http://103.245.72.97:8082/ws/live2.php';
+		$url = 'http://feeder.untad.ac.id:8082/ws/live2.php';
 
 		$data = array (
 			'act' => $act,
@@ -228,7 +228,7 @@ class Feeder extends CI_Model{
 	public function deletefeeder($namerest,$value){
 
 		$token = $this->gettoken_restfull();
-		$url = 'http://103.245.72.97:8082/ws/live2.php';
+		$url = 'http://feeder.untad.ac.id:8082/ws/live2.php';
 
 		$data = array (
 			'act' => $namerest,
