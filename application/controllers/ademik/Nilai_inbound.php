@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set("Asia/Makassar");
 
-class nilai_inbound extends CI_Controller
+class Nilai_inbound extends CI_Controller
 {
 	
 	function __construct()
