@@ -140,7 +140,8 @@ $config['subclass_prefix'] = 'MY_';
 | Note: This will NOT disable or override the CodeIgniter-specific
 |	autoloading (application/config/autoload.php)
 */
-$config['composer_autoload'] = FALSE;
+// $config['composer_autoload'] = FCPATH . 'vendor/autoload.php';
+$config['composer_autoload'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------
@@ -536,13 +537,13 @@ $config['proxy_ips'] = '';
 // fedder fandu configurasi
 /*$config['user_feeder'] = '001028e1';
 $config['password_feeder'] = 'hil2006';
-$config['url_feeder'] = 'http://103.245.72.97:8082/ws/live.php?wsdl';*/
+$config['url_feeder'] = 'http://feeder.untad.ac.id:8082/ws/live.php?wsdl';*/
 
 $config['user_feeder'] = '001028e1';
 $config['password_feeder'] = 'az18^^';
-$config['url_feeder'] = 'http://103.245.72.97:8082/ws/live.php?wsdl';
+$config['url_feeder'] = 'http://feeder.untad.ac.id:8082/ws/live.php?wsdl';
 
-$config['url_feeder2'] = 'http://103.245.72.97:8082/ws/live2.php';
+$config['url_feeder2'] = 'http://feeder.untad.ac.id:8082/ws/live2.php';
 
 $config['telegram_bot_id'] = 'bot_id';
 $config['telegram_bot_key'] = 'token_bot';

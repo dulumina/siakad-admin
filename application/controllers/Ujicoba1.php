@@ -110,8 +110,8 @@ class ujicoba1 extends CI_Controller {
 	/*include 'nusoap/nusoap.php';
     include 'nusoap/class.wsdlcache.php';
 
-	//$url = 'http://103.245.72.97:8082/ws/sandbox.php?wsdl'; // gunakan sandbox untuk coba-coba
-	$url = 'http://103.245.72.97:8082/ws/live.php?wsdl'; // gunakan live bila sudah yakin
+	//$url = 'http://feeder.untad.ac.id:8082/ws/sandbox.php?wsdl'; // gunakan sandbox untuk coba-coba
+	$url = 'http://feeder.untad.ac.id:8082/ws/live.php?wsdl'; // gunakan live bila sudah yakin
 
 	$client = new nusoap_client($url, true);
 	//echo "Include Berhasil <br/>";

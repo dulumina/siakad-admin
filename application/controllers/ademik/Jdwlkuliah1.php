@@ -830,7 +830,8 @@ class Jdwlkuliah1 extends CI_Controller {
 		$opfkip
 		<option name=Gabungan value=Gabungan>Kelas Gabungan</option>
 		<option name=Int-Class value=Int-Class>Kelas Internasional</option>
-		<option name=Int-Class value=Konsentrasi>Konsentrasi</option>";
+		<option name=Int-Class value=Konsentrasi>Konsentrasi</option>
+		<option name=MBKM value=MBKM>MBKM</option>";
 
 		if ($ulevel == 1 or $ulevel == 5 or $ulevel == 7) {
 			$paket  = $this->app->two_val_option("concat(KodePaket, ' -- ',NamaPaket)", "KodePaket" ,"_v2_paket", "KodeJurusan like '$kdj%'", "");
@@ -2093,6 +2094,7 @@ class Jdwlkuliah1 extends CI_Controller {
 	}
 
 	private function proses_kirimnilaidikti($idjadwal, $tahun, $program, $kdj){
+		$this->load->model('FeederRunWS');
 		/*$idjadwal = $this->input->post("idjadwalinnilai");
 		$tahun = $this->input->post("tahunvalidasi");
 		$program = $this->input->post("programvalidasi");
@@ -2114,11 +2116,12 @@ class Jdwlkuliah1 extends CI_Controller {
 
 		//echo $idjadwal;
 
-		$message = "";
+		$message = ""; 
 
 		$hasil = $this->db->query("SELECT n.ID, n.NIM, n.Tahun, n.nilai, n.GradeNilai, n.Bobot, n.KodeMK, n.enkripsi, j.id_kelas_kuliah, j.IDJADWAL, m.id_reg_pd, m.KodeFakultas FROM $tbl n left join _v2_jadwal j on n.IDJadwal=j.IDJADWAL left join _v2_mhsw m on n.NIM=m.NIM  WHERE n.Tahun = '$tahun' AND (n.st_feeder = 0 or n.st_feeder = 5 or n.st_feeder = -3) AND n.IDJadwal LIKE '$idjadwal' AND n.GradeNilai != ''");
 
 		foreach ($hasil->result() as $show) {
+			$insPeserta=[];
 			$IDKRS = $show->ID; // n.ID
 			$id_kls = $show->id_kelas_kuliah; // j.id_kelas_kuliah
 			$id_reg_pd = $show->id_reg_pd; // m.id_reg_pd
@@ -2164,9 +2167,27 @@ class Jdwlkuliah1 extends CI_Controller {
 					"action" => $action,
 					"tabel" => $table
 				]);
+
+				$pesertaKls = array(
+					'id_kelas_kuliah'=>$id_kls,
+					'id_registrasi_mahasiswa'=>$id_reg_pd
+				);
+
+				$data_record = array(
+					'nilai_angka'=>$nil_ang,
+					'nilai_indeks'=>$nil_indeks,
+					'nilai_huruf'=>$nil_huruf
+				);
 				// $httpg = $this->http_request("https://api.telegram.org/bot1806507201:AAGhQ4U_IvQntAfmzWqiQ2KdhFZSotNcDMc/sendMessage?chat_id=949836438&parse_mode=Markdown&text=$text");
 				// insert tabel mahasiswa ke feeder
-				$datb = $this->feeder->action_feeder($temp_token,$temp_proxy,$action,$table,$record);
+				$insPeserta = $this->FeederRunWS->insert('InsertPesertaKelasKuliah',$pesertaKls);
+				$insPeserta->InsertPesertaKelasKuliah=$pesertaKls;
+
+				$resfdr = $this->FeederRunWS->update('UpdateNilaiPerkuliahanKelas', $pesertaKls, $data_record);
+				foreach ($resfdr as $key => $value) {
+					$datb[$key]=$value;
+				}
+				// $datb = $this->feeder->action_feeder($temp_token,$temp_proxy,$action,$table,$record);
 
 				// fandu matikan karena salah
 				//$resultb = $this->feeder->action_feeder($temp_token,$temp_proxy,$action,$table,$record);
@@ -2319,8 +2340,10 @@ class Jdwlkuliah1 extends CI_Controller {
 
 		$result = array(
 			"ket" => "sukses",
+			"insPeserta" => $insPeserta,
 			"pesan" => $message,
-			"kirim_data" => $text
+			"kirim_data" => $text,
+			"datanilai" => $data_record
 		);
 
 		echo json_encode($result);
@@ -2357,7 +2380,7 @@ class Jdwlkuliah1 extends CI_Controller {
 		include 'ws/nusoap/nusoap.php';
 		include 'ws/nusoap/class.wsdlcache.php';
 
-		$wsdl = 'http://103.245.72.97:8082/ws/live.php?wsdl';
+		$wsdl = 'http://feeder.untad.ac.id:8082/ws/live.php?wsdl';
 
 		$client = new nusoap_client($wsdl, true);
 		$proxy = $client->getProxy();
