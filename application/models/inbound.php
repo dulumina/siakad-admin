@@ -8,8 +8,6 @@ function dosen()
         $ulevel=$this->session->userdata('ulevel');
         $kdf=$this->session->userdata('kdf');
         $unip = $this->session->userdata("unip");
-
-        // $this->db->select('_v2_jurusan.kode kodeprodi,_v2_jurusan.Nama_indonesia namaprodi');
         $this->db->distinct();
         $this->db->select('_v2_krsmbkm.id_jadwal, _v2_jadwal.IDDosen, _v2_dosen.Name, _v2_jurusan.Kode, _v2_jurusan.Nama_Indonesia, _v2_jurusan.KodeFakultas');
         $this->db->join('_v2_jadwal', '_v2_jadwal.IDJADWAL=_v2_krsmbkm.id_jadwal');
