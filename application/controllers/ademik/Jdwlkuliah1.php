@@ -1273,7 +1273,7 @@ class Jdwlkuliah1 extends CI_Controller {
 				// Apakah gabungan?
 				// fandu hapus field Global='$glob'
 
-				$cekidjadwal = "select IDJADWAL from _v2_jadwal where IDJadwal='$IDJADWALBr'";
+				$cekidjadwal = "select IDJADWAL from _v2_jadwal where IDJadwal='$IDJADWALBr' AND Hari='$Hari' ";
 
 				$residjadwal = $this->db->query($cekidjadwal)->num_rows();
 				if ($residjadwal == 0 or $md == 2) { // apakah IDJADWAL sudah pernah terinput
