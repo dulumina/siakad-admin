@@ -1274,7 +1274,7 @@ class Jdwlkuliah1 extends CI_Controller {
 				// Apakah gabungan?
 				// fandu hapus field Global='$glob'
 
-				$cekidjadwal = "select IDJADWAL from _v2_jadwal where IDJadwal='$IDJADWALBr'";
+				$cekidjadwal = "select IDJADWAL from _v2_jadwal where IDJadwal='$IDJADWALBr' AND Hari='$Hari' ";
 
 				$residjadwal = $this->db->query($cekidjadwal)->num_rows();
 				if ($residjadwal == 0 or $md == 2) { // apakah IDJADWAL sudah pernah terinput
@@ -1319,8 +1319,12 @@ class Jdwlkuliah1 extends CI_Controller {
 								}
 							}
 						}
-
-						$messagefeeder = $this->update_jadwal_feeder($IDJADWALBr, $thn); // proses ke feeder
+						if ($md=='2') {
+							$messagefeeder = $this->feeder_Kelas_kuliah('update',$IDJADWALBr);
+						}else {
+							$IDJADWALBr = "$kdj"."$thn"."$IdTstamp";
+							$messagefeeder = $this->feeder_Kelas_kuliah('insert', $IDJADWALBr);
+						}
 
 						$statalert = "success";
 					} else {
@@ -2597,9 +2601,9 @@ class Jdwlkuliah1 extends CI_Controller {
 			}
 		}
 
-		function update_Kelas_kuliah($IDJadwal){ // proses sendiri
+		private function feeder_Kelas_kuliah($md, $IDJadwal){ // proses sendiri
 
-			$this->load->library('feeder_untad');
+			$this->load->model('FeederRunWS');
 
 			$query = "select j.id_kelas_kuliah, jr.id_sms id_prodi, j.Tahun id_semester, m.id_mk id_matkul, j.Keterangan nama_kelas_kuliah, '' bahasan, '' tanggal_mulai_efektif, '' tanggal_akhir_efektif, m.SKS sks_mata_kuliah, m.SKSTatapMuka sks_tatap_muka, m.SKSPraktikum sks_praktek, m.SKSPraktekLap sks_praktek_lapangan, m.SKSSimulasi sks_simulasi, '' tanggal_tutup_daftar, j.kap kapasitas from _v2_jadwal j, _v2_jurusan jr, _v2_matakuliah m where m.IDMK=j.IDMK and j.KodeJurusan= jr.Kode and j.IDJadwal like '$IDJadwal' limit 1";
 			$data_raw = $this->db->query($query);
@@ -2611,27 +2615,25 @@ class Jdwlkuliah1 extends CI_Controller {
 			}
 
 			$jadwal_data = $data_raw->row_array();
-			// print_r($jadwal_data);
-			// die;
+			
 			$key = $jadwal_data['id_kelas_kuliah'];
 			unset($jadwal_data['id_kelas_kuliah']);
 			$record = $jadwal_data;
-			echo $key;
-			echo "<br>";
-			echo json_encode($record);
-			echo "<br>";
-			// die;
-			$res_feeder = $this->feeder_untad->update('UpdateKelasKuliah',$key,$record);
-
-			echo json_encode($res_feeder);
-			die;
+			
+			if ($md=='update') {
+				$res_feeder = $this->FeederRunWS->update('UpdateKelasKuliah',$key,$record);
+			}elseif ($md=='insert') {
+				$res_feeder = $this->FeederRunWS->insert('InsertKelasKuliah',$record);
+			}
+			
 			$id_kls = $res_feeder->data->id_kelas_kuliah;
 			$error_code = $res_feeder->error_code;
 			$error_desc = $res_feeder->error_desc;
-	
-			if($id_kls != null){
-				$qupdate = "update _v2_jadwal set id_kelas_kuliah='$id_kls',st_feeder=2 where IDJADWAL='$IDJADWAL'";
+			
+			if($id_kls){
+				$qupdate = "update _v2_jadwal set id_kelas_kuliah='$id_kls',st_feeder=2 where IDJADWAL='$IDJadwal'";
 				$this->db->query($qupdate);
+				
 				return "dan Jadwal Berhasil di Kirim Ke Feeder";
 			}else if($error_code=='700'){ // Data kelas ini sudah ada == $error_status['700']
 				$action = "GetRecord";

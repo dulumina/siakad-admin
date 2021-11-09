@@ -1,15 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class inbound extends CI_Model{
+class Inbound extends CI_Model{
 
 function dosen()
     {
         $ulevel=$this->session->userdata('ulevel');
         $kdf=$this->session->userdata('kdf');
         $unip = $this->session->userdata("unip");
-
-        // $this->db->select('_v2_jurusan.kode kodeprodi,_v2_jurusan.Nama_indonesia namaprodi');
         $this->db->distinct();
         $this->db->select('_v2_krsmbkm.id_jadwal, _v2_jadwal.IDDosen, _v2_dosen.Name, _v2_jurusan.Kode, _v2_jurusan.Nama_Indonesia, _v2_jurusan.KodeFakultas');
         $this->db->join('_v2_jadwal', '_v2_jadwal.IDJADWAL=_v2_krsmbkm.id_jadwal');
@@ -51,9 +49,7 @@ function krs($tahunakademik,$dosen,$mk)
 
         $this->db->order_by('_v2_jadwal.IDDosen', 'ASC');
         return $this->db->get('_v2_krsmbkm')->result();
-        // return $this->db->from('_v2_krsmbkm')
-        // ->get()
-        // ->result();
+
 }
 
 function in_nilai($id)
@@ -78,9 +74,6 @@ function simpan_nilai($id, $hadir, $praktek, $mid, $uas, $nilai, $grade)
     $this->db->set('GradeNilai',$grade);
     $this->db->where('id',$id);
 
-
-    // $this->db->select('*');
-    // $this->db->where('id', $id);
     return $this->db->update('_v2_krsmbkm');
 }
 
