@@ -176,9 +176,9 @@
 		  dataType: 'json',
 		  cache : false,
 		  success: function(res){ 
-				let data = JSON.parse(res);
+				// let data = JSON.parse(res);
 				// $body.removeClass("loading");
-				if(data.error_code==0){
+				if(res.error_code==0){
 					//var feeder = "#feeder-"+nim;
 					//alert("123");
 					$("#feeder-"+nim).html("Data Terkirim");
