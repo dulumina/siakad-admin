@@ -72,10 +72,10 @@ class Cetak_khs_prodi extends CI_Controller {
  
             var save_method; //for save method string
             var table;
- 
+						var oTable;
             $(document).ready(function() {
 				var dataku = 'semesterAkademik=".$semesterAkademik."&jurusan=".$jurusan."&program=".$program."&angkatan=".$angkatan."';
-            	var oTable = $('#tabel_cetak_khs').dataTable({
+            	oTable = $('#tabel_cetak_khs').dataTable({
 		            'processing': true, 
 			            'serverSide': true, 
 			            'order': [], 
