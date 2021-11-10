@@ -835,79 +835,52 @@ class Cetak_khs_prodi extends CI_Controller {
 
 		}
 
-		$feeder = $this->feeder->getToken_feeder();
-		$temp_token = $feeder['temp_token'];
-		$temp_proxy = $feeder['temp_proxy'];
-
 		if($data->IPK != -1){
 			$NIM = ucfirst($data->NIM);
 
-			$record = new stdClass();
-			$record->id_smt = $data->Tahun;
-			$record->id_reg_pd = $data->id_reg_pd;
-			$record->id_stat_mhs = $data->Status;
-			$record->ips = $data->IPS;
-			$record->sks_smt = $data->SKS;
-			$record->ipk = $data->IPK;
-			$record->sks_total = $data->TotalSKS;
-			$record->biaya_smt = $spp;
+			$record['id_semester'] 							= $data->Tahun;
+			$record['id_registrasi_mahasiswa']	= $data->id_reg_pd;
+			$record['id_status_mahasiswa'] 			= $data->Status;
+			$record['ips'] 											= $data->IPS;
+			$record['sks_semester'] 						= $data->SKS;
+			$record['ipk'] 											= $data->IPK;
+			$record['total_sks'] 								= $data->TotalSKS;
+			$record['biaya_kuliah_smt'] 				= $spp;
 
 			$ID = $data->ID;
 
-			$table = 'kuliah_mahasiswa';
+			$this->load->model('FeederRunWS');
+			$filter = "id_registrasi_mahasiswa='$data->id_reg_pd' AND id_semester='$data->Tahun'";
+			$cek = $this->FeederRunWS->get('GetListPerkuliahanMahasiswa',$filter);
+			$status=[];
 
-			// action insert ke feeder
-			$action = 'InsertRecord';
+			if (count($cek->data)==0) {	// insert data ke feeder jika data belum ada
+				$rdikti = $this->FeederRunWS->insert('InsertPerkuliahanMahasiswa',$record);
+				
+				$status['error_code'] = $rdikti->error_code;
+				$status['error_desc'] = $rdikti->error_desc;
+				$status['pesan'] = "Data AKM berhasil dikirim ke feeder";
 
-			// insert tabel mahasiswa ke feeder
-			$rdikti = $this->feeder->action_feeder($temp_token,$temp_proxy,$action,$table,$record);
-
-			$error_code = $rdikti['error_code'];
-			$error_desc = $rdikti['error_desc'];
-			if($error_code==730){
-
-				$recordup = array(
-					'key' => array('id_smt' => $data->Tahun,'id_reg_pd' => $data->id_reg_pd,'id_stat_mhs' => $data->Status),
-					'data' => array('ips' => $data->SKS,'sks_smt' => $data->SKS,'ipk' => $data->IPK,'sks_total' => $data->TotalSKS, 'biaya_smt' => $spp)
+			}elseif (count($cek->data)>=1) { // update data di feeder jika data sudah ada
+				$key = array(
+					'id_registrasi_mahasiswa'	=> $data->id_reg_pd,
+					'id_semester'	=> $data->Tahun
 				);
+				unset($record['id_registrasi_mahasiswa']);
+				unset($record['id_semester']);
 
-				$table = 'kelas_kuliah';
-
-				// action insert ke feeder
-				$action = 'UpdateRecord';
-
-				// insert tabel mahasiswa ke feeder
-				$rdiktiup = $this->feeder->action_feeder($temp_token,$temp_proxy,$action,$table,$recordup);
-
-				$sql = $this->krs_model->updateKhsFeeder($ID);
-				if($sql){
-	    			$this->session->set_flashdata('msg', 'Data Berhasil Di import');
-					redirect('ademik/cetak_khs_prodi');
-					echo json_encode('Data Berhasil di import');
-				}else{
-					/*$this->session->set_flashdata('msg', 'Data Berhasil di import tapi st_feeder gagal diupdate di khs');
-					redirect('ademik/cetak_khs_prodi');*/
-					echo json_encode('Data Berhasil di import tapi st_feeder gagal diupdate di khs');
-				}
-			} elseif ($error_code!=0){
-				/*$this->session->set_flashdata('msg', $error_code."-".$error_desc." - ".json_encode($record));
-				redirect('ademik/cetak_khs_prodi');*/
-				echo json_encode($error_code."-".$error_desc." - ".json_encode($record));
-			}else{
-				$sql = $this->krs_model->updateKhsFeeder($ID);
-				if($sql){
-					/*$this->session->set_flashdata('msg', "Data Berhasil di import");
-					redirect('ademik/cetak_khs_prodi');*/
-					//echo "Data Berhasil Di import";
-					echo json_encode('Data Berhasil di import');
-				}else{
-					/*$this->session->set_flashdata('msg', "Data Berhasil di import tapi st_feeder gagal diupdate di khs");
-					redirect('ademik/cetak_khs_prodi');*/
-
-					echo json_encode('Data Berhasil di import tapi st_feeder gagal diupdate di khs');
-					//echo "Data Berhasil di import tapi st_feeder gagal diupdate di khs";
-				}
+				$rdiktiup = $this->FeederRunWS->update('UpdatePerkuliahanMahasiswa',$key,$record);
+				$status['error_code'] = $rdiktiup->error_code;
+				$status['error_desc'] = $rdiktiup->error_desc;
+				$status['pesan'] = "Data AKM berhasil diupdate di feeder";
 			}
+
+			if ($status['error_code'] == 0){
+				$this->krs_model->updateKhsFeeder($ID);
+			} else {
+				$status['pesan'] = $status['error_desc']." | error_code =".$status['error_code'];
+			}
+			echo json_encode($status['pesan']);
 		}else{
 			/*$this->session->set_flashdata('msg', "IPK bernilai 0 tidak dapat di import ke feeder");
 			redirect('ademik/cetak_khs_prodi');*/
