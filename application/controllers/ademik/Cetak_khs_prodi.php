@@ -790,6 +790,11 @@ class Cetak_khs_prodi extends CI_Controller {
 				$status['error_code'] = $rdikti->error_code;
 				$status['error_desc'] = $rdikti->error_desc;
 				$status['pesan'] = "Data AKM berhasil dikirim ke feeder";
+				if ($status['error_code'] == 0){
+					$this->krs_model->updateKhsFeeder($ID);
+				} else {
+					$status['pesan'] = $status['error_desc']." | error_code =".$status['error_code'];
+				}
 
 			}elseif (count($cek->data)>=1) { // update data di feeder jika data sudah ada
 				$key = array(
@@ -804,13 +809,13 @@ class Cetak_khs_prodi extends CI_Controller {
 				$status['error_code'] = $rdiktiup->error_code;
 				$status['error_desc'] = $rdiktiup->error_desc;
 				$status['pesan'] = "Data AKM berhasil diupdate di feeder";
+				if ($status['error_code'] == 0){
+					$this->krs_model->updateKhsFeeder($ID);
+				} else {
+					$status['pesan'] = $status['error_desc']." | error_code =".$status['error_code'];
+				}
 			}
-
-			if ($status['error_code'] == 0){
-				$this->krs_model->updateKhsFeeder($ID);
-			} else {
-				$status['pesan'] = $status['error_desc']." | error_code =".$status['error_code'];
-			}
+			
 		}else{
 			/*$this->session->set_flashdata('msg', "IPK bernilai 0 tidak dapat di import ke feeder");
 			redirect('ademik/cetak_khs_prodi');*/
