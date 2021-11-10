@@ -842,42 +842,53 @@ class Cetak_khs_prodi extends CI_Controller {
 		if($data->IPK != -1){
 			$NIM = ucfirst($data->NIM);
 
-			$record = new stdClass();
-			$record->id_smt = $data->Tahun;
-			$record->id_reg_pd = $data->id_reg_pd;
-			$record->id_stat_mhs = $data->Status;
-			$record->ips = $data->IPS;
-			$record->sks_smt = $data->SKS;
-			$record->ipk = $data->IPK;
-			$record->sks_total = $data->TotalSKS;
-			$record->biaya_smt = $spp;
+			// $record = new stdClass();
+			$record['id_semester'] 							= $data->Tahun;
+			$record['id_registrasi_mahasiswa']	= $data->id_reg_pd;
+			$record['id_status_mahasiswa'] 			= $data->Status;
+			$record['ips'] 											= $data->IPS;
+			$record['sks_semester'] 						= $data->SKS;
+			$record['ipk'] 											= $data->IPK;
+			$record['total_sks'] 								= $data->TotalSKS;
+			$record['biaya_kuliah_smt'] 				= $spp;
 
 			$ID = $data->ID;
 
-			$table = 'kuliah_mahasiswa';
+			// $table = 'kuliah_mahasiswa';
 
 			// action insert ke feeder
-			$action = 'InsertRecord';
+			// $action = 'InsertRecord';
 
 			// insert tabel mahasiswa ke feeder
-			$rdikti = $this->feeder->action_feeder($temp_token,$temp_proxy,$action,$table,$record);
+			// $rdikti = $this->feeder->action_feeder($temp_token,$temp_proxy,$action,$table,$record);
+			$this->load->model('FeederRunWS');
+			$rdikti = $this->FeederRunWS->insert('InsertPerkuliahanMahasiswa',$record);
 
-			$error_code = $rdikti['error_code'];
-			$error_desc = $rdikti['error_desc'];
+			$error_code = $rdikti->error_code;
+			$error_desc = $rdikti->error_desc;
+
 			if($error_code==730){
 
-				$recordup = array(
-					'key' => array('id_smt' => $data->Tahun,'id_reg_pd' => $data->id_reg_pd,'id_stat_mhs' => $data->Status),
-					'data' => array('ips' => $data->SKS,'sks_smt' => $data->SKS,'ipk' => $data->IPK,'sks_total' => $data->TotalSKS, 'biaya_smt' => $spp)
-				);
+				// $recordup = array(
+				// 	'key' => array('id_smt' => $data->Tahun,'id_reg_pd' => $data->id_reg_pd,'id_stat_mhs' => $data->Status),
+				// 	'data' => array('ips' => $data->SKS,'sks_smt' => $data->SKS,'ipk' => $data->IPK,'sks_total' => $data->TotalSKS, 'biaya_smt' => $spp)
+				// );
 
-				$table = 'kelas_kuliah';
+				// $table = 'kelas_kuliah';
 
 				// action insert ke feeder
-				$action = 'UpdateRecord';
+				// $action = 'UpdateRecord';
 
 				// insert tabel mahasiswa ke feeder
-				$rdiktiup = $this->feeder->action_feeder($temp_token,$temp_proxy,$action,$table,$recordup);
+				// $rdiktiup = $this->feeder->action_feeder($temp_token,$temp_proxy,$action,$table,$recordup);
+				$key = array(
+					'id_registrasi_mahasiswa'	=> $data->id_reg_pd,
+					'id_semester'	=> $data->Tahun
+				);
+				unset($record['id_registrasi_mahasiswa']);
+				unset($record['id_semester']);
+
+				$rdiktiup = $this->FeederRunWS->update('UpdatePerkuliahanMahasiswa',$key,$record);
 
 				$sql = $this->krs_model->updateKhsFeeder($ID);
 				if($sql){
