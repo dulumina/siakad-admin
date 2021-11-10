@@ -175,27 +175,25 @@
 		  type: 'POST',
 		  dataType: 'json',
 		  cache : false,
-		  success: function(msg){ 
-			// $body.removeClass("loading");
-			if(msg=="Data Berhasil di import"){
-				//var feeder = "#feeder-"+nim;
-				//alert("123");
-				$("#feeder-"+nim).html("Data Terkirim");
-			}
-				console.log(msg);
-				alert(msg);
-				
-		  },
-		  error: function(err){
-		    //alert('Terdapat masalah hub. admin');
-		    console.log(err);
-		  } 
+		  success: function(res){ 
+				let data = JSON.parse(res);
+				// $body.removeClass("loading");
+				if(data.error_code==0){
+					//var feeder = "#feeder-"+nim;
+					//alert("123");
+					$("#feeder-"+nim).html("Data Terkirim");
+				}
+				console.log(data);
+				alert(data.pesan);
+		  }
 		})  
-		.fail(function() {
-			alert("Terjadi masalah saat mengirim 'Aktivitas Perkuliahan Mahasiswa', periksa pada aplikasi feeder apakah data berhasil terkirim.")
+		.fail(function(res) {
+			let data = JSON.parse(res);
+			alert(data.pesan)
 		})
 		.always(function() {
 			$body.removeClass("loading");
+			oTable.ajax.reload();
 		});	
 
 	}
