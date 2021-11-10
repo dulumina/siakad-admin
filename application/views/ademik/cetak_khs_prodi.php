@@ -183,8 +183,8 @@
 					//alert("123");
 					$("#feeder-"+nim).html("Data Terkirim");
 				}
-				console.log(data);
-				alert(data.pesan);
+				console.log(res);
+				alert(res.pesan);
 		  }
 		})  
 		.fail(function(res) {
