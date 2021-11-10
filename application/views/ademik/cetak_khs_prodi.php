@@ -188,12 +188,11 @@
 		  }
 		})  
 		.fail(function(res) {
-			let data = JSON.parse(res);
-			alert(data.pesan)
+			// let data = JSON.parse(res);
+			alert(res.pesan)
 		})
 		.always(function() {
 			$body.removeClass("loading");
-			oTable.ajax.reload();
 		});	
 
 	}
