@@ -137,7 +137,7 @@ class Siakad_years extends CI_Controller {
 				}
 			}
 			*/
-			$this->db->trans_start();
+			// $this->db->trans_start();
 				$this->db->insert_batch('_v2_tempSpc',$wspc1->result_array());
 				$tempSpc = $this->db->select(" 
 										'A' as StatusMhs, 
@@ -164,12 +164,12 @@ class Siakad_years extends CI_Controller {
 				$this->db->where('periode_aktif', $tahun);
 				//$this->db->where('point2', 0);
 				$this->db->update('_v2_periode_aktif', $dataupdate);
-			$this->db->trans_complete();
+			// $this->db->trans_complete();
 
 			$dataError = array(
 				'ket' => 'Success',
 				'pesan' => 'Transaksi data berhasil',
-				'data' => $tempSpc
+				'data' => ['spc'=>$wspc1->result_array(),'spp2'=>$tempSpc]
 			);
 
 			$this->db->query("TRUNCATE TABLE _v2_tempSpc");
