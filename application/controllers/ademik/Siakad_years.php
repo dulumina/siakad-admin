@@ -77,7 +77,8 @@ class Siakad_years extends CI_Controller {
 			// $id = $this->cek_log();
 			$id = $this->db->query("SELECT max(`tgl`) as waktu_transaksi FROM `_v2_spp2` WHERE `tgl` <= now()")->row()->waktu_transaksi;
 			// $id = "2019-06-01"
-			$qrspc="SELECT p.id_record_tagihan,p.key_val_2 as key_val_2,t.nama,t.kode_fakultas,t.kode_prodi,p.waktu_transaksi,p.total_nilai_pembayaran, dt.kode_jenis_biaya FROM pembayaran AS p, tagihan AS t, detil_tagihan as dt WHERE t.id_record_tagihan=p.id_record_tagihan and p.waktu_transaksi > '$id' and kode_periode >='$tahun' and t.id_record_tagihan=dt.id_record_tagihan and ( dt.kode_jenis_biaya like '%SPP%' or dt.kode_jenis_biaya like '%UKT%' or dt.kode_jenis_biaya like '%COA%' or dt.kode_jenis_biaya like '%SP%' or dt.kode_jenis_biaya like '%RMD%' or dt.kode_jenis_biaya like '%REMEDIAL%' or dt.kode_jenis_biaya like '%P3S%') order by p.waktu_transaksi ASC";
+			$limit_waktu = " and p.waktu_transaksi > '$id' ";
+			$qrspc="SELECT p.id_record_tagihan,p.key_val_2 as key_val_2,t.nama,t.kode_fakultas,t.kode_prodi,p.waktu_transaksi,p.total_nilai_pembayaran, dt.kode_jenis_biaya FROM pembayaran AS p, tagihan AS t, detil_tagihan as dt WHERE t.id_record_tagihan=p.id_record_tagihan $limit_waktu and kode_periode >='$tahun' and t.id_record_tagihan=dt.id_record_tagihan and ( dt.kode_jenis_biaya like '%SPP%' or dt.kode_jenis_biaya like '%UKT%' or dt.kode_jenis_biaya like '%COA%' or dt.kode_jenis_biaya like '%SP%' or dt.kode_jenis_biaya like '%RMD%' or dt.kode_jenis_biaya like '%REMEDIAL%' or dt.kode_jenis_biaya like '%P3S%') order by p.waktu_transaksi ASC";
 			$wspc1 = $this->db2->query($qrspc);
 			// echo "$qrspc";
 			/*
@@ -136,7 +137,8 @@ class Siakad_years extends CI_Controller {
 					);
 				}
 			}
-			// $this->db->trans_start();
+			*/
+			$this->db->trans_start();
 				$this->db->insert_batch('_v2_tempSpc',$wspc1->result_array());
 				$tempSpc = $this->db->select(" 
 										'A' as StatusMhs, 
@@ -163,13 +165,12 @@ class Siakad_years extends CI_Controller {
 				$this->db->where('periode_aktif', $tahun);
 				//$this->db->where('point2', 0);
 				$this->db->update('_v2_periode_aktif', $dataupdate);
-			// $this->db->trans_complete();
+			$this->db->trans_complete();
 
-			*/
 			$dataError = array(
 				'ket' => 'Success',
 				'pesan' => 'Transaksi data berhasil',
-				'kueriSpc' => $this->db2->last_query(),
+				// 'kueriSpc' => $this->db2->last_query(),
 				'data' => ['spc'=>$wspc1->result_array(),'spp2'=>$tempSpc]
 			);
 
