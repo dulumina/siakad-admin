@@ -70,7 +70,7 @@ class Siakad_years extends CI_Controller {
 		$dataError = array(
 			'ket' => 'Error',
 			'pesan' => 'Anda harus login terlebih dahulu',
-			'nim' => ''
+			'data' => ''
 		);
 		
 		if (!empty($user_proses)){
@@ -165,6 +165,12 @@ class Siakad_years extends CI_Controller {
 				//$this->db->where('point2', 0);
 				$this->db->update('_v2_periode_aktif', $dataupdate);
 			$this->db->trans_complete();
+
+			$dataError = array(
+				'ket' => 'Success',
+				'pesan' => 'Transaksi data berhasil',
+				'data' => $tempSpc
+			);
 
 			$this->db->query("TRUNCATE TABLE _v2_tempSpc");
 		}
