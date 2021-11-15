@@ -67,81 +67,107 @@ class Siakad_years extends CI_Controller {
 		$tahun = $this->input->post('tahun');
 		// proses pengambilan tagihan dari spc ke siakad
 		// echo $tahun;
-
+		$dataError = array(
+			'ket' => 'Error',
+			'pesan' => 'Anda harus login terlebih dahulu',
+			'nim' => ''
+		);
+		
 		if (!empty($user_proses)){
-			$id = $this->cek_log();
+			// $id = $this->cek_log();
+			$id = $this->db->query("SELECT max(`tgl`) as waktu_transaksi FROM `_v2_spp2` WHERE `tgl` <= now()")->row()->waktu_transaksi;
 			// $id = "2019-06-01"
 			$qrspc="SELECT p.id_record_tagihan,p.key_val_2 as key_val_2,t.nama,t.kode_fakultas,t.kode_prodi,p.waktu_transaksi,p.total_nilai_pembayaran, dt.kode_jenis_biaya FROM pembayaran AS p, tagihan AS t, detil_tagihan as dt WHERE t.id_record_tagihan=p.id_record_tagihan and p.waktu_transaksi > '$id' and kode_periode >='$tahun' and t.id_record_tagihan=dt.id_record_tagihan and ( dt.kode_jenis_biaya like '%SPP%' or dt.kode_jenis_biaya like '%UKT%' or dt.kode_jenis_biaya like '%COA%' or dt.kode_jenis_biaya like '%SP%' or dt.kode_jenis_biaya like '%RMD%' or dt.kode_jenis_biaya like '%REMEDIAL%' or dt.kode_jenis_biaya like '%P3S%') order by p.waktu_transaksi ASC";
 			$wspc1 = $this->db2->query($qrspc);
 			// echo "$qrspc";
-		}
-		
-		foreach ($wspc1->result() as $wspc) {
+			/*
+			foreach ($wspc1->result() as $wspc) {
 
-			$key_val_2 = $wspc->key_val_2;
-			$id_record_tagihan_spc = $wspc->id_record_tagihan;
-			$waktu_transaksi = $wspc->waktu_transaksi;
-			$nama_mhs = $this->db->escape($wspc->nama);
-			$kodefakultas = $wspc->kode_fakultas;
-			$kodejurusan = $wspc->kode_prodi;
+				$key_val_2 = $wspc->key_val_2;
+				$id_record_tagihan_spc = $wspc->id_record_tagihan;
+				$waktu_transaksi = $wspc->waktu_transaksi;
+				$nama_mhs = $this->db->escape($wspc->nama);
+				$kodefakultas = $wspc->kode_fakultas;
+				$kodejurusan = $wspc->kode_prodi;
 
-			$ins="select * from `_v2_spp2` where  id_record_tagihan='$id_record_tagihan_spc'";
-			$count = $this->db->query($ins)->num_rows();
+				$ins="select * from `_v2_spp2` where  id_record_tagihan='$id_record_tagihan_spc'";
+				$count = $this->db->query($ins)->num_rows();
 
-			if ($count == 0){
+				if ($count == 0){
 
-					$dataSPP2 = array(
-						'StatusMhs' => 'A',
-						'nim' => $key_val_2,
-						'tahun' => $tahun,
-						'KodeFakultas' => $kodefakultas,
-						'KodeJurusan' => $kodejurusan,
-						'bayar' => '1',
-						'TotalBayar' => '',
-						'id_record_tagihan' => $id_record_tagihan_spc,
-						'tgl' => $waktu_transaksi
-					);
+						$dataSPP2 = array(
+							'StatusMhs' => 'A',
+							'nim' => $key_val_2,
+							'tahun' => $tahun,
+							'KodeFakultas' => $kodefakultas,
+							'KodeJurusan' => $kodejurusan,
+							'bayar' => '1',
+							'TotalBayar' => '',
+							'id_record_tagihan' => $id_record_tagihan_spc,
+							'tgl' => $waktu_transaksi
+						);
 
-					$this->db->insert('_v2_spp2',$dataSPP2);
+						$this->db->insert('_v2_spp2',$dataSPP2);
 
-					$timespc = array(
-						'nim' => $key_val_2,
-						'tahun' => $tahun,
-						'waktu_transaksi' => $waktu_transaksi,
-						'user_proses' => $user_proses
-					);
+						$timespc = array(
+							'nim' => $key_val_2,
+							'tahun' => $tahun,
+							'waktu_transaksi' => $waktu_transaksi,
+							'user_proses' => $user_proses
+						);
 
-					$this->db->insert('_v2_waktu_spc',$timespc);
+						$this->db->insert('_v2_waktu_spc',$timespc);
 
-					// update tabel _v2_mhsw status bayar dan tahun status
-					$upd="UPDATE `_v2_mhsw` set StatusBayar=1, TahunStatus='$tahun', Status='A' where NIM='$key_val_2'";
-					$this->db->query($upd);
+						// update tabel _v2_mhsw status bayar dan tahun status
+						$upd="UPDATE `_v2_mhsw` set StatusBayar=1, TahunStatus='$tahun', Status='A' where NIM='$key_val_2'";
+						$this->db->query($upd);
 
+						$dataError = array(
+							'ket' => 'success',
+							'pesan' => 'Data berhasil terkirim',
+							'nim' => $key_val_2
+						);
+				} else {
+					// matikan sementara echo "Data Sudah Ada - $key_val_2<br>";
 					$dataError = array(
-						'ket' => 'success',
-						'pesan' => 'Data berhasil terkirim',
+						'ket' => 'Error',
+						'pesan' => 'Data Sudah Ada',
 						'nim' => $key_val_2
 					);
-			} else {
-				// matikan sementara echo "Data Sudah Ada - $key_val_2<br>";
-				$dataError = array(
-					'ket' => 'Error',
-					'pesan' => 'Data Sudah Ada',
-					'nim' => $key_val_2
-				);
+				}
 			}
-		}
-		
-		$dataupdate = array(
-			'point3' => 1,
-			'point3_user' => "$user_proses"
-		);
-		$this->db->set('point3_tgl', 'NOW()', FALSE);
-		
-		$this->db->where('periode_aktif', $tahun);
-		//$this->db->where('point2', 0);
-		$this->db->update('_v2_periode_aktif', $dataupdate);
+			*/
+			$this->db->trans_start();
+				$this->db->insert_batch('_v2_tempSpc',$wspc1->result_array());
+				$tempSpc = $this->db->select(" 
+										'A' as StatusMhs, 
+										_v2_tempSpc.key_val_2 as nim,
+										'$tahun' as tahun,
+										_v2_tempSpc.kode_fakultas as KodeFakultas,
+										_v2_tempSpc.kode_prodi as KodeJurusan,
+										'1' as bayar,
+										_v2_tempSpc.total_nilai_pembayaran as TotalBayar,
+										_v2_tempSpc.id_record_tagihan as id_record_tagihan,
+										_v2_tempSpc.waktu_transaksi as tgl")
+									->join('_v2_spp2','_v2_tempSpc.id_record_tagihan=_v2_spp2.id_record_tagihan','LEFT')
+									->where("_v2_spp2.id_record_tagihan is null",null,false)
+									->get('_v2_tempSpc')->result_array();
+				
+				$this->db->insert('_v2_spp2',$tempSpc);
+				
+				$dataupdate = array(
+					'point3' => 1,
+					'point3_user' => "$user_proses"
+				);
+				$this->db->set('point3_tgl', 'NOW()', FALSE);
+				
+				$this->db->where('periode_aktif', $tahun);
+				//$this->db->where('point2', 0);
+				$this->db->update('_v2_periode_aktif', $dataupdate);
+			$this->db->trans_complete();
 
+			$this->db->query("TRUNCATE TABLE _v2_tempSpc");
+		}
 		echo json_encode($dataError);
 	}
 
