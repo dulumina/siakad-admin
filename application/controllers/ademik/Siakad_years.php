@@ -167,8 +167,8 @@ class Siakad_years extends CI_Controller {
 			$this->db->trans_complete();
 
 			$dataError = array(
-				'ket' => 'Error',
-				'pesan' => 'Anda harus login terlebih dahulu',
+				'ket' => 'Success',
+				'pesan' => 'Transaksi data berhasil',
 				'data' => $tempSpc
 			);
 
