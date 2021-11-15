@@ -170,7 +170,8 @@ class Siakad_years extends CI_Controller {
 			$dataError = array(
 				'ket' => 'Success',
 				'pesan' => 'Transaksi data berhasil',
-				// 'kueriSpc' => $this->db2->last_query(),
+				'kueriSpc' => $this->db2->last_query(),
+				'kuerispp2' => $this->db->last_query(),
 				'data' => ['spc'=>$wspc1->result_array(),'spp2'=>$tempSpc]
 			);
 
