@@ -64,16 +64,16 @@ class Siakad_years extends CI_Controller {
 		// fandu matikan sementara $tahun = $this->input->post('tahun');
 		$user_proses = $this->session->userdata('unip');
 		// $tahun = "20183";
-		$tahun = "20191";
+		$tahun = $this->input->post('tahun');
 		// proses pengambilan tagihan dari spc ke siakad
 		// echo $tahun;
 
 		if (!empty($user_proses)){
 			$id = $this->cek_log();
 			// $id = "2019-06-01"
-			$qrspc="SELECT p.id_record_tagihan,p.key_val_2 as key_val_2,t.nama,t.kode_fakultas,t.kode_prodi,p.waktu_transaksi,p.total_nilai_pembayaran, dt.kode_jenis_biaya FROM pembayaran AS p, tagihan AS t, detil_tagihan as dt WHERE t.id_record_tagihan=p.id_record_tagihan and p.waktu_transaksi > '$id' and kode_periode >='$tahun' and t.id_record_tagihan=dt.id_record_tagihan and ( dt.kode_jenis_biaya like '%SPP%' or dt.kode_jenis_biaya like '%UKT%' or dt.kode_jenis_biaya like '%COA%' or dt.kode_jenis_biaya like '%SP%' or dt.kode_jenis_biaya like '%RMD%' or dt.kode_jenis_biaya like '%REMEDIAL%' or dt.kode_jenis_biaya like '%P3S%') order by p.waktu_transaksi ASC limit 100";
+			$qrspc="SELECT p.id_record_tagihan,p.key_val_2 as key_val_2,t.nama,t.kode_fakultas,t.kode_prodi,p.waktu_transaksi,p.total_nilai_pembayaran, dt.kode_jenis_biaya FROM pembayaran AS p, tagihan AS t, detil_tagihan as dt WHERE t.id_record_tagihan=p.id_record_tagihan and p.waktu_transaksi > '$id' and kode_periode >='$tahun' and t.id_record_tagihan=dt.id_record_tagihan and ( dt.kode_jenis_biaya like '%SPP%' or dt.kode_jenis_biaya like '%UKT%' or dt.kode_jenis_biaya like '%COA%' or dt.kode_jenis_biaya like '%SP%' or dt.kode_jenis_biaya like '%RMD%' or dt.kode_jenis_biaya like '%REMEDIAL%' or dt.kode_jenis_biaya like '%P3S%') order by p.waktu_transaksi ASC";
 			$wspc1 = $this->db2->query($qrspc);
-			echo "$qrspc";
+			// echo "$qrspc";
 		}
 		
 		foreach ($wspc1->result() as $wspc) {
@@ -247,7 +247,7 @@ class Siakad_years extends CI_Controller {
 
 		function runWS($data){
 
-			$url = 'http://feeder.untad.ac.id:8082/ws/live2.php';
+			$url = 'http://103.245.72.97:8082/ws/live2.php';
 			$ch = curl_init();
 				
 			curl_setopt($ch, CURLOPT_POST, 1);
