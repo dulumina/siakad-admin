@@ -72,10 +72,10 @@ class Cetak_khs_prodi extends CI_Controller {
  
             var save_method; //for save method string
             var table;
- 
+						var oTable;
             $(document).ready(function() {
 				var dataku = 'semesterAkademik=".$semesterAkademik."&jurusan=".$jurusan."&program=".$program."&angkatan=".$angkatan."';
-            	var oTable = $('#tabel_cetak_khs').dataTable({
+            	oTable = $('#tabel_cetak_khs').dataTable({
 		            'processing': true, 
 			            'serverSide': true, 
 			            'order': [], 
@@ -219,43 +219,6 @@ class Cetak_khs_prodi extends CI_Controller {
 	 	}
 
 	}
-
-	/*public function proses($thn, $nim, $kdf, $kdj) {
-		$n = 0;
-		$TSKS = 0; $TNK = 0;
-		$TSKSLulus = 0;
-
-		$getDataKrs = $this->cetak_khs_prodi_model->getDatakrs($thn, $nim);
-		foreach ($getDataKrs as $show) {
-			$n++;
-			if ($show->Tunda == 'Y') $strtnd = "T : ".$show->AlasanTunda; else $strtnd = '&nbsp;';
-			$bobot = 0;
-
-			$bobot = $show->Bobot;
-			$NK = $bobot * $show->SKS;
-
-			if($show->GradeNilai=="A"||$show->GradeNilai=="A-" ||$show->GradeNilai=="B+" ||$show->GradeNilai=="B" ||$show->GradeNilai=="B-"||$show->GradeNilai=="C+" ||$show->GradeNilai=="C"||$show->GradeNilai=="C-"||$show->GradeNilai=="D"||$show->GradeNilai=="E"||$show->GradeNilai=="K"||$show->GradeNilai=="T" ||$show->GradeNilai=="" ||$show->GradeNilai==" "){
-				if(($show->NamaMK=="Seminar Proposal" || $show->NamaMK=="Praktik Lapangan (Magang)" || $show->NamaMK=="Skripsi" || $show->NamaMK=="Ko-Kurikuler" || $show->NamaMK=="Kuliah Kerja Profesi (KKP) / KKN") && $show->Bobot==0){ }
-				else{ 
-					$TNK += $NK;
-					$TSKS += $show->SKS;
-				if($bobot>0) $TSKSLulus += $show->SKS;
-				}
-			}
-		}
-		if ($TSKS == 0) $IPS = 0;
-		else $IPS = number_format($TNK/$TSKS, 2, ',', '.');
-
-		$IPS = str_replace(',','.',$IPS);
-
-		$getSksMax = $this->cetak_khs_prodi_model->getSksMax($IPS,$nim);
-		$maxsks= $getSksMax->SKSMax;
-		//echo "$n,$IPS,$TSKSLulus,$TSKS,$maxsks,$nim,$thn";
-		if ($n != 0) {
-			$updateKhs = $this->cetak_khs_prodi_model->updateKhs($IPS,$TSKSLulus,$TSKS,$maxsks,$nim,$thn);
-
-		}
-	}*/
 
 	public function prcIpk($semesterAkademik,$program,$jurusan,$angkatan,$nim=''){
 		if ($nim!=''){$str="and m.nim='$nim'";}else{$str="and  stprc='1' limit 50";}
@@ -405,45 +368,6 @@ class Cetak_khs_prodi extends CI_Controller {
 	 		$msg = "PRC IPK gagal";
 	 	}
 	}
-
-	/*public function prosesipk($thn, $nim, $kdf, $angkatan) {
-		$ang = substr($thn,0,4);
-		$TotSKS=0;
-		$TotSKSLulus=0;
-		$TotNil=0;
-		
-		$status='';
-		if($angkatan==$ang){
-			$status='baru';
-		}
-
-		$getDataKrsIpk = $this->cetak_khs_prodi_model->getDataKrsIpk($nim,$thn,$status);
-
-		foreach ($getDataKrsIpk as $show) {
-			$bobot = $show->Bbt;
-
-			if($show->Grade=="A" || $show->Grade=="B" || $show->Grade=="C" || $show->Grade=="D" || $show->Grade=="E" || $show->Grade=="A-" || $show->Grade=="B+" || $show->Grade=="B-" || $show->Grade=="C+"|| $show->Grade=="C-"|| $show->Grade=="K" || $show->Grade=="T" || $show->Grade=="" || $show->Grade==" "){
-
-				if(($show->NamaMK=="Seminar Proposal" || $show->NamaMK=="Praktik Lapangan (Magang)" || $show->NamaMK=="Skripsi" || $show->NamaMK=="Ko-Kurikuler" || $show->NamaMK=="Kuliah Kerja Profesi (KKP) / KKN") && $show->Bbt==0){ }
-				else{ 
-					$TotSKS +=$show->SKS;
-					$TotNil +=$show->Bbt*$show->SKS;
-					$bobot = $show->Bbt;
-					if($bobot>0){ $TotSKSLulus+=$show->SKS;}
-
-				}
-			}
-		}
-
-		$TotIPK = round($TotNil/$TotSKS,2);
-		$TotIPK = number_format($TotNil/$TotSKS, 2, ',', '.');
-
-		$TotIPK = str_replace(',','.',$TotIPK);
-
-		$tgl = date('d-m-Y');
-
-		$updateKhsIpk = $this->cetak_khs_prodi_model->updateKhsIpk($TotIPK,$TotSKS,$TotSKSLulus,$nim,$thn);
-	}*/
 
 	public function resetIps($semesterAkademik,$program,$jurusan,$angkatan){
 		$getDataReset = $this->cetak_khs_prodi_model->getDataReset($semesterAkademik,$jurusan,$program,$angkatan);
@@ -808,6 +732,11 @@ class Cetak_khs_prodi extends CI_Controller {
 		$nim = $this->input->post('nim');
 		$tahun = $this->input->post('thn');
 
+		$status['action'] = '';
+		$status['error_code'] = '';
+		$status['error_desc'] = '';
+		$status['pesan'] = '';
+
 		$tahun_akademik = $this->krs_model->tahun_akademik($nim);
 		$spp_db = $this->krs_model->pembayaran($nim, $tahun);
 		$data = $this->krs_model->getDataKhsFeeder($nim, $tahun);
@@ -835,84 +764,64 @@ class Cetak_khs_prodi extends CI_Controller {
 
 		}
 
-		$feeder = $this->feeder->getToken_feeder();
-		$temp_token = $feeder['temp_token'];
-		$temp_proxy = $feeder['temp_proxy'];
-
 		if($data->IPK != -1){
 			$NIM = ucfirst($data->NIM);
 
-			$record = new stdClass();
-			$record->id_smt = $data->Tahun;
-			$record->id_reg_pd = $data->id_reg_pd;
-			$record->id_stat_mhs = $data->Status;
-			$record->ips = $data->IPS;
-			$record->sks_smt = $data->SKS;
-			$record->ipk = $data->IPK;
-			$record->sks_total = $data->TotalSKS;
-			$record->biaya_smt = $spp;
+			$record['id_semester'] 							= $data->Tahun;
+			$record['id_registrasi_mahasiswa']	= $data->id_reg_pd;
+			$record['id_status_mahasiswa'] 			= $data->Status;
+			$record['ips'] 											= $data->IPS;
+			$record['sks_semester'] 						= $data->SKS;
+			$record['ipk'] 											= $data->IPK;
+			$record['total_sks'] 								= $data->TotalSKS;
+			$record['biaya_kuliah_smt'] 				= $spp;
 
 			$ID = $data->ID;
 
-			$table = 'kuliah_mahasiswa';
+			$this->load->model('FeederRunWS');
+			$filter = "id_registrasi_mahasiswa='$data->id_reg_pd' AND id_semester='$data->Tahun'";
+			$cek = $this->FeederRunWS->get('GetListPerkuliahanMahasiswa',$filter);
+			$status=[];
 
-			// action insert ke feeder
-			$action = 'InsertRecord';
-
-			// insert tabel mahasiswa ke feeder
-			$rdikti = $this->feeder->action_feeder($temp_token,$temp_proxy,$action,$table,$record);
-
-			$error_code = $rdikti['error_code'];
-			$error_desc = $rdikti['error_desc'];
-			if($error_code==730){
-
-				$recordup = array(
-					'key' => array('id_smt' => $data->Tahun,'id_reg_pd' => $data->id_reg_pd,'id_stat_mhs' => $data->Status),
-					'data' => array('ips' => $data->SKS,'sks_smt' => $data->SKS,'ipk' => $data->IPK,'sks_total' => $data->TotalSKS, 'biaya_smt' => $spp)
-				);
-
-				$table = 'kelas_kuliah';
-
-				// action insert ke feeder
-				$action = 'UpdateRecord';
-
-				// insert tabel mahasiswa ke feeder
-				$rdiktiup = $this->feeder->action_feeder($temp_token,$temp_proxy,$action,$table,$recordup);
-
-				$sql = $this->krs_model->updateKhsFeeder($ID);
-				if($sql){
-	    			$this->session->set_flashdata('msg', 'Data Berhasil Di import');
-					redirect('ademik/cetak_khs_prodi');
-					echo json_encode('Data Berhasil di import');
-				}else{
-					/*$this->session->set_flashdata('msg', 'Data Berhasil di import tapi st_feeder gagal diupdate di khs');
-					redirect('ademik/cetak_khs_prodi');*/
-					echo json_encode('Data Berhasil di import tapi st_feeder gagal diupdate di khs');
+			if (count($cek->data)==0) {	// insert data ke feeder jika data belum ada
+				$rdikti = $this->FeederRunWS->insert('InsertPerkuliahanMahasiswa',$record);
+				
+				$status['action'] = 'insert';
+				$status['error_code'] = $rdikti->error_code;
+				$status['error_desc'] = $rdikti->error_desc;
+				$status['pesan'] = "Data AKM berhasil dikirim ke feeder";
+				if ($status['error_code'] == 0){
+					$this->krs_model->updateKhsFeeder($ID);
+				} else {
+					$status['pesan'] = $status['error_desc']." | error_code =".$status['error_code'];
 				}
-			} elseif ($error_code!=0){
-				/*$this->session->set_flashdata('msg', $error_code."-".$error_desc." - ".json_encode($record));
-				redirect('ademik/cetak_khs_prodi');*/
-				echo json_encode($error_code."-".$error_desc." - ".json_encode($record));
-			}else{
-				$sql = $this->krs_model->updateKhsFeeder($ID);
-				if($sql){
-					/*$this->session->set_flashdata('msg', "Data Berhasil di import");
-					redirect('ademik/cetak_khs_prodi');*/
-					//echo "Data Berhasil Di import";
-					echo json_encode('Data Berhasil di import');
-				}else{
-					/*$this->session->set_flashdata('msg', "Data Berhasil di import tapi st_feeder gagal diupdate di khs");
-					redirect('ademik/cetak_khs_prodi');*/
 
-					echo json_encode('Data Berhasil di import tapi st_feeder gagal diupdate di khs');
-					//echo "Data Berhasil di import tapi st_feeder gagal diupdate di khs";
+			}elseif (count($cek->data)>=1) { // update data di feeder jika data sudah ada
+				$key = array(
+					'id_registrasi_mahasiswa'	=> $data->id_reg_pd,
+					'id_semester'	=> $data->Tahun
+				);
+				unset($record['id_registrasi_mahasiswa']);
+				unset($record['id_semester']);
+
+				$rdiktiup = $this->FeederRunWS->update('UpdatePerkuliahanMahasiswa',$key,$record);
+				$status['action'] = 'update';
+				$status['error_code'] = $rdiktiup->error_code;
+				$status['error_desc'] = $rdiktiup->error_desc;
+				$status['pesan'] = "Data AKM berhasil diupdate di feeder";
+				if ($status['error_code'] == 0){
+					$this->krs_model->updateKhsFeeder($ID);
+				} else {
+					$status['pesan'] = $status['error_desc']." | error_code =".$status['error_code'];
 				}
 			}
+			
 		}else{
 			/*$this->session->set_flashdata('msg', "IPK bernilai 0 tidak dapat di import ke feeder");
 			redirect('ademik/cetak_khs_prodi');*/
-			echo json_encode('IPK bernilai 0 tidak dapat di import ke feeder');
+			$status['pesan'] = 'IPK bernilai 0 tidak dapat di import ke feeder';
 		}
+		echo json_encode($status);
 	}
 
 	public function dataMahasiswa($semesterAkademik,$jurusan,$program,$angkatan)

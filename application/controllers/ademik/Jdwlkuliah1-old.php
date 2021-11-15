@@ -2284,7 +2284,7 @@ class Jdwlkuliah1 extends CI_Controller {
 		include 'ws/nusoap/nusoap.php';
 		include 'ws/nusoap/class.wsdlcache.php';
 
-		$wsdl = 'http://103.245.72.97:8082/ws/live.php?wsdl';
+		$wsdl = 'http://feeder.untad.ac.id:8082/ws/live.php?wsdl';
 
 		$client = new nusoap_client($wsdl, true);
 		$proxy = $client->getProxy();

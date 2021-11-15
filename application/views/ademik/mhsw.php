@@ -601,11 +601,8 @@
 </div>
 
 
-<script src="<?=base_url()?>assets/js/pages/data-table.js"></script>
-<script>
-	var xx = <?= json_encode($data) ?>;
-	// console.log(xx);
-</script>
+<!-- <script src="<?=base_url()?>assets/js/pages/data-table.js"></script> -->
+
 <script type='text/javascript'>
 
  	var i = setInterval(function() {
@@ -824,8 +821,10 @@
 
 	}
 
-	var kirimBiodata = document.querySelector('.kirimBiodata');
-	kirimBiodata.addEventListener('click', kirimFeederBiodata);
+	if (document.querySelector('.kirimBiodata')) {
+		var kirimBiodata = document.querySelector('.kirimBiodata');
+		kirimBiodata.addEventListener('click', kirimFeederBiodata);
+	}
 	function kirimFeederBiodata() {
 		var nim = kirimBiodata.dataset.nim;
 		//alert(nim);

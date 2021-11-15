@@ -288,6 +288,8 @@ class Additional_model extends CI_Model {
 
 		$this->db->select('ID,Judul,Kategori,Konten,Author,TglExp,Tgl,foto_berita');
 		$this->db->from('_v2_berita');
+		$this->db->where('NotActive','N');
+		$this->db->where('now() <=','TglExp');
 		$this->db->order_by('Tgl','desc');
 		$this->db->limit(5);
 

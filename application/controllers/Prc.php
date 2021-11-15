@@ -115,7 +115,7 @@ class prc extends CI_Controller {
 				$fak = "and m.KodeFakultas in ('F','B','C','D','E','F','L','N','O','K2M','K2T','A','H','P','F','pmmdn')";
 			}
 	
-			if(empty($loguser)) $where=" and usr in ('_v2_adm','_v2_adm_fak','_v2_adm_jur','_v2_adm_pusat')"; // untuk selain mahasiswa dan dosen jika loguser kosong
+			if(empty($loguser)) $where=" and usr in ('_v2_adm','_v2_adm_fak','_v2_adm_jur','_v2_adm_pusat','_v2_adm_rekap')"; // untuk selain mahasiswa dan dosen jika loguser kosong
 			else $where=" and usr='$loguser'";
 	
 			$tab_lev = $this->db->query("Select usr,Level FROM level WHERE NotActive='N'$where")->result();
@@ -136,7 +136,7 @@ class prc extends CI_Controller {
 	
 			for ($a=0; $a<count($use); $a++){
 				//echo "fandu -- $use[$a] <br>";
-				if ($use[$a]=="_v2_adm"){ // admin pusat
+				if ($use[$a]=="_v2_adm" || $use[$a]=='_v2_adm_rekap'){ // admin pusat
 					$val=",m.KodeUnit as kdf,m.KodeSubunit  as kdj,m.Login, m.Sex, m.Foto, m.count_edit_password";
 					$par="AND m.NotActive='N'";
 					$join="m";
@@ -326,7 +326,7 @@ class prc extends CI_Controller {
 	private function runWS($data)
 	{
 
-		$url = 'http://103.245.72.97:8082/ws/live2.php';
+		$url = 'http://feeder.untad.ac.id:8082/ws/live2.php';
 		$ch = curl_init();
 			
 		curl_setopt($ch, CURLOPT_POST, 1);

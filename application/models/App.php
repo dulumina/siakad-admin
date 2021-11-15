@@ -13,6 +13,39 @@ class App extends CI_Model{
 		}
 	}
 
+	public function cek_access()
+	{
+    $class = $this->router->fetch_class();
+    $method = $this->router->fetch_method();
+		
+		$ulevel=$this->session->userdata('ulevel');
+		$uri_array = explode('/',uri_string());
+		$index_class = array_search($class,$uri_array);
+		$index_method = (isset($uri_array[$index_class+1]))? $uri_array[$index_class+1] : ''  ;
+		$class_method = $uri_array[$index_class].'/'.$index_method ;
+		$this->db->group_start();
+		$this->db->or_where('Link',$class);
+		$this->db->or_where('Link',$class_method);
+		$this->db->group_end();
+		$this->db->where('NotActive','N');
+		$modul = $this->db->get('modul');
+		// echo json_encode($uri_array);die;
+		if ($modul->num_rows()==1 ) {
+			$rule = explode('-',$modul->row()->Level);
+			if (!in_array($ulevel,$rule)) {
+				$this->session->set_flashdata('konfirmasi','Silahkan login terlebih dahulu...!');
+				redirect(base_url());
+			}
+		}elseif ($modul->num_rows()==2) {
+			$diff = array_diff($modul->result_array()[0],$modul->result_array()[1]);
+			if ( count($diff) > 1 ){
+				$this->session->set_flashdata('konfirmasi','Silahkan login terlebih dahulu...!');
+				redirect(base_url());
+			}
+		}
+
+	}
+
 	public function checksession(){
 		$uname=$this->session->userdata('uname');
 		$ulevel=$this->session->userdata('ulevel');
@@ -94,8 +127,8 @@ class App extends CI_Model{
 		return($result);
 	}
 
-	public function all_val($table){
-		$menu = $this->db->get_where($table);
+	public function all_val($table,$where=[]){
+		$menu = $this->db->get_where($table,$where);
 		return $menu;
 	}
 
@@ -225,7 +258,7 @@ class App extends CI_Model{
 	public function getTahunAngkatan($prodi=false){
 		$where="";
 		if($prodi){
-			$where = " AND KodeJurusan = $prodi ";
+			$where = " AND KodeJurusan = '$prodi' ";
 		}
 
 		$query = "SELECT TahunAkademik angkatan

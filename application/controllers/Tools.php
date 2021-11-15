@@ -7,6 +7,7 @@ class Tools extends CI_Controller
     $this->load->helper('form');
     $this->load->helper('fikri');
     $this->app->checksession_ajax();
+    // $this->app->cek_access();
   }
 
   public function index()
