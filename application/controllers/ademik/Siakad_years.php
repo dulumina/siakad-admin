@@ -153,7 +153,7 @@ class Siakad_years extends CI_Controller {
 									->where("_v2_spp2.id_record_tagihan is null",null,false)
 									->get('_v2_tempSpc')->result_array();
 				
-				$this->db->insert('_v2_spp2',$tempSpc);
+				$this->db->insert_batch('_v2_spp2',$tempSpc);
 				
 				$dataupdate = array(
 					'point3' => 1,
