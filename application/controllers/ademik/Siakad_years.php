@@ -72,7 +72,7 @@ class Siakad_years extends CI_Controller {
 			'pesan' => 'Anda harus login terlebih dahulu',
 			'data' => ''
 		);
-		
+		$tempSpc = [];
 		if (!empty($user_proses)){
 			// $id = $this->cek_log();
 			$id = $this->db->query("SELECT max(`tgl`) as waktu_transaksi FROM `_v2_spp2` WHERE `tgl` <= now()")->row()->waktu_transaksi;
@@ -136,7 +136,6 @@ class Siakad_years extends CI_Controller {
 					);
 				}
 			}
-			*/
 			// $this->db->trans_start();
 				$this->db->insert_batch('_v2_tempSpc',$wspc1->result_array());
 				$tempSpc = $this->db->select(" 
@@ -166,6 +165,7 @@ class Siakad_years extends CI_Controller {
 				$this->db->update('_v2_periode_aktif', $dataupdate);
 			// $this->db->trans_complete();
 
+			*/
 			$dataError = array(
 				'ket' => 'Success',
 				'pesan' => 'Transaksi data berhasil',
