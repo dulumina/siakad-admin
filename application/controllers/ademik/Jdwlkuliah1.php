@@ -1451,12 +1451,6 @@ class Jdwlkuliah1 extends CI_Controller {
 		$angkatan 		= $this->input->post('angkatan');
 		$daftar 		= $this->daftar_mhsw($idjadwal,$thn,$angkatan);
 		
-		print_r($idjadwal);
-		echo "<br>";
-		print_r($thn);
-		echo "<br>";
-		print_r($angkatan);
-		die;
 		// var for checking query get data mahasiswa 
 		// $cek  			= "";
 		
