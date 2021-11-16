@@ -6,7 +6,7 @@ wait$(()=>{
     var id = $("#dosen").val();
     $.ajax({
       type: 'POST',
-      url: '<?=base_url()?>ademik/nilai_inbound/mata_kuliah',
+      url: '<?=base_url()?>ademik/Nilai_inbound/mata_kuliah',
       data: {id: id},
       success: function(data) {             
         let matkul = JSON.parse(data);
@@ -29,7 +29,7 @@ wait$(()=>{
       let mk= $("#mk").val();
       $.ajax({
         type: 'POST',
-        url: '<?=base_url()?>ademik/nilai_inbound/t_krs',
+        url: '<?=base_url()?>ademik/Nilai_inbound/t_krs',
         data: {
           dosen: dosen,
           tahunakademik:tahunakademik,
@@ -61,7 +61,7 @@ $(document).ready(function(){
 
       $.ajax({
         type: 'POST',
-        url: '<?=base_url()?>ademik/nilai_inbound/simpan_nilai',
+        url: '<?=base_url()?>ademik/Nilai_inbound/simpan_nilai',
         data: {
           id:id,
           hadir:hadir,
@@ -110,7 +110,7 @@ $(document).ready(function(){
       let mk= $("#mk").val();
       $.ajax({
         type: 'POST',
-        url: '<?=base_url()?>ademik/nilai_inbound/t_krs',
+        url: '<?=base_url()?>ademik/Nilai_inbound/t_krs',
         data: {
           dosen: dosen,
           tahunakademik:tahunakademik,
@@ -165,7 +165,7 @@ $(document).ready(function(){
     $('.modal-title').text('Input Nilai');
     $.ajax({
         type: 'POST',
-        url: '<?=base_url()?>ademik/nilai_inbound/in_nilai',
+        url: '<?=base_url()?>ademik/Nilai_inbound/in_nilai',
         data: {
           id: id          
         },
