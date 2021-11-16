@@ -1348,16 +1348,17 @@ function kirimidajar(e,id,jns){
 	var tahunakademik = $('#tahunakademik').val();
 	var program = $('#program').val();
 	var jurusan = $('#jurusan').val();
-
+	console.log(actval);
   $body = $("body");
 	$body.addClass("loading");
 
 	$.ajax({
 		type: 'POST',
-		url: '<?=base_url()?>ademik/jdwlkuliah1/InsertDosenPengajarKelasKuliah',
 		data: 'tahunakademik=' + tahunakademik + '&program='+ program + '&jurusan='+ jurusan +'&id='+id +'&actval='+actval+'&jenis_dosen='+jns,
+		url: '<?=base_url()?>ademik/jdwlkuliah1/InsertDosenPengajarKelasKuliah',
 		dataType: "JSON",
 		success: function(response){
+      	console.log(data);
       $body.removeClass("loading");
 
 			console.log(response);
