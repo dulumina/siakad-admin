@@ -99,10 +99,10 @@ class M_prcSiakad2 extends CI_Model {
 			jurusan.KodeFakultas as KodeFakultas, 
 			lulus_pcmb.kprodi as KodeJurusan, 
 			'A' as Status, 
-			(CASE WHEN lulus_pcmb.Jalur='NONREG' THEN 'RESO' WHEN lulus_pcmb.Jalur='NONREGULER' THEN 'RESO' ELSE 'REG' END) as KodeProgram, 
-			(case WHEN Seleksi = 'AJENJANG' THEN 'J' else 'B' end ) as StatusAwal, 
-			'20201' as Semester, 
-			'2020' as TahunAkademik
+			(CASE WHEN daftar.prog='NONREG' THEN 'RESO' WHEN daftar.prog='NONREGULER' THEN 'RESO' ELSE 'REG' END) as KodeProgram, 
+			(case WHEN lulus_pcmb.jalur = 'AJENJANG' THEN 'J' else 'B' end ) as StatusAwal, 
+			'20211' as Semester, 
+			'2021' as TahunAkademik
 			FROM lulus_pcmb 
 			inner JOIN daftar on daftar.noujian=lulus_pcmb.noujian
 			INNER JOIN jurusan ON jurusan.Kode=lulus_pcmb.kprodi
@@ -133,15 +133,18 @@ class M_prcSiakad2 extends CI_Model {
 		// $query = "START TRANSACTION; INSERT _v2_mhsw SELECT ID, st_feeder, id_pd, id_reg_pd, SID, Login, Password, Description, NIM, NISN, PMBID, NIRM, Tanggal, Name, Email, Sex, TempatLahir, TglLahir, TglLahir2, TglLahir2_Eng, Alamat, Dusun, Kelurahan, Kecamatan, RT, RW, Kota, Provinsi, KodePos, HP, Phone, NIK, NPWP, AgamaID, Suku, Kewarganegaraan, JenisTinggal, AlatTransportasi, penerimaKPS, nomorKPS, TipePembayaran, KetPembayaran, SudahBekerja, NamaOT, NamaIbu, NamaWali, PekerjaanOT, HslAyah, PekerjaanIbu, HslIbu, PekerjaanW, HslW, PendidikanOT, PendidikanIbu, PendidikanW, AlamatOT1, AlamatOT2, AlamatW1, AlamatW2, RTOT, RTW, RWOT, RWW, KotaOT, KotaW, KodeTelpOT, TelpOT, TelpW, EmailOT, EmailW, KodePosOT, KodePosW, KodeFakultas, KodeJurusan, Status, StatusKRS, StatusBayar, TahunStatus, KodeProgram, StatusAwal, UniversitasAsal, ProdiAsal, SKSditerima, JalurMasuk, Semester, TahunAkademik, Lulus, TglLulus, TahunLulus, LamaStudi, LamaStudiThn, LamaStudiBln, LamaStudiHari, PredikatLulus, DosenID, Masuk, NotActive, TA, TglTA, Proposal, TglProposal, Skripsi, TglSkripsi, TotalSKS, TotalSKSLulus, IPK, JudulTA, JudulTA2, PengujiTA1, PengujiTA2, PengujiTA3, PengujiTA4, PengujiTA5, PengujiTA6, PengujiTA7, NoSKPembimbing, TglSKPembimbing, NoSKPenguji, TglSKPenguji, NomorSKYudisium, TglSKYudisium, Predikat, NomerIjazah, TglIjazah, log, logupd, nosk, fotoktm, count_edit_password, AlasanPindah, file_transkip, file_blangko_pindah, AlamatSP, UniversitasPindah, error_code, error_desc, no_induk_universitas, update_krsf, UjiProposalTgl, UjiHasilTgl, UjiAkhirTgl, UjiProposalJam, UjiHasilJam, UjiAkhirJam FROM _v2_tempMaba WHERE on_siakad = 0 ; UPDATE _v2_tempMaba SET on_siakad = 1; COMMIT;";
 		$this->db->trans_start();
 			$insert = "INSERT _v2_mhsw";
-			$insert = $insert." SELECT ID, st_feeder, id_pd, id_reg_pd, SID, Login, Password, Description, NIM, NISN, PMBID, NIRM, Tanggal, Name, Email, Sex, TempatLahir, TglLahir, TglLahir2, TglLahir2_Eng, Alamat, Dusun, Kelurahan, Kecamatan, RT, RW, Kota, Provinsi, KodePos, HP, Phone, NIK, NPWP, AgamaID, Suku, Kewarganegaraan, JenisTinggal, AlatTransportasi, penerimaKPS, nomorKPS, TipePembayaran, KetPembayaran, SudahBekerja, NamaOT, NamaIbu, NamaWali, PekerjaanOT, HslAyah, PekerjaanIbu, HslIbu, PekerjaanW, HslW, PendidikanOT, PendidikanIbu, PendidikanW, AlamatOT1, AlamatOT2, AlamatW1, AlamatW2, RTOT, RTW, RWOT, RWW, KotaOT, KotaW, KodeTelpOT, TelpOT, TelpW, EmailOT, EmailW, KodePosOT, KodePosW, KodeFakultas, KodeJurusan, Status, StatusKRS, StatusBayar, TahunStatus, KodeProgram, StatusAwal, UniversitasAsal, ProdiAsal, SKSditerima, JalurMasuk, Semester, TahunAkademik, Lulus, TglLulus, TahunLulus, LamaStudi, LamaStudiThn, LamaStudiBln, LamaStudiHari, PredikatLulus, DosenID, Masuk, NotActive, TA, TglTA, Proposal, TglProposal, Skripsi, TglSkripsi, TotalSKS, TotalSKSLulus, IPK, JudulTA, JudulTA2, PengujiTA1, PengujiTA2, PengujiTA3, PengujiTA4, PengujiTA5, PengujiTA6, PengujiTA7, NoSKPembimbing, TglSKPembimbing, NoSKPenguji, TglSKPenguji, NomorSKYudisium, TglSKYudisium, Predikat, NomerIjazah, TglIjazah, log, logupd, nosk, fotoktm, count_edit_password, AlasanPindah, file_transkip, file_blangko_pindah, AlamatSP, UniversitasPindah, error_code, error_desc, no_induk_universitas, update_krsf, UjiProposalTgl, UjiHasilTgl, UjiAkhirTgl, UjiProposalJam, UjiHasilJam, UjiAkhirJam";
+			$insert = $insert." SELECT ID, st_feeder, id_pd, id_reg_pd, SID, Login, Password, Description, NIM, NISN, PMBID, NIRM, Tanggal, Name, Email, Sex, TempatLahir, TglLahir, TglLahir2, TglLahir2_Eng, Alamat, Dusun, Kelurahan, Kecamatan, RT, RW, Kota, Provinsi, KodePos, HP, Phone, NIK, NPWP, AgamaID, Suku, Kewarganegaraan, JenisTinggal, AlatTransportasi, penerimaKPS, nomorKPS, TipePembayaran, KetPembayaran, SudahBekerja, NamaOT, NamaIbu, NamaWali, PekerjaanOT, HslAyah, PekerjaanIbu, HslIbu, PekerjaanW, HslW, PendidikanOT, PendidikanIbu, PendidikanW, AlamatOT1, AlamatOT2, AlamatW1, AlamatW2, RTOT, RTW, RWOT, RWW, KotaOT, KotaW, KodeTelpOT, TelpOT, TelpW, EmailOT, EmailW, KodePosOT, KodePosW, KodeFakultas, KodeJurusan, Status, StatusKRS, StatusBayar, TahunStatus, KodeProgram, StatusAwal, UniversitasAsal, ProdiAsal, SKSditerima, JalurMasuk, Semester, TahunAkademik, Lulus, TglLulus, TahunLulus, LamaStudi, LamaStudiThn, LamaStudiBln, LamaStudiHari, PredikatLulus, DosenID, Masuk, NotActive, TA,0 PembimbingTA,0 PembimbingTA2, TglTA, Proposal, TglProposal, Skripsi, TglSkripsi, TotalSKS, TotalSKSLulus, IPK, JudulTA, JudulTA2, PengujiTA1, PengujiTA2, PengujiTA3, PengujiTA4, PengujiTA5, PengujiTA6, PengujiTA7, NoSKPembimbing, TglSKPembimbing, NoSKPenguji, TglSKPenguji, NomorSKYudisium, TglSKYudisium, Predikat, NomerIjazah, TglIjazah, log, logupd, nosk, fotoktm, count_edit_password, AlasanPindah, file_transkip, file_blangko_pindah, AlamatSP, UniversitasPindah, error_code, error_desc, no_induk_universitas, update_krsf, UjiProposalTgl, UjiHasilTgl, UjiAkhirTgl, UjiProposalJam, UjiHasilJam, UjiAkhirJam";
 			$insert = $insert." FROM _v2_tempMaba";
 			$insert = $insert." WHERE on_siakad = 0 ";
 		$res = $this->db->query($insert);
 			$update = "UPDATE _v2_tempMaba SET on_siakad = 1";
 		$this->db->query($update);
 		$this->db->trans_complete();
-
-		return $res->affected_rows();
+		if ($this->db->trans_status() === FALSE)
+		{
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 	public function updateStSiakadInDaftarUlang($data)

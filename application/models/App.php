@@ -3,6 +3,49 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class App extends CI_Model{
 
+	public function cek_login(){
+		$uname=$this->session->userdata('uname');
+		$ulevel=$this->session->userdata('ulevel');
+		if (empty($uname) and empty($ulevel)){
+			$this->session->sess_destroy();
+			$this->session->set_flashdata('konfirmasi','Silahkan login terlebih dahulu...!');
+			redirect(base_url());
+		}
+	}
+
+	public function cek_access()
+	{
+    $class = $this->router->fetch_class();
+    $method = $this->router->fetch_method();
+		
+		$ulevel=$this->session->userdata('ulevel');
+		$uri_array = explode('/',uri_string());
+		$index_class = array_search($class,$uri_array);
+		$index_method = (isset($uri_array[$index_class+1]))? $uri_array[$index_class+1] : ''  ;
+		$class_method = $uri_array[$index_class].'/'.$index_method ;
+		$this->db->group_start();
+		$this->db->or_where('Link',$class);
+		$this->db->or_where('Link',$class_method);
+		$this->db->group_end();
+		$this->db->where('NotActive','N');
+		$modul = $this->db->get('modul');
+		// echo json_encode($uri_array);die;
+		if ($modul->num_rows()==1 ) {
+			$rule = explode('-',$modul->row()->Level);
+			if (!in_array($ulevel,$rule)) {
+				$this->session->set_flashdata('konfirmasi','Silahkan login terlebih dahulu...!');
+				redirect(base_url());
+			}
+		}elseif ($modul->num_rows()==2) {
+			$diff = array_diff($modul->result_array()[0],$modul->result_array()[1]);
+			if ( count($diff) > 1 ){
+				$this->session->set_flashdata('konfirmasi','Silahkan login terlebih dahulu...!');
+				redirect(base_url());
+			}
+		}
+
+	}
+
 	public function checksession(){
 		$uname=$this->session->userdata('uname');
 		$ulevel=$this->session->userdata('ulevel');
@@ -84,8 +127,8 @@ class App extends CI_Model{
 		return($result);
 	}
 
-	public function all_val($table){
-		$menu = $this->db->get_where($table);
+	public function all_val($table,$where=[]){
+		$menu = $this->db->get_where($table,$where);
 		return $menu;
 	}
 
@@ -145,5 +188,83 @@ class App extends CI_Model{
 		$query = "select $select from $tabel where $kondisi"; // Modif 08 - 2006 and Tahun='$thn'
 		$row = $this->db->query($query)->row();
 		return $row;
+	}
+
+	public function getPeriodeKrsProdi($periode='',$prodi='',$bolean=false)
+	{
+		$where=array(
+			'_v2_tahun.NotActive' => 'N',
+			'_v2_jurusan.NotActive' => 'N',
+			'_v2_bataskrs.NotActive' => 'N',
+			'_v2_bataskrs.krsm <= ' => date('Y-m-d'),
+			'_v2_bataskrs.krss >= ' => date('Y-m-d'),
+
+		);
+		
+		if ($periode!='') {
+			$where['_v2_tahun.kode'] = $periode;
+		}
+		if ($prodi!='') {
+			$where['_v2_jurusan.kode'] = $prodi;
+		}
+
+		$this->db->join('_v2_jurusan','_v2_jurusan.Kode=_v2_tahun.KodeJurusan','inner');
+		$this->db->join('_v2_bataskrs','_v2_bataskrs.Tahun=_v2_tahun.Kode AND _v2_tahun.KodeProgram=_v2_bataskrs.KodeProgram AND _v2_bataskrs.KodeJurusan=_v2_jurusan.Kode', 'inner');
+		$this->db->where($where);
+		$this->db->order_by('_v2_tahun.kode','DESC');
+
+		$tabel_periode = $this->db->get('_v2_tahun');
+		if ($bolean) {
+			if ($tabel_periode->num_rows()>0) {
+				return true;
+			}else {
+				return false;
+			}
+		}else {
+			return $tabel_periode->result();
+		}
+	}
+	public function getProdi()
+	{
+		$this->db->where('_v2_jurusan.kode !=','PMMDN');
+		$this->db->where('_v2_jurusan.NotActive','N');
+		$this->db->join('fakultas','fakultas.kode=_v2_jurusan.kodeFakultas','inner');
+		return $this->db->get('_v2_jurusan')->result();
+	}
+	public function getKelasPerkuliahan($prodi='',$periode='')
+	{
+		$select = "id_kelas_kuliah,IDJADWAL,id_mk,IDMK,NamaMK,SKS,IDDosen,Hari,JamMulai,JamSelesai,KodeRuang";
+		$where=[];
+		if ($prodi) {
+			$where['_v2_jadwal.KodeJurusan']=$prodi;
+		}
+		if ($periode) {
+			$where['_v2_jadwal.tahun']=$periode;
+		}
+
+		$this->db->select($select);
+		$this->db->select("concat(_v2_hari.Nama,', ',_v2_jadwal.JamMulai,' s/d ',_v2_jadwal.JamSelesai) as waktu");
+		
+		$this->db->join('_v2_jurusan','_v2_jurusan.Kode=_v2_tahun.KodeJurusan','inner');
+		// $this->db->join('_v2_bataskrs','_v2_bataskrs.Tahun=_v2_tahun.Kode AND _v2_tahun.KodeProgram=_v2_bataskrs.KodeProgram AND _v2_bataskrs.KodeJurusan=_v2_jurusan.Kode', 'inner');
+		$this->db->join('_v2_jadwal','_v2_jadwal.Tahun=_v2_tahun.Kode AND _v2_jadwal.KodeJurusan=_v2_jurusan.Kode','inner');
+		$this->db->join('_v2_hari','_v2_jadwal.hari=_v2_hari.id','inner');
+		$this->db->where($where);
+		$this->db->order_by('_v2_tahun.kode','DESC');
+		$this->db->group_by('IDJADWAL');
+		$res = $this->db->get('_v2_tahun');
+		return $res->result();
+	}
+	public function getTahunAngkatan($prodi=false){
+		$where="";
+		if($prodi){
+			$where = " AND KodeJurusan = '$prodi' ";
+		}
+
+		$query = "SELECT TahunAkademik angkatan
+		FROM `_v2_mhsw` 
+		WHERE TahunAkademik !='' OR not null $where
+		group by TahunAkademik";
+		return $this->db->query($query)->result_array();
 	}
 }

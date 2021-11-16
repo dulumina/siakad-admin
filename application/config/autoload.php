@@ -58,7 +58,7 @@ $autoload['packages'] = array();
 |
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
-$autoload['libraries'] = array('database','session','Nusoap_library');
+$autoload['libraries'] = array('database','session','Nusoap_library','recaptcha');
 //$autoload['libraries'] = array('database','session','encryption','Nusoap_library','Main_function');
 
 /*
@@ -90,7 +90,7 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('url');
+$autoload['helper'] = array('url','addtional');
 
 /*
 | -------------------------------------------------------------------

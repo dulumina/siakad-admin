@@ -34,9 +34,15 @@ class Menu extends CI_Controller {
 		$uname=$this->session->userdata('uname');
 		$ulevel=$this->session->userdata('ulevel');
 		if (!empty($uname) and !empty($ulevel)){
-
+			$nim 	= $this->session->userdata('unip');
 			$data['berita'] = $this->additional_model->getTampilBerita();
+			$mhs = $this->db->select('semester')->get_where('_v2_mhsw',['nim'=>$nim]);
+			$data['semester'] = '';
+			if ($mhs->num_rows() != 0 ) {
+				$data['semester'] = $mhs->row()->semester;
+			}
 			$data['ukt'] = $this->get_mhsw_spc();
+			$data['periode_spc'] = $this->additional_model->periode_aktif_spc();
 
 			$urutan = 0;
 			$urutantgl = 0;
@@ -50,7 +56,11 @@ class Menu extends CI_Controller {
 			$this->load->view('dashbord',$data);
 
 		} else {
-			$this->load->view('login');
+			
+			$recaptcha = $this->recaptcha->create_box();
+			$data['recaptcha'] = $recaptcha;
+
+			$this->load->view('login',$data);
 		}
 	}
 
@@ -59,8 +69,12 @@ class Menu extends CI_Controller {
 		$uname=$this->session->userdata('uname');
 		$ulevel=$this->session->userdata('ulevel');
 		$tamp = $this->session->userdata('sess_tamplate');
-
-		if (!empty($uname) and !empty($ulevel)  and !empty($tamp)){
+		
+		$data['ukt'] = $this->get_mhsw_spc();
+		$data['periode_spc'] = $this->additional_model->periode_aktif_spc();
+		$recaptcha = $this->recaptcha->create_box();
+		$data['recaptcha'] = $recaptcha;
+		if (!empty($uname) and !empty($ulevel)  ){//and !empty($tamp)){
 
 			$data['berita'] = $this->additional_model->getTampilBerita();
 			
@@ -72,11 +86,12 @@ class Menu extends CI_Controller {
 				$data['tgl'][$urutantgl] = $this->tanggal_indonesia(date('d-m-Y',strtotime($data['berita'][$urutantgl++]->Tgl)));
 			}
 
+
 			$this->load->view('temp/head');
 			$this->load->view('temp/index',$data);
 			$this->load->view('temp/footers');
 		} else {
-			$this->load->view('login');
+			$this->load->view('login',$data);
 		}
 	}
 
@@ -289,6 +304,7 @@ class Menu extends CI_Controller {
 	function tmenu($ulevel){
 		$this->cek_session();
 		$res=$this->db->query("SELECT g.GroupModulID, g.GroupModul, m.Modul, m.Link, m.ImgLink, m.ajx FROM groupmodul as g, modul as m WHERE g.Level like '%-$ulevel-%' and m.Level like '%-$ulevel-%' and g.GroupModulID=m.GroupModul and m.NotActive='N' and g.NotActive='N' order by g.GroupModulID, m.ModulID ASC");
+		// echo json_encode($this->db->last_query());exit;
 			$int = 0;
 			foreach ($res->result_array() as $data){
 				$user=array(

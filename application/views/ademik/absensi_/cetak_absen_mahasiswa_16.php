@@ -114,7 +114,7 @@
                         <div>
                             <table width="100%">
                                 <tr>
-                                    <th align="center"><h4>KEMENTERIAN PENDIDIKAN DAN KEBUDAYAAN</h4></th>
+                                    <th align="center"><h4>KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI</h4></th>
                                 </tr>
                                 <tr>
                                     <th align="center"><h4>UNIVERSITAS TADULAKO</h4></th>

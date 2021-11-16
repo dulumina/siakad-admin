@@ -76,12 +76,36 @@ $query_builder = TRUE;
 
 
 
+// $db['default'] = array(
+// 	'dsn'	=> '',
+// 	'hostname' => '127.0.0.1',
+// 	'port'	   => '3306',
+// 	'username' => 'root',
+// 	'password' => 'root',
+// 	'database' => 'siasfo2',
+// 	'dbdriver' => 'mysqli',
+// 	'dbprefix' => '',
+// 	'pconnect' => FALSE,
+// 	'db_debug' => (ENVIRONMENT !== 'production'),
+// 	'cache_on' => FALSE,
+// 	'cachedir' => '',
+// 	'char_set' => 'utf8',
+// 	'dbcollat' => 'utf8_general_ci',
+// 	'swap_pre' => '',
+// 	'encrypt' => FALSE,
+// 	'compress' => FALSE,
+// 	'stricton' => FALSE,
+// 	'failover' => array(),
+// 	'save_queries' => TRUE
+// );
+
+
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '10.97.55.244',
-	'port'	   => '3306',
-	'username' => 'siakad',
-	'password' => 'SiaNewK@d2021',
+	'hostname' => '127.0.0.1',
+	'port'	   => '3307',
+	'username' => 'root',
+	'password' => '',
 	'database' => 'siasfo2',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -103,10 +127,11 @@ $db['default'] = array(
 // db1 spc
 $db['spc'] = array(
 	'dsn'	=> '',
-	'hostname' => '10.97.55.244',
-	'username' => 'siakad',
-	'password' => 'SiaNewK@d2021',
-	'database' => 'spc',
+	'hostname' => '127.0.0.1',
+	'port'	   => '3307',
+	'username' => 'root',
+	'password' => '',
+	'database' => 'test',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -125,10 +150,10 @@ $db['spc'] = array(
 
 $db['ulangtosiakad2'] = array(
 	'dsn'	=> '',
-	'hostname' => '103.245.72.109',
-	'port'	   => '3030',
-	'username' => 'migrasi',
-	'password' => 'migrasi19$',
+	'hostname' => '127.0.0.1',
+	'port'	   => '3307',
+	'username' => 'root',
+	'password' => '',
 	'database' => 'ulangtosiakad2',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -148,10 +173,10 @@ $db['ulangtosiakad2'] = array(
 
 $db['daftarulang'] = array(
 	'dsn'	=> '',
-	'hostname' => '103.245.72.13',
-	'port'	   => '',
-	'username' => 'ulang',
-	'password' => 'ulangtik$$',
+	'hostname' => '127.0.0.1',
+	'port'	   => '3307',
+	'username' => 'root',
+	'password' => '',
 	'database' => 'ulang',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -172,10 +197,10 @@ $db['daftarulang'] = array(
 // db2 siakad
 $db['siakad'] = array(
 	'dsn'	=> '',
-	'hostname' => '103.245.72.71',
-	'username' => 'db1siakad',
-	//'password' => 'Zuhri@$A',
-	'password' => 'dbsia1dbkadDB2021',
+	'hostname' => '127.0.0.1',
+	'port'	   => '3307',
+	'username' => 'root',
+	'password' => '',
 	'database' => 'siasfo1',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -196,11 +221,10 @@ $db['siakad'] = array(
 // db3 wisuda
 $db['wisuda'] = array(
 	'dsn'	=> '',
-	'hostname' => '36.91.91.44',
-	// 'username' => 'wisuda',
-	'username' => 'wisudaSiakad',
-	// 'password' => 'w1sud4@unt4d16%',
-	'password' => 'W!sud@S1@k4D_DB',
+	'hostname' => '127.0.0.1',
+	'port'	   => '3307',
+	'username' => 'root',
+	'password' => '',
 	'database' => 'wisuda',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -220,11 +244,10 @@ $db['wisuda'] = array(
 
 $db['sapta'] = array(
 	'dsn'	=> '',
-	// 'hostname' => 'sapta.untad.ac.id',
-	'hostname' => '103.245.72.31',
-	'username' => 'sapta',
-	'password' => 'pas@0959$',
-	// 'password' => 'unt4d@54pt417^^',
+	'hostname' => '127.0.0.1',
+	'port'	   => '3307',
+	'username' => 'root',
+	'password' => '',
 	'database' => 'sapta',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -244,9 +267,10 @@ $db['sapta'] = array(
 
 $db['kkn'] = array(
 	'dsn'	=> '',
-	'hostname' => '103.245.72.31',
-	'username' => 'kkn',
-	'password' => 'pr4kt3k@unt4d16(*)',
+	'hostname' => '127.0.0.1',
+	'port'	   => '3307',
+	'username' => 'root',
+	'password' => '',
 	'database' => 'kkn',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

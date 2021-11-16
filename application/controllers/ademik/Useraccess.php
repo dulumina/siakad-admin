@@ -8,7 +8,8 @@ class useraccess extends CI_Controller {
 	    $this->load->library('encryption');
 	    $this->load->library('datatables');
 	    $this->load->model('user_model');
-		date_default_timezone_set("Asia/Makassar");
+			date_default_timezone_set("Asia/Makassar");
+			$this->app->cek_login();
 	}
 
 	public function index(){
@@ -99,6 +100,79 @@ class useraccess extends CI_Controller {
 		$content = "ademik/useraccess/admin";
 		$this->load->view('temp/head');
 		$this->load->view('ademik/useraccess/admin');
+		$this->load->view('temp/footers',$data);
+	}
+	public function pimpinanpage(){
+		$data['footerSection'] = "<script type='text/javascript'>
+ 
+            var save_method; //for save method string
+            var table;
+ 
+            $(document).ready(function() {
+                //datatables
+                table = $('#table_admin').DataTable({ 
+                    'processing': true, //Feature control the processing indicator.
+                    'serverSide': true, //Feature control DataTables' server-side processing mode. 
+                    'order': [], //Initial no order.
+                    // Load data for the table's content from an Ajax source
+                    'sAjaxSource': '".base_url('ademik/useraccess/dataPimpinan')."',
+            		//Set column definition initialisation properties.
+		            'oLanguage': {
+		                'sProcessing': '<img src=\"".base_url('assets/images/tenor.gif')."\" />'
+		            },
+                    'fnServerData': function (sSource, aoData, fnCallback) {
+		                $.ajax
+		                ({
+		                    'dataType': 'json',
+		                    'type': 'POST',
+		                    'url': sSource,
+		                    'data': aoData,
+		                    'success': fnCallback
+		                });
+		            },
+		            'fnDrawCallback': function (oSettings) {
+						$('.hapus').on('click',function(e){
+			                var currentBtn = $(this);
+
+			                uri = currentBtn.attr('data-uri');
+			                login = currentBtn.attr('data-login');
+			                
+			                swal({   
+			                    title: 'Yakin data ingin dihapus?',   
+			                    text: 'Data tidak dapat dikembalikan lagi',   
+			                    type: 'warning',   
+			                    showCancelButton: true,   
+			                    confirmButtonColor: '#fcb03b',   
+			                    confirmButtonText: 'Iya',   
+			                    cancelButtonText: 'Tidak',   
+			                    closeOnConfirm: false,   
+			                    closeOnCancel: false 
+			                }, function(isConfirm){   
+			                    if (isConfirm) {     
+			                         $.ajax({
+			                            type: 'POST',
+			                            data : 'login='+login,
+			                            url: uri,
+			                            success: function(data){
+											window.location.reload(false); 
+			                            }
+			                        });
+			                           
+			                    } else {     
+			                        swal('Batal', 'Data tidak jadi dihapus', 'error');   
+			                    } 
+			                });
+			                return false;
+			            });
+					} 
+                });            
+ 
+            });
+        </script>"; 
+            
+		$content = "ademik/useraccess/admin";
+		$this->load->view('temp/head');
+		$this->load->view('ademik/useraccess/Pimpinan');
 		$this->load->view('temp/footers',$data);
 	}
 
@@ -472,6 +546,13 @@ class useraccess extends CI_Controller {
         return print_r($this->datatables->generate());
 	}
 
+	public function dataPimpinan(){
+		$this->datatables->select('CONCAT("<a href=\"'.base_url("ademik/useraccess/editPimpinan").'/",ID,"\">",Name,"</a>"), Login, Email, Phone, NotActive, CONCAT("<button data-uri=\"'.base_url("ademik/useraccess/deletePimpinan").'\" data-login=\"",Login,"\"  class=\"btn hapus btn-danger btn-icon-anim btn-square\"><i class=\"fa fa-trash-o\"></i></button>")');
+		$this->datatables->from('_v2_adm_rekap');
+		$this->db->order_by("Name", "ASC");
+		return print_r($this->datatables->generate());
+	}
+
 	public function dataadminpusat(){
 		if($this->session->ulevel==1){
 			$this->datatables->select('CONCAT("<a href=\"'.base_url("ademik/useraccess/editadminpusat").'/",ID,"\">",Name,"</a>"), Login, Email, Phone, NotActive, CONCAT("<button data-uri=\"'.base_url("ademik/useraccess/deleteadminpusat").'\" data-login=\"",Login,"\" class=\"btn hapus btn-danger btn-icon-anim btn-square\"><i class=\"fa fa-trash-o\"></i></button>")');	
@@ -589,6 +670,12 @@ class useraccess extends CI_Controller {
 	public function addadmin(){
 		$this->load->view('temp/head');
 		$this->load->view('ademik/useraccess/addadmin');
+		$this->load->view('temp/footers');
+	}
+
+	public function addpimpinan(){
+		$this->load->view('temp/head');
+		$this->load->view('ademik/useraccess/addPimpinan');
 		$this->load->view('temp/footers');
 	}
 
@@ -735,6 +822,98 @@ class useraccess extends CI_Controller {
 		 	$this->user_model->insertLog($dataLog, '_v2_log_user');
 	        
 	        redirect('ademik/useraccess/adminpage');
+	    }		
+	}
+	public function storePimpinan(){
+		$config = array(
+		        array(
+		                'field' => 'Login',
+		                'label' => 'Nama Login',
+		                'rules' => array(
+		                		'required',
+		                		'is_unique[_v2_adm.Login]'
+		                ),
+		                'errors' => array(
+		                        'required' => '%s Harus diisi.',
+		                        'is_unique' => '%s sudah ada.'    
+		                )
+		        ),array(
+		                'field' => 'Password',
+		                'label' => 'Password',
+		                'rules' => 'required',
+		                'errors' => array(
+		                        'required' => '%s Harus diisi.'
+		                )
+		        ),
+		        array(
+		                'field' => 'full_name',
+		                'label' => 'Nama Lengkap',
+		                'rules' => 'required',
+		                'errors' => array(
+		                        'required' => '%s Harus diisi.'
+		                )
+		        ),
+		        array(
+		                'field' => 'Phone',
+		                'label' => 'Phone',
+		                'rules' => array(
+		                	'required',
+		                	'max_length[12]',
+		                	'integer'
+		                ),
+		                'errors' => array(
+		                        'required' => '%s Harus diisi.',
+		                        'max_length' => '%s tidak boleh lebih dari 12 karakter',
+		                        'integer' => '%s harus angka'
+		                )
+		        ),
+		        array(
+		                'field' => 'Email',
+		                'label' => 'Email',
+		                'rules' => array(
+		                		'required',
+		                		'is_unique[_v2_adm.Email]'		                		
+		                ),
+		                'errors' => array(
+		                        'required' => '%s Harus diisi.'
+		                )
+		        )
+		);
+		$this->form_validation->set_rules($config);
+		$this->form_validation->set_error_delimiters('<div class="alert alert-danger alert-dismissable" style="margin:10px 20px;">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			<i class="ti-alert pr-15"></i>', '</div>');
+
+	    if ($this->form_validation->run() === FALSE)
+	    {
+	    	$this->session->set_flashdata('error', validation_errors());
+	    	redirect('ademik/useraccess/addPimpinan');
+	    }
+	    else
+	    {
+			$data = array(
+		        'Login' => $this->user_model->db->escape_str($this->input->post('Login')),
+		        'Password' => $this->user_model->db->escape_str($this->input->post('Password')),
+		        'Description' => $this->user_model->db->escape_str($this->input->post('Description')),
+		       	'Name' => $this->user_model->db->escape_str($this->input->post('full_name')),
+		       	'Email' => $this->user_model->db->escape_str($this->input->post('Email')),
+		       	'Phone' => $this->user_model->db->escape_str($this->input->post('Phone'))
+		    );
+			
+		 	$this->user_model->insert($data, '_v2_adm_rekap');
+
+			$dataLog = array(
+		        'username' => $this->user_model->db->escape_str($this->input->post('Login')),
+		        'user_category' => 'Pimpinan',
+		       	'user_created' => $this->session->uname,
+		       	'date_created' => date("Y-m-d H:i:s"),
+		       	'ip_address' => $this->input->ip_address(),
+		       	'status' => 'Add'
+		    );
+			
+		 	$this->user_model->insertLog($dataLog, '_v2_log_user');
+	        
+	        redirect('ademik/useraccess/pimpinanpage');
 	    }		
 	}
 
@@ -1253,6 +1432,13 @@ class useraccess extends CI_Controller {
 		$this->load->view('temp/footers');
 	}
 
+	public function editPimpinan($id){
+		$data['edit'] = $this->user_model->getAdmin($id, "_v2_adm_rekap")->row();
+		$this->load->view('temp/head');
+		$this->load->view('ademik/useraccess/editPimpinan',$data);
+		$this->load->view('temp/footers');
+	}
+
 	public function editadminpusat($id){
 		if($this->session->ulevel==1){
 			$data['edit'] = $this->user_model->getAdmin($id, "_v2_adm_pusat")->row();
@@ -1444,6 +1630,102 @@ class useraccess extends CI_Controller {
 			
 		 	$this->user_model->insertLog($dataLog, '_v2_log_user');
 	        redirect('ademik/useraccess/adminpage');
+	    }		
+	}
+
+	public function updatePimpinan($id){
+		$config = array(
+		        array(
+		                'field' => 'Login',
+		                'label' => 'Nama Login',
+		                'rules' => array(
+		                		'required'
+		                ),
+		                'errors' => array(
+		                        'required' => '%s Harus diisi.'
+		                )
+		        ),
+		        array(
+		                'field' => 'full_name',
+		                'label' => 'Nama Lengkap',
+		                'rules' => 'required',
+		                'errors' => array(
+		                        'required' => '%s Harus diisi.'
+		                )
+		        ),
+		        array(
+		                'field' => 'Phone',
+		                'label' => 'Phone',
+		                'rules' => array(
+		                	'required',
+		                	'max_length[12]',
+		                	'integer'
+		                ),
+		                'errors' => array(
+		                        'required' => '%s Harus diisi.',
+		                        'max_length' => '%s tidak boleh lebih dari 12 karakter',
+		                        'integer' => 'harus angka'
+		                )
+		        ),
+		        array(
+		                'field' => 'Email',
+		                'label' => 'Email',
+		                'rules' => array(
+		                		'required'               		
+		                ),
+		                'errors' => array(
+		                        'required' => '%s Harus diisi.'
+		                )
+		        )
+		);
+		$this->form_validation->set_rules($config);
+		$this->form_validation->set_error_delimiters('<div class="alert alert-danger alert-dismissable" style="margin:10px 20px;">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			<i class="ti-alert pr-15"></i>', '</div>');
+
+	    if ($this->form_validation->run() === FALSE)
+	    {
+	    	$this->session->set_flashdata('error', validation_errors());
+	    	redirect('ademik/useraccess/editPimpinan/'.$id);
+	    }
+	    else
+	    {
+	    	if($this->input->post('Password')==""){
+	    		$data = array(
+	    			'ID' => $id,
+			        'Description' => $this->user_model->db->escape_str($this->input->post('Description')),
+			       	'Name' => $this->user_model->db->escape_str($this->input->post('full_name')),
+			       	'Email' => $this->user_model->db->escape_str($this->input->post('Email')),
+			       	'Phone' => $this->user_model->db->escape_str($this->input->post('Phone')),
+			       	'NotActive' => $this->user_model->db->escape_str($this->input->post('NotActive'))
+			    );
+				
+			 	$this->user_model->update($data, '_v2_adm_rekap');   	
+	    	}else{
+	    		$data = array(
+	    			'ID' => $id,
+			        'Password' => $this->user_model->db->escape_str($this->input->post('Password')),
+			        'Description' => $this->user_model->db->escape_str($this->input->post('Description')),
+			       	'Name' => $this->user_model->db->escape_str($this->input->post('full_name')),
+			       	'Email' => $this->user_model->db->escape_str($this->input->post('Email')),
+			       	'Phone' => $this->user_model->db->escape_str($this->input->post('Phone')),
+			       	'NotActive' => $this->user_model->db->escape_str($this->input->post('NotActive'))
+			    );
+				
+			 	$this->user_model->updatePassword($data, '_v2_adm_rekap');
+	    	}
+			
+			$dataLog = array(
+		        'username' => $this->user_model->db->escape_str($this->input->post('Login')),
+		        'user_category' => 'Pimpinan',
+		       	'user_created' => $this->session->uname,
+		       	'date_created' => date("Y-m-d H:i:s"),
+		       	'ip_address' => $this->input->ip_address(),
+		       	'status' => 'Edit'
+		    );
+			
+		 	$this->user_model->insertLog($dataLog, '_v2_log_user');
+	        redirect('ademik/useraccess/pimpinanpage');
 	    }		
 	}
 
@@ -1983,7 +2265,25 @@ class useraccess extends CI_Controller {
 	    );
 		
 	 	$this->user_model->insertLog($dataLog, '_v2_log_user');
-    }	
+	}	
+
+	public function deletePimpinan()
+	{
+		$id=$this->user_model->db->escape_str($this->input->post('login'));
+		
+		$this->user_model->deleteData($id,'_v2_adm_rekap');
+
+		$dataLog = array(
+	        'username' => $this->user_model->db->escape_str($this->input->post('login')),
+	        'user_category' => 'Pimpinan',
+	       	'user_created' => $this->session->uname,
+	       	'date_created' => date("Y-m-d H:i:s"),
+	       	'ip_address' => $this->input->ip_address(),
+	       	'status' => 'Delete'
+	    );
+		
+	 	$this->user_model->insertLog($dataLog, '_v2_log_user');
+	}	
 
 	public function deleteadminpusat()
 	{

@@ -24,7 +24,7 @@
   			<img src='assets/images/TUT_WURI_HANDAYANI.jpg' width='110' height='110' ALIGN='left'></td></tr>
 			  <tr align=center style='font-size:25px;'>
 			  	<td>
-			  		<b>KEMENTERIAN PENDIDIKAN DAN KEBUDAYAAN R.I</b></td></tr>
+			  		<b>KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI R.I</b></td></tr>
 			  <tr align=center style='font-size:40px;'>
 			  	<td>
 			  		<b>UNIVERSITAS TADULAKO</b></td></tr>

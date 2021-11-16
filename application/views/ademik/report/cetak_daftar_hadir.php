@@ -72,7 +72,7 @@
 			</div>
 			<div class="col-md-11 text-center">
 				<b style="font-size: 13">
-				KEMENTERIAN PENDIDIKAN DAN KEBUDAYAAN
+				KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI
 				</b><br>
 				<b style="font-size: 15">UNIVERSITAS TADULAKO</b><br>
 				<b style="font-size: 15">FAKULTAS <?= $detailJadwal->nmf ?></b>

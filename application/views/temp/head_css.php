@@ -102,4 +102,17 @@
 			gtag('js', new Date());
 
 			gtag('config', 'G-YC25K6DDZY');
+			
+			function wait$(params) {
+				var i = setInterval(()=>{
+								if ($) {
+									clearInterval(i);
+									<?php if(ENVIRONMENT=='development') : ?>
+									console.log('$ is loaded.');
+									console.log("gunakan wait$(()=>{ tulis blok kode anda yang mengunakan $ disini })");
+									<?php endif; ?>
+									params();
+								}
+							}, 100);
+			}
 		</script>

@@ -16,7 +16,7 @@
       <div class="row">
         <div class="col-12">
          <div class="box">			
-			<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-info">
+			<button type="button" id="addModul" class="btn btn-info" data-level="-" data-toggle="modal" data-target="#modal-info">
                 + Group Modul
             </button>
 		 </div>
@@ -51,10 +51,18 @@
 				foreach ($tab as $a){ ?>
 					<tr>
 						<td id="tes"><?=$a->GroupModulID?></td>
-						<td><?=$a->GroupModul?></td>
+						<td>
+							<a class="lihatGroup" data-toggle="modal" data-target="#modal-info" id="group_<?=$a->GroupModulID?>" href="#<?=$a->GroupModul?>" 
+								data-notactive="<?=$a->NotActive?>"
+								data-id="<?=$a->GroupModulID?>" 
+								data-name="<?=$a->GroupModul?>" 
+								data-level="<?=$a->Level?>" 
+							><?=$a->GroupModul?></a>
+						</td>
 						<td><?=$a->Level?></td>
 						<td><?=$a->NotActive?></td>
-						<td><button type="button" class="btn btn-default" onClick="lihat(<?=$a->GroupModulID?>)" data-toggle="modal" data-target="#modal-default">Lihat Group Modul</button>
+						<td>
+							<button type="button" class="btn btn-default" onClick="lihat(<?=$a->GroupModulID?>)" data-toggle="modal" data-target="#modal-default">Lihat Group Modul</button>
 						</td>
 					</tr>
 				<?php }	?>
@@ -97,24 +105,24 @@
           
               <table id="example2" class="table table-bordered table-striped table-responsive">
                 <thead>
-					<tr>
-						<th>Modul</th>
-						<th>Link</th>
-						<th>Level</th>
-						<th>Status</th>
-					</tr>
-				</thead>
-				<tfoot>
-					<tr>
-						<th>Modul</th>
-						<th>Link</th>
-						<th>Level</th>
-						<th>Status</th>
-					</tr>
-				</tfoot>
-				<tbody id="isitab">
-				</tbody>
-			</table>
+									<tr>
+										<th>Modul</th>
+										<th>Link</th>
+										<th>Level</th>
+										<th>Status</th>
+									</tr>
+								</thead>
+								<tfoot>
+									<tr>
+										<th>Modul</th>
+										<th>Link</th>
+										<th>Level</th>
+										<th>Status</th>
+									</tr>
+								</tfoot>
+								<tbody id="isitab">
+								</tbody>
+							</table>
 					</div>
 						
 						
@@ -130,40 +138,41 @@
 			  
 			  
 			  <div class="modal modal-info fade" id="modal-info">
-			  <form action="<?=base_url()?>ademik/module/module/addgroup" method="POST">
-				  <div class="modal-dialog">
-					<div class="modal-content">
-					  <div class="modal-header">
-						<h4 class="modal-title">List Group Modal</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						  <span aria-hidden="true">&times;</span></button>
-					  </div>
-					  <div class="modal-body">
-						<div class="form-group">
-							<input class="form-control" name="gropmod" placeholder="Group Model">
+					<form action="<?=base_url()?>ademik/module/module/addgroup" method="POST">
+						<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+
+							<h4 class="modal-title">List Group Modal</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span></button>
+							</div>
+							<div class="modal-body">
+								
+							<input class="form-control" id="identifier" name="identifier" type="hidden">
+							<div class="form-group">
+								<input class="form-control" name="gropmod" placeholder="Group Model">
+							</div>
+							<div class="form-group">
+								<label>Select Multiple</label>
+								<select multiple class="form-control" id='ulevel' name="multi_array[]">
+									<?php foreach($levels as $level) :?>
+										<option value=<?= $level->Level; ?>><?= $level->Name; ?></option>
+									<?php endforeach; ?>
+								</select>
+							</div>
+							<div class="demo-checkbox">
+								<input type="checkbox" id="notActive" name="NotActive" checked />
+								<label for="notActive">Avtive</label>
+							</div>
+							</div>
+							<div class="modal-footer">
+							<button type="button" class="btn btn-outline" data-dismiss="modal">Close</button>
+							<input type="submit" class="btn btn-outline" value="Save changes">
+							</div>
 						</div>
-						<div class="form-group">
-							<label>Select Multiple</label>
-							<select multiple class="form-control" name="multi_array[]">
-								<option value=1>option 1</option>
-								<option value=2>option 2</option>
-								<option value=3>option 3</option>
-								<option value=4>option 4</option>
-								<option value=5>option 5</option>
-							</select>
+						<!-- /.modal-content -->
 						</div>
-						<div class="demo-checkbox">
-							<input type="checkbox" id="basic_checkbox_1" name="NotActive" checked />
-							<label for="basic_checkbox_1">Default</label>
-						</div>
-					  </div>
-					  <div class="modal-footer">
-						<button type="button" class="btn btn-outline" data-dismiss="modal">Close</button>
-						<input type="submit" class="btn btn-outline" value="Save changes">
-					  </div>
-					</div>
-					<!-- /.modal-content -->
-				  </div>
 				  </form>
 				  <!-- /.modal-dialog -->
 			  </div>
@@ -172,7 +181,7 @@
 			  
 			  <div class="modal modal-primary fade" id="modal-primary">
 				  <div class="modal-dialog">
-				  <form action="<?=base_url()?>ademik/module/module/addmodul" method="POST"/>
+				  <form action="<?=base_url()?>ademik/module/module/addmodul" method="POST">
 					<div class="modal-content">
 					  <div class="modal-header">
 						<h4 class="modal-title">Tambah Modul</h4><input id="groupmodulid" type="hidden" name="groupmodulid" readonly="readonly"/>
@@ -207,12 +216,12 @@
 							<input class="form-control" name="modulaut" placeholder="Author">
 						</div>
 						<div class="demo-checkbox">
-							<input type="checkbox" id="md_checkbox_21" class="filled-in chk-col-red" name="modulnot" checked />
-							<label for="md_checkbox_21">NotActive</label>		
+							<input type="checkbox" id="modulnot" class="filled-in chk-col-red" name="modulnot" checked />
+							<label for="modulnot">NotActive</label>		
 						</div>
 						<div class="demo-checkbox">
-							<input type="checkbox" id="md_checkbox_21" class="filled-in chk-col-red" name="modulajax" checked />
-							<label for="md_checkbox_21">Use Ajax</label>		
+							<input type="checkbox" id="modulajax" class="filled-in chk-col-red" name="modulajax" checked />
+							<label for="modulajax">Use Ajax</label>		
 						</div>
 					  </div>
 					  <div class="modal-footer">
@@ -226,8 +235,34 @@
 				  <!-- /.modal-dialog -->
 			  </div>
 			  <!-- /.modal -->
-	
+
 <script>
+
+wait$(()=>{
+	$('#modal-info').on('show.bs.modal', function (event) {
+		var button = $(event.relatedTarget)
+		var id = button.data('id') 
+		var name = button.data('name') 
+		var actf = button.data('notactive')
+		var level = button.data('level').split("-")
+		if (actf=='Y') {
+			document.getElementById('notActive').checked = false;
+		}else{
+			document.getElementById('notActive').checked = true;
+		}
+		$('#ulevel').val(level);
+		$('#identifier').val(id);
+		$('input[name=gropmod]').val(name);
+	})
+
+	$('#addModul').on('click',()=>{
+		document.getElementById('notActive').checked = true;
+		$('#ulevel').val('');
+		$('#identifier').val('');
+		$('input[name=gropmod]').val('');
+	})
+})
+
 function lihat (id){
 	//alert($('#tes').val()+" dan "+id);
 	//alert('fandu');

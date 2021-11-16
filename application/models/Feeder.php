@@ -53,7 +53,7 @@ class Feeder extends CI_Model{
 	public function gettoken_restfull(){
 		$user_feeder = $this->config->item('user_feeder');
 		$password_feeder = $this->config->item('password_feeder');
-		$url = 'http://103.245.72.97:8082/ws/live2.php';
+		$url = 'http://feeder.untad.ac.id:8082/ws/live2.php';
 
 		$data = array (
 			'act' => 'GetToken',
@@ -89,7 +89,7 @@ class Feeder extends CI_Model{
 	public function id_reg_dosen_detailbiodatadosen($Filter){
 
 		$token = $this->gettoken_restfull();
-		$url = 'http://103.245.72.97:8082/ws/live2.php';
+		$url = 'http://feeder.untad.ac.id:8082/ws/live2.php';
 
 		/*$data = array (
 			'act' => 'GetListMahasiswa',
@@ -129,11 +129,63 @@ class Feeder extends CI_Model{
 
 	}
 
+	public function getfeeder($act){
+
+		$token = $this->gettoken_restfull();
+		$url = 'http://feeder.untad.ac.id:8082/ws/live2.php';
+
+		/*$edit = array();
+		$edit['id_registrasi_dosen'] = 'bbe897c1-3997-4008-8c98-90ba40110a38';
+		//$edit['id_dosen'] = '87221cd4-9045-458b-897b-107fbf0cd921';
+		$edit['id_kelas_kuliah'] = 'ea43f5af-b0d8-4228-a473-7b93df63c87f';
+		$edit['sks_substansi_total'] = '2';
+		$edit['rencana_tatap_muka'] = '15';
+		$edit['realisasi_tatap_muka'] = '13';
+		$edit['id_jenis_evaluasi'] = '1';
+		//26c776cf-92fe-4a42-b826-f750410d0804
+		$data = array (
+			'act' => 'InsertDosenPengajarKelasKuliah',
+			'token' => $token,
+			'record' => $edit
+		);*/
+
+
+		$data = array (
+			'act' => $act,
+			'token' => $token
+		);
+
+		//$data = json_encode($data);
+
+		$ch = curl_init();
+
+		curl_setopt($ch, CURLOPT_POST, 1);
+
+		$headers = array();
+
+		$headers[] = 'Content-Type: application/json';
+
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+		if ($data){
+			$data = json_encode($data);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+		}
+
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$result = curl_exec($ch);
+		curl_close($ch);
+
+		return $result;
+
+	}
+
 	//insert semua restfull ke feeder
 	public function insertfeeder($namerest,$value){
 
 		$token = $this->gettoken_restfull();
-		$url = 'http://103.245.72.97:8082/ws/live2.php';
+		$url = 'http://feeder.untad.ac.id:8082/ws/live2.php';
 
 		/*$edit = array();
 		$edit['id_registrasi_dosen'] = 'bbe897c1-3997-4008-8c98-90ba40110a38';
@@ -187,7 +239,7 @@ class Feeder extends CI_Model{
 	public function cekdatafeeder($act, $Filter){
 
 		$token = $this->gettoken_restfull();
-		$url = 'http://103.245.72.97:8082/ws/live2.php';
+		$url = 'http://feeder.untad.ac.id:8082/ws/live2.php';
 
 		$data = array (
 			'act' => $act,
@@ -228,7 +280,7 @@ class Feeder extends CI_Model{
 	public function deletefeeder($namerest,$value){
 
 		$token = $this->gettoken_restfull();
-		$url = 'http://103.245.72.97:8082/ws/live2.php';
+		$url = 'http://feeder.untad.ac.id:8082/ws/live2.php';
 
 		$data = array (
 			'act' => $namerest,

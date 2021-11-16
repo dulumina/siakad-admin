@@ -112,10 +112,11 @@
 													<th><?= $tampil->namaProgram ?></th>
 													<th><?= $tampil->namaJurusan ?></th>
 													<th id="<?= $tampil->NIM ?>">
+														<i  onClick="cekIdPd('<?= $tampil->NIM?>')" style='color: blue; cursor: pointer;' class="fa fa-refresh" data-toggle="tooltip" data-placement="top" title="Update ID Feeder. bila input manual di feeder" aria-hidden="true"></i>
 														<?php if ( empty($tampil->id_reg_pd) ) { ?>
 															<!-- <button type="button" data-nim='<?= $tampil->NIM; ?>' class="btn btn btn-danger fa fa-mail-forward kirimBiodata"> Kirim Ke PDPT</button> -->
-															<i  onClick="cekIdPd('<?= $tampil->NIM?>')" style='color: blue; cursor: pointer;' class="fa fa-refresh" data-toggle="tooltip" data-placement="top" title="sinkron. bila input manual di feeder" aria-hidden="true"></i>
-															<span style='color: red;'>Belum Terkirim Ke Feeder</span>
+															
+															<span style='color: red;'> Belum Terkirim Ke Feeder</span>
 														<?php } else { ?>
 															<span class='glyphicon glyphicon-ok' style='color: green;' ></span>
 														<?php } ?>
@@ -600,11 +601,8 @@
 </div>
 
 
-<script src="<?=base_url()?>assets/js/pages/data-table.js"></script>
-<script>
-	var xx = <?= json_encode($data) ?>;
-	// console.log(xx);
-</script>
+<!-- <script src="<?=base_url()?>assets/js/pages/data-table.js"></script> -->
+
 <script type='text/javascript'>
 
  	var i = setInterval(function() {
@@ -823,8 +821,10 @@
 
 	}
 
-	var kirimBiodata = document.querySelector('.kirimBiodata');
-	kirimBiodata.addEventListener('click', kirimFeederBiodata);
+	if (document.querySelector('.kirimBiodata')) {
+		var kirimBiodata = document.querySelector('.kirimBiodata');
+		kirimBiodata.addEventListener('click', kirimFeederBiodata);
+	}
 	function kirimFeederBiodata() {
 		var nim = kirimBiodata.dataset.nim;
 		//alert(nim);

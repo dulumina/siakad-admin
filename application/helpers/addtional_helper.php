@@ -125,5 +125,48 @@ function getMajorCollege($nim)
 	return $CI->db->get_where('_v2_mhsw', $where)->row()->KodeJurusan;
 }
 
+/**
+ * function 		: cleanName()
+ * @author 			MOh Dzulfikri
+ * @param string 	$name (name with symbol ' )
+ * @return	string	name without symbol '
+**/
+function cleanName($name){
+	$find=["\'","&#39;"];
+	$replace="'";
+	return str_replace($find,$replace,$name);
+}
 
+/**
+ * 
+ */
+function sendMessage($data=[])
+{
+	
+	$ci = get_instance();
+	$config = $ci->config;
+	$bot_key = $config->item('telegram_bot_key');
+	$bot_msg_id = $config->item('telegram_bot_msg_id');
+
+	$data = http_build_query(array(
+		'chat_id' => $bot_msg_id,
+		'text' => json_encode($data)
+	));
+
+	$url = "https://api.telegram.org/bot$bot_key/sendMessage?$data";
+
+	return json_decode(file_get_contents($url));
+}
+
+/**
+ * 
+ */
+function getDevice($ua)
+{
+	$url = "http://api.userstack.com/api/detect?access_key=53c917b83cdfb44be0aadaee80ba6141&ua=$ua";
+	$data = json_decode(file_get_contents($url));
+	$device = $data->device->type.' '.$data->device->brand.' '.$data->device->name;
+
+	return $device;
+}
 ?>

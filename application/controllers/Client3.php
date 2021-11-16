@@ -100,7 +100,7 @@ class Client3 extends CI_Controller {
 	public function nusoap1(){
 		$user_feeder = '001028p1';
 		$password_feeder = 'bakp2021@#$';
-		$url = 'http://103.245.72.97:8082/ws/live2.php';
+		$url = 'http://feeder.untad.ac.id:8082/ws/live2.php';
 
 		$data = array (
 			'act' => 'GetToken',
@@ -140,7 +140,7 @@ class Client3 extends CI_Controller {
 
 		$token = $this->nusoap1();
 		$Filter = "id_mahasiswa='17844c8f-c260-44a2-80d9-8b440f72acb5'";
-		$url = 'http://103.245.72.97:8082/ws/live2.php';
+		$url = 'http://feeder.untad.ac.id:8082/ws/live2.php';
 
 		$data = array (
 			'act' => 'GetListMahasiswa',
@@ -180,7 +180,7 @@ class Client3 extends CI_Controller {
 
 		$token = $this->nusoap1();
 		$Filter = "id_registrasi_dosen='16b3c62f-9437-4796-b8bd-f4619a3930b3'";
-		$url = 'http://103.245.72.97:8082/ws/live2.php';
+		$url = 'http://feeder.untad.ac.id:8082/ws/live2.php';
 
 		/*$data = array (
 			'act' => 'GetListMahasiswa',
@@ -225,7 +225,7 @@ class Client3 extends CI_Controller {
 
 		$token = $this->nusoap1();
 		$Filter = "id_dosen='bae06faf-c9bf-44ab-a3fe-e830feec1c16'";
-		$url = 'http://103.245.72.97:8082/ws/live2.php';
+		$url = 'http://feeder.untad.ac.id:8082/ws/live2.php';
 
 		/*$data = array (
 			'act' => 'GetListMahasiswa',
@@ -270,7 +270,7 @@ class Client3 extends CI_Controller {
 
 		$token = $this->nusoap1();
 		$Filter = "id_dosen='bae06faf-c9bf-44ab-a3fe-e830feec1c16'";
-		$url = 'http://103.245.72.97:8082/ws/live2.php';
+		$url = 'http://feeder.untad.ac.id:8082/ws/live2.php';
 
 		/*$data = array (
 			'act' => 'GetListMahasiswa',
