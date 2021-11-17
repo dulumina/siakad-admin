@@ -2619,7 +2619,7 @@ class Jdwlkuliah1 extends CI_Controller {
 			$key = $jadwal_data['id_kelas_kuliah'];
 			unset($jadwal_data['id_kelas_kuliah']);
 			$record = $jadwal_data;
-			if($jadwal_data['id_kelas_kuliah']){
+			if(isset($jadwal_data['id_kelas_kuliah'])){
 				$res_feeder = $this->FeederRunWS->update('UpdateKelasKuliah',$key,$record);
 			}else{
 				$res_feeder = $this->FeederRunWS->insert('InsertKelasKuliah',$record);

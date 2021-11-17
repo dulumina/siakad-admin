@@ -1343,12 +1343,12 @@ function kirimnilaidikti(){
 }
 
 function kirimidajar(e,id,jns){
-  console.log(e);
+	
   var actval = $('#act_value'+id).val();
 	var tahunakademik = $('#tahunakademik').val();
 	var program = $('#program').val();
 	var jurusan = $('#jurusan').val();
-	console.log(actval);
+	
   $body = $("body");
 	$body.addClass("loading");
 
@@ -1358,15 +1358,10 @@ function kirimidajar(e,id,jns){
 		url: '<?=base_url()?>ademik/jdwlkuliah1/InsertDosenPengajarKelasKuliah',
 		dataType: "JSON",
 		success: function(response){
-      	console.log(data);
-      $body.removeClass("loading");
+			var error_code = response.error_code;
+			var error_desc = response.error_desc;
 
-			console.log(response);
-
-      var error_code = response.error_code;
-      var error_desc = response.error_desc;
-
-      if ( error_code != 0 ) {
+			if ( error_code != 0 ) {
 				swal({
 					title: 'Peringatan',
 					type: 'warning',
@@ -1385,6 +1380,9 @@ function kirimidajar(e,id,jns){
 			}
 
 		}
+	})
+	.always(()=>{
+      $body.removeClass("loading");
 	});
 }
 
