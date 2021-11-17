@@ -1358,10 +1358,7 @@ function kirimidajar(e,id,jns){
 		url: '<?=base_url()?>ademik/jdwlkuliah1/InsertDosenPengajarKelasKuliah',
 		dataType: "JSON",
 		success: function(response){
-      	console.log(data);
-
 			console.log(response);
-
 			var error_code = response.error_code;
 			var error_desc = response.error_desc;
 
