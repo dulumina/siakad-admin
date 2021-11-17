@@ -1359,14 +1359,13 @@ function kirimidajar(e,id,jns){
 		dataType: "JSON",
 		success: function(response){
       	console.log(data);
-      $body.removeClass("loading");
 
 			console.log(response);
 
-      var error_code = response.error_code;
-      var error_desc = response.error_desc;
+			var error_code = response.error_code;
+			var error_desc = response.error_desc;
 
-      if ( error_code != 0 ) {
+			if ( error_code != 0 ) {
 				swal({
 					title: 'Peringatan',
 					type: 'warning',
@@ -1385,6 +1384,9 @@ function kirimidajar(e,id,jns){
 			}
 
 		}
+	})
+	.always(()=>{
+      $body.removeClass("loading");
 	});
 }
 
