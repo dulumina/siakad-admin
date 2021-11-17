@@ -1319,6 +1319,7 @@ class Jdwlkuliah1 extends CI_Controller {
 								}
 							}
 						}
+
 						if ($md=='2') {
 							$messagefeeder = $this->feeder_Kelas_kuliah('update',$IDJADWALBr);
 						}else {
@@ -2615,14 +2616,12 @@ class Jdwlkuliah1 extends CI_Controller {
 			}
 
 			$jadwal_data = $data_raw->row_array();
-			
 			$key = $jadwal_data['id_kelas_kuliah'];
 			unset($jadwal_data['id_kelas_kuliah']);
 			$record = $jadwal_data;
-			
-			if ($md=='update') {
+			if($jadwal_data['id_kelas_kuliah']){
 				$res_feeder = $this->FeederRunWS->update('UpdateKelasKuliah',$key,$record);
-			}elseif ($md=='insert') {
+			}else{
 				$res_feeder = $this->FeederRunWS->insert('InsertKelasKuliah',$record);
 			}
 			
