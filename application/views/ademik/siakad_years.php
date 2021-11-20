@@ -117,7 +117,7 @@
               <td>3</td>
               <td>Proses SPC to SIAKAD</td>
               <td>Image</td>
-              <td class="text-right"><button onclick="updstatbayar()"  class="btn btn-social-icon btn-circle btn-bitbucket"><i class="fa fa-bitbucket"></i></button></td>
+              <td class="text-right"><button onclick="getBayar()"  class="btn btn-social-icon btn-circle btn-bitbucket"><i class="fa fa-bitbucket"></i></button></td>
               <td class="text-right">Berfungsi untuk mengambil data mahasiswa yang telah membayar uang kuliah tungggal (UKT) pada aplikasi SPC</td>
               <td class="text-right"><?=$detailperiodeaktif->point3_user;?></td>
               <td class="text-right"><?=$detailperiodeaktif->point3_tgl;?></td>
@@ -356,6 +356,35 @@
 	<!-- /.modal -->
 
 <script>
+function getBayar() {
+  $.ajax({
+	  type: 'POST',
+	  url: "<?=base_url('ademik/siakad_years/get_spctosiakad/'.$checksum)?>",
+	  data: 'tahun='+<?=$link?>,
+	  dataType: 'json',
+	  cache : false,
+    success : (data)=>{
+      console.log(data);
+      // updstatbayar();
+      if (data.status) {
+        alert(data.message);
+        $.ajax({
+          type: 'POST',
+          url: "<?=base_url('ademik/siakad_years/updateBayar/'.$checksum)?>",
+          data: 'tahun='+<?=$link?>,
+          dataType: 'json',
+          cache : false,
+          success : (data)=>{
+            alert(data.message);
+          }
+        })
+      }else {
+        alert(data.message);
+      }
+    }
+  })
+}
+/**
 function updstatbayar(){
 	var a = 1;
 	console.log('fandu masuk = '+a);
@@ -396,6 +425,7 @@ function updstatbayar(){
 	  }
 	});
 }
+*/
 
 /*
 function css (a){
