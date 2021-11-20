@@ -202,17 +202,25 @@ class Siakad_years extends CI_Controller {
 			$limit_waktu = "";
 			$qrspc="SELECT p.id_record_tagihan,p.key_val_2 as key_val_2,t.nama,t.kode_fakultas,t.kode_prodi,p.waktu_transaksi,p.total_nilai_pembayaran, dt.kode_jenis_biaya FROM pembayaran AS p, tagihan AS t, detil_tagihan as dt WHERE t.id_record_tagihan=p.id_record_tagihan $limit_waktu and kode_periode >='$tahun' and t.id_record_tagihan=dt.id_record_tagihan and ( dt.kode_jenis_biaya like '%SPP%' or dt.kode_jenis_biaya like '%UKT%' or dt.kode_jenis_biaya like '%COA%' or dt.kode_jenis_biaya like '%SP%' or dt.kode_jenis_biaya like '%RMD%' or dt.kode_jenis_biaya like '%REMEDIAL%' or dt.kode_jenis_biaya like '%P3S%') order by p.waktu_transaksi ASC";
 			$wspc1 = $this->db2->query($qrspc);
-			if ($wspc1->num_rows > 0) {
+			if ($wspc1->num_rows() > 0) {
 				$this->db->insert_batch('_v2_tempSpc',$wspc1->result_array());
 				echo json_encode([
 					'status' => TRUE,
 					'message' => 'Berhasil mengambil data dari SPC',
 				]);
 			}else{
-				echo json_encode([
-					'status' => False,
-					'message' => 'Tidak ada data dari SPC',
-				]);
+				if (ENVIRONMENT=="production") {
+					echo json_encode([
+						'status' => False,
+						'message' => 'Tidak ada data dari SPC',
+					]);
+				}else{
+					echo json_encode([
+						'status' => False,
+						'message' => 'Tidak ada data dari SPC',
+						'kueri' => $qrspc
+					]);
+				}
 			}
 		}
 	}
@@ -252,6 +260,8 @@ class Siakad_years extends CI_Controller {
 					$this->db->set('point3_tgl', 'NOW()', FALSE)
 									 ->where('periode_aktif', $tahun)
 									 ->update('_v2_periode_aktif', $dataupdate);
+					
+					$this->db->query("TRUNCATE TABLE _v2_tempSpc");
 				$this->db->trans_complete();
 	
 				if ($this->db->trans_status() === FALSE)
