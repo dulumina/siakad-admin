@@ -1343,29 +1343,25 @@ function kirimnilaidikti(){
 }
 
 function kirimidajar(e,id,jns){
-  console.log(e);
+	
   var actval = $('#act_value'+id).val();
 	var tahunakademik = $('#tahunakademik').val();
 	var program = $('#program').val();
 	var jurusan = $('#jurusan').val();
-
+	
   $body = $("body");
 	$body.addClass("loading");
 
 	$.ajax({
 		type: 'POST',
-		url: '<?=base_url()?>ademik/jdwlkuliah1/InsertDosenPengajarKelasKuliah',
 		data: 'tahunakademik=' + tahunakademik + '&program='+ program + '&jurusan='+ jurusan +'&id='+id +'&actval='+actval+'&jenis_dosen='+jns,
+		url: '<?=base_url()?>ademik/jdwlkuliah1/InsertDosenPengajarKelasKuliah',
 		dataType: "JSON",
 		success: function(response){
-      $body.removeClass("loading");
+			var error_code = response.error_code;
+			var error_desc = response.error_desc;
 
-			console.log(response);
-
-      var error_code = response.error_code;
-      var error_desc = response.error_desc;
-
-      if ( error_code != 0 ) {
+			if ( error_code != 0 ) {
 				swal({
 					title: 'Peringatan',
 					type: 'warning',
@@ -1384,6 +1380,9 @@ function kirimidajar(e,id,jns){
 			}
 
 		}
+	})
+	.always(()=>{
+      $body.removeClass("loading");
 	});
 }
 

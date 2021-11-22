@@ -9,7 +9,7 @@ class khs_inbound extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->helper('security');
-		// $this->load->model(array('inbound'));
+		$this->load->model(array('Inbound'));
 		$this->load->helper('url');
 
 	}
@@ -25,6 +25,29 @@ class khs_inbound extends CI_Controller
 
 		$this->load->view('dashbord');
 
+	}
+
+	function mhs()
+	{
+		$nim = $this->input->post('nim');
+		$data_mhs=$this->Inbound->mhs($nim);
+		echo json_encode($data_mhs);
+	}
+
+	function periode()
+	{
+		$nim = $this->input->post('nim');
+		$data_periode=$this->Inbound->periode($nim);
+		echo json_encode($data_periode);
+	}
+
+	function tkhs()
+	{
+		$nim = $this->input->post('nim');
+		$periode = $this->input->post('periode');
+		$isi_khs['dataa']=$this->Inbound->khs($nim,$periode);
+		// echo $data_khs;
+		echo json_encode($isi_khs);
 	}
 
 	

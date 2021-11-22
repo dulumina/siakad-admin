@@ -2619,7 +2619,7 @@ class Jdwlkuliah1 extends CI_Controller {
 			$key = $jadwal_data['id_kelas_kuliah'];
 			unset($jadwal_data['id_kelas_kuliah']);
 			$record = $jadwal_data;
-			if($jadwal_data['id_kelas_kuliah']){
+			if(isset($jadwal_data['id_kelas_kuliah'])){
 				$res_feeder = $this->FeederRunWS->update('UpdateKelasKuliah',$key,$record);
 			}else{
 				$res_feeder = $this->FeederRunWS->insert('InsertKelasKuliah',$record);
@@ -3041,23 +3041,31 @@ class Jdwlkuliah1 extends CI_Controller {
 
 		$r = $this->db->query($s)->result();
 
+		// $result = $this->feeder->getFeeder('GetDosenPengajarKelasKuliah');
+		// $obj = json_decode($result);
+		// print_r($result);
+		// echo $result;
+		// print_r($obj);die;
+
 		foreach ($r as $val){
 
 			$filter = array(
 				'id_registrasi_dosen' => $val->id_reg_ptk,
 				'id_kelas_kuliah' => $val->id_kelas_kuliah,
+				//'id_substansi' => '',
 				'sks_substansi_total' => substr($val->SKS, 0, -2),
-				'rencana_tatap_muka' => $val->Rencana,
-				'realisasi_tatap_muka' => $val->Realisasi,
+				//'rencana_tatap_muka' => $val->Rencana,
+				'rencana_minggu_pertemuan' => $val->Rencana,
+				'realisasi_minggu_pertemuan' => $val->Realisasi,
 				'id_jenis_evaluasi' => '1'
 			);
-
+			
 			$result = $this->feeder->insertfeeder("InsertDosenPengajarKelasKuliah", $filter);
-			//echo "$result<br>";
+			
 			$obj = json_decode($result);
 
 			$error_code = $obj->{'error_code'}; // mendapatkan error code
-
+			//print_r($error_code);die;
 			if ($error_code == 0){
 
 				$id_aktivitas_mengajar = $obj->{'data'}->{'id_aktivitas_mengajar'};
