@@ -106,6 +106,23 @@ function mhs($nim)
         return $this->db->get('_v2_krsmbkm')->result();
     }   
 
+    function cetak ($nim, $periode)
+    {
+        $this->db->select('*');
+        $this->db->join('_v2_mhsw_pmmdn', '_v2_mhsw_pmmdn.NIM = _v2_krsmbkm.nim');
+        $this->db->join('_v2_jadwal', '_v2_jadwal.IDJADWAL= _v2_krsmbkm.id_jadwal');
+        $this->db->where('_v2_mhsw_pmmdn.nim', $nim);
+        $this->db->where('_v2_krsmbkm.tahun', $periode);
+        return $this->db->get('_v2_krsmbkm')->result();
+    }
+
+    function tperiode ($periode)
+    {
+        $this->db->select('*');
+        $this->db->where('periode_aktif', $periode);
+        return $this->db->get('_v2_periode_aktif')->row();
+    }
+
 
 }
 ?>
