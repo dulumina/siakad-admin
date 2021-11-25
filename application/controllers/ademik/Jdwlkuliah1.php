@@ -1274,7 +1274,7 @@ class Jdwlkuliah1 extends CI_Controller {
 				// Apakah gabungan?
 				// fandu hapus field Global='$glob'
 
-				$cekidjadwal = "select IDJADWAL from _v2_jadwal where IDJadwal='$IDJADWALBr'";
+				$cekidjadwal = "select IDJADWAL from _v2_jadwal where IDJadwal='$IDJADWALBr' AND Hari='$Hari' ";
 
 				$residjadwal = $this->db->query($cekidjadwal)->num_rows();
 				if ($residjadwal == 0 or $md == 2) { // apakah IDJADWAL sudah pernah terinput
@@ -1320,7 +1320,12 @@ class Jdwlkuliah1 extends CI_Controller {
 							}
 						}
 
-						$messagefeeder = $this->update_jadwal_feeder($IDJADWALBr, $thn); // proses ke feeder
+						if ($md=='2') {
+							$messagefeeder = $this->feeder_Kelas_kuliah('update',$IDJADWALBr);
+						}else {
+							$IDJADWALBr = "$kdj"."$thn"."$IdTstamp";
+							$messagefeeder = $this->feeder_Kelas_kuliah('insert', $IDJADWALBr);
+						}
 
 						$statalert = "success";
 					} else {
@@ -2094,6 +2099,7 @@ class Jdwlkuliah1 extends CI_Controller {
 	}
 
 	private function proses_kirimnilaidikti($idjadwal, $tahun, $program, $kdj){
+		$this->load->model('FeederRunWS');
 		/*$idjadwal = $this->input->post("idjadwalinnilai");
 		$tahun = $this->input->post("tahunvalidasi");
 		$program = $this->input->post("programvalidasi");
@@ -2115,11 +2121,12 @@ class Jdwlkuliah1 extends CI_Controller {
 
 		//echo $idjadwal;
 
-		$message = "";
+		$message = ""; 
 
 		$hasil = $this->db->query("SELECT n.ID, n.NIM, n.Tahun, n.nilai, n.GradeNilai, n.Bobot, n.KodeMK, n.enkripsi, j.id_kelas_kuliah, j.IDJADWAL, m.id_reg_pd, m.KodeFakultas FROM $tbl n left join _v2_jadwal j on n.IDJadwal=j.IDJADWAL left join _v2_mhsw m on n.NIM=m.NIM  WHERE n.Tahun = '$tahun' AND (n.st_feeder = 0 or n.st_feeder = 5 or n.st_feeder = -3) AND n.IDJadwal LIKE '$idjadwal' AND n.GradeNilai != ''");
 
 		foreach ($hasil->result() as $show) {
+			$insPeserta=[];
 			$IDKRS = $show->ID; // n.ID
 			$id_kls = $show->id_kelas_kuliah; // j.id_kelas_kuliah
 			$id_reg_pd = $show->id_reg_pd; // m.id_reg_pd
@@ -2165,9 +2172,27 @@ class Jdwlkuliah1 extends CI_Controller {
 					"action" => $action,
 					"tabel" => $table
 				]);
+
+				$pesertaKls = array(
+					'id_kelas_kuliah'=>$id_kls,
+					'id_registrasi_mahasiswa'=>$id_reg_pd
+				);
+
+				$data_record = array(
+					'nilai_angka'=>$nil_ang,
+					'nilai_indeks'=>$nil_indeks,
+					'nilai_huruf'=>$nil_huruf
+				);
 				// $httpg = $this->http_request("https://api.telegram.org/bot1806507201:AAGhQ4U_IvQntAfmzWqiQ2KdhFZSotNcDMc/sendMessage?chat_id=949836438&parse_mode=Markdown&text=$text");
 				// insert tabel mahasiswa ke feeder
-				$datb = $this->feeder->action_feeder($temp_token,$temp_proxy,$action,$table,$record);
+				$insPeserta = $this->FeederRunWS->insert('InsertPesertaKelasKuliah',$pesertaKls);
+				$insPeserta->InsertPesertaKelasKuliah=$pesertaKls;
+
+				$resfdr = $this->FeederRunWS->update('UpdateNilaiPerkuliahanKelas', $pesertaKls, $data_record);
+				foreach ($resfdr as $key => $value) {
+					$datb[$key]=$value;
+				}
+				// $datb = $this->feeder->action_feeder($temp_token,$temp_proxy,$action,$table,$record);
 
 				// fandu matikan karena salah
 				//$resultb = $this->feeder->action_feeder($temp_token,$temp_proxy,$action,$table,$record);
@@ -2320,8 +2345,10 @@ class Jdwlkuliah1 extends CI_Controller {
 
 		$result = array(
 			"ket" => "sukses",
+			"insPeserta" => $insPeserta,
 			"pesan" => $message,
-			"kirim_data" => $text
+			"kirim_data" => $text,
+			"datanilai" => $data_record
 		);
 
 		echo json_encode($result);
@@ -2358,7 +2385,7 @@ class Jdwlkuliah1 extends CI_Controller {
 		include 'ws/nusoap/nusoap.php';
 		include 'ws/nusoap/class.wsdlcache.php';
 
-		$wsdl = 'http://103.245.72.97:8082/ws/live.php?wsdl';
+		$wsdl = 'http://feeder.untad.ac.id:8082/ws/live.php?wsdl';
 
 		$client = new nusoap_client($wsdl, true);
 		$proxy = $client->getProxy();
@@ -2575,9 +2602,9 @@ class Jdwlkuliah1 extends CI_Controller {
 			}
 		}
 
-		function update_Kelas_kuliah($IDJadwal){ // proses sendiri
+		private function feeder_Kelas_kuliah($md, $IDJadwal){ // proses sendiri
 
-			$this->load->library('feeder_untad');
+			$this->load->model('FeederRunWS');
 
 			$query = "select j.id_kelas_kuliah, jr.id_sms id_prodi, j.Tahun id_semester, m.id_mk id_matkul, j.Keterangan nama_kelas_kuliah, '' bahasan, '' tanggal_mulai_efektif, '' tanggal_akhir_efektif, m.SKS sks_mata_kuliah, m.SKSTatapMuka sks_tatap_muka, m.SKSPraktikum sks_praktek, m.SKSPraktekLap sks_praktek_lapangan, m.SKSSimulasi sks_simulasi, '' tanggal_tutup_daftar, j.kap kapasitas from _v2_jadwal j, _v2_jurusan jr, _v2_matakuliah m where m.IDMK=j.IDMK and j.KodeJurusan= jr.Kode and j.IDJadwal like '$IDJadwal' limit 1";
 			$data_raw = $this->db->query($query);
@@ -2589,27 +2616,23 @@ class Jdwlkuliah1 extends CI_Controller {
 			}
 
 			$jadwal_data = $data_raw->row_array();
-			// print_r($jadwal_data);
-			// die;
 			$key = $jadwal_data['id_kelas_kuliah'];
 			unset($jadwal_data['id_kelas_kuliah']);
 			$record = $jadwal_data;
-			echo $key;
-			echo "<br>";
-			echo json_encode($record);
-			echo "<br>";
-			// die;
-			$res_feeder = $this->feeder_untad->update('UpdateKelasKuliah',$key,$record);
-
-			echo json_encode($res_feeder);
-			die;
+			if(isset($jadwal_data['id_kelas_kuliah'])){
+				$res_feeder = $this->FeederRunWS->update('UpdateKelasKuliah',$key,$record);
+			}else{
+				$res_feeder = $this->FeederRunWS->insert('InsertKelasKuliah',$record);
+			}
+			
 			$id_kls = $res_feeder->data->id_kelas_kuliah;
 			$error_code = $res_feeder->error_code;
 			$error_desc = $res_feeder->error_desc;
-	
-			if($id_kls != null){
-				$qupdate = "update _v2_jadwal set id_kelas_kuliah='$id_kls',st_feeder=2 where IDJADWAL='$IDJADWAL'";
+			
+			if($id_kls){
+				$qupdate = "update _v2_jadwal set id_kelas_kuliah='$id_kls',st_feeder=2 where IDJADWAL='$IDJadwal'";
 				$this->db->query($qupdate);
+				
 				return "dan Jadwal Berhasil di Kirim Ke Feeder";
 			}else if($error_code=='700'){ // Data kelas ini sudah ada == $error_status['700']
 				$action = "GetRecord";
@@ -3018,23 +3041,31 @@ class Jdwlkuliah1 extends CI_Controller {
 
 		$r = $this->db->query($s)->result();
 
+		// $result = $this->feeder->getFeeder('GetDosenPengajarKelasKuliah');
+		// $obj = json_decode($result);
+		// print_r($result);
+		// echo $result;
+		// print_r($obj);die;
+
 		foreach ($r as $val){
 
 			$filter = array(
 				'id_registrasi_dosen' => $val->id_reg_ptk,
 				'id_kelas_kuliah' => $val->id_kelas_kuliah,
+				//'id_substansi' => '',
 				'sks_substansi_total' => substr($val->SKS, 0, -2),
-				'rencana_tatap_muka' => $val->Rencana,
-				'realisasi_tatap_muka' => $val->Realisasi,
+				//'rencana_tatap_muka' => $val->Rencana,
+				'rencana_minggu_pertemuan' => $val->Rencana,
+				'realisasi_minggu_pertemuan' => $val->Realisasi,
 				'id_jenis_evaluasi' => '1'
 			);
-
+			
 			$result = $this->feeder->insertfeeder("InsertDosenPengajarKelasKuliah", $filter);
-			//echo "$result<br>";
+			
 			$obj = json_decode($result);
 
 			$error_code = $obj->{'error_code'}; // mendapatkan error code
-
+			//print_r($error_code);die;
 			if ($error_code == 0){
 
 				$id_aktivitas_mengajar = $obj->{'data'}->{'id_aktivitas_mengajar'};

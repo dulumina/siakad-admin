@@ -326,7 +326,7 @@ class prc extends CI_Controller {
 	private function runWS($data)
 	{
 
-		$url = 'http://103.245.72.97:8082/ws/live2.php';
+		$url = 'http://feeder.untad.ac.id:8082/ws/live2.php';
 		$ch = curl_init();
 			
 		curl_setopt($ch, CURLOPT_POST, 1);
