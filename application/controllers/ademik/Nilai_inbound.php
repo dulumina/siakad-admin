@@ -2,14 +2,14 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set("Asia/Makassar");
 
-class nilai_inbound extends CI_Controller
+class Nilai_inbound extends CI_Controller
 {
 	
 	function __construct()
 	{
 		parent::__construct();
 		$this->load->helper('security');
-		$this->load->model(array('inbound'));
+		$this->load->model(array('Inbound'));
 		$this->load->helper('url');
 
 	}
@@ -17,7 +17,7 @@ class nilai_inbound extends CI_Controller
 	function index()
 	{
 		
-		$res['dsn']=$this->inbound->dosen();				
+		$res['dsn']=$this->Inbound->dosen();				
 		// $GetField = $this->daftar_dosen();
 		// $res['dsn'] = $GetField;
 		// $res['typedosen'] = "default";
@@ -31,7 +31,7 @@ class nilai_inbound extends CI_Controller
 	function mata_kuliah(){
 		$nip = $this->input->post('id');
 		// echo json_encode($nip);    
-		$data=$this->inbound->mk($nip);
+		$data=$this->Inbound->mk($nip);
         echo json_encode($data);
 
 	}
@@ -47,7 +47,7 @@ class nilai_inbound extends CI_Controller
 		// echo $tahunakademik;
 		// echo $dosen;
 		// echo $mk;
-		$res['data']=$this->inbound->krs($tahunakademik,$dosen,$mk);
+		$res['data']=$this->Inbound->krs($tahunakademik,$dosen,$mk);
 
 		echo json_encode($res);
 		// $this->load->view('dashbord',$res);
@@ -58,7 +58,7 @@ class nilai_inbound extends CI_Controller
 
 	function in_nilai(){
 		$id_krs = $this->input->post('id');
-		$data_krs=$this->inbound->in_nilai($id_krs);
+		$data_krs=$this->Inbound->in_nilai($id_krs);
 		
 
 		echo json_encode($data_krs);
@@ -74,7 +74,7 @@ class nilai_inbound extends CI_Controller
 		$nilai = $this->input->post('nilai');
 		$grade = $this->input->post('grade');
 
-		$data_krs=$this->inbound->simpan_nilai($id, $hadir, $praktek, $mid, $uas, $nilai, $grade);
+		$data_krs=$this->Inbound->simpan_nilai($id, $hadir, $praktek, $mid, $uas, $nilai, $grade);
 		echo json_encode($data_krs);
 	}
 
