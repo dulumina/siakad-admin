@@ -75,7 +75,7 @@
           </div>
           
           <div class="tab-pane pad" id="pindahReg" role="tabpane4">
-            <div id="formReg"></div>
+            <div id="formPindahReg"></div>
           </div>
         </div>
       </div>

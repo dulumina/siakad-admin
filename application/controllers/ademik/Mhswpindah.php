@@ -66,7 +66,7 @@ class Mhswpindah extends CI_Controller {
 	}
 
 	public function viewPindahReg()
-	{
+	{						
 		$this->load->view("ademik/mahasiswa_pindah/formPindahReg");
 		$this->load->view("ademik/mahasiswa_pindah/formPindahReg_js");
 	}
@@ -249,21 +249,21 @@ class Mhswpindah extends CI_Controller {
 		$where 		 = array('NIM' => $this->input->post('nim_lama') );
 		
 
-		$insert_feeder = array(
-			'id_mahasiswa'							=> $this->input->post('id_pd'),
-			'nim'												=> $this->input->post('nimbaru'),
-			'id_jenis_daftar'						=> '2',
-			'id_jalur_daftar'						=> '',
-			'id_periode_masuk'					=> $this->input->post('TahunAkademik'),
-			'tanggal_daftar'						=> date("Y-m-d"),
-			'id_perguruan_tinggi'				=> '8e5d195a-0035-41aa-afef-db715a37b8da',
-			'id_prodi'									=> $this->Model_mahasiswa_pindah->getIdJurusan($this->input->post('jurusan')),
-			'sks_diakui'								=> $this->input->post('SKSditerima'),
+		/*$insert_feeder = array(
+			'id_mahasiswa'				=> $this->input->post('id_pd'),
+			'nim'						=> $this->input->post('nimbaru'),
+			'id_jenis_daftar'			=> '2',
+			'id_jalur_daftar'			=> '',
+			'id_periode_masuk'			=> $this->input->post('TahunAkademik'),
+			'tanggal_daftar'			=> date("Y-m-d"),
+			'id_perguruan_tinggi'		=> '8e5d195a-0035-41aa-afef-db715a37b8da',
+			'id_prodi'					=> $this->Model_mahasiswa_pindah->getIdJurusan($this->input->post('jurusan')),
+			'sks_diakui'				=> $this->input->post('SKSditerima'),
 			'id_perguruan_tinggi_asal'	=> '8e5d195a-0035-41aa-afef-db715a37b8da',
-			'id_prodi_asal'							=> $this->Model_mahasiswa_pindah->getIdJurusan($this->input->post('kode_jurusan_lama')),
-			'id_pembiayaan'							=> '',
-			'biaya_masuk				'				=> $this->input->post('biaya_masuk_kuliah'),
-		);
+			'id_prodi_asal'				=> $this->Model_mahasiswa_pindah->getIdJurusan($this->input->post('kode_jurusan_lama')),
+			'id_pembiayaan'				=> '',
+			'biaya_masuk'				=> $this->input->post('biaya_masuk_kuliah'),
+		);*/
 		
 		$update_feeder = array(
 			'id_registrasi_mahasiswa' => $this->input->post('id_reg_pd'),
@@ -294,10 +294,10 @@ class Mhswpindah extends CI_Controller {
 			$res['cek1'] = $cek1;
 			$res['cek2'] = $cek2;
 			 
-			if (!$cek1->data) {
+			/*if (!$cek1->data) {
 				# jika nim baru belum ada di feeder
 				$res['inFeeder'] = $this->InsertRiwayatPendidikanMahasiswa($nim);
-			}
+			}*/
 			if (!$cek2->data) {
 				# jika nim lama belum berstatus pindah
 				$res['outFeeder']	= $this->InsertMahasiswaLulusDO($xnim);
@@ -313,8 +313,8 @@ class Mhswpindah extends CI_Controller {
 				'label' => 'Nomor Stambuk',
 				'rules' => 'required|max_length[9]',
 				'errors' => array(
-					'required' => '%s Tidak Boleh Kosong',
-					'max_length' => '%s Maksimal 9 Angka',
+				'required' => '%s Tidak Boleh Kosong',
+				'max_length' => '%s Maksimal 9 Angka',
 				)
 			),
 			array(
@@ -322,8 +322,8 @@ class Mhswpindah extends CI_Controller {
 				'label' => 'Alamat Sekarang',
 				'rules' => 'required|max_length[250]',
 				'errors' => array(
-					'required' => '%s Tidak Boleh Kosong',
-					'max_length' => '%s Maksimal 250 Karakter',
+				'required' => '%s Tidak Boleh Kosong',
+				'max_length' => '%s Maksimal 250 Karakter',
 				)
 			),
 			array(
@@ -331,8 +331,8 @@ class Mhswpindah extends CI_Controller {
 				'label' => 'Alamat Setelah Pindah',
 				'rules' => 'required|max_length[250]',
 				'errors' => array(
-					'required' => '%s Tidak Boleh Kosong',
-					'max_length' => '%s Maxsimal 250 Karakter',
+				'required' => '%s Tidak Boleh Kosong',
+				'max_length' => '%s Maxsimal 250 Karakter',
 				)
 			),
 			array(
@@ -340,8 +340,8 @@ class Mhswpindah extends CI_Controller {
 				'label' => 'Pindah',
 				'rules' => 'required|max_length[250]',
 				'errors' => array(
-					'required' => '%s Tidak Boleh Kosong',
-					'max_length' => '%s Maxsimal 250 Karakter',
+				'required' => '%s Tidak Boleh Kosong',
+				'max_length' => '%s Maxsimal 250 Karakter',
 				)
 			),
 			array(
@@ -349,8 +349,8 @@ class Mhswpindah extends CI_Controller {
 				'label' => 'Alasan',
 				'rules' => 'required|max_length[250]',
 				'errors' => array(
-					'required' => '%s Tidak Boleh Kosong',
-					'max_length' => '%s Maxsimal 250 Karakter',
+				'required' => '%s Tidak Boleh Kosong',
+				'max_length' => '%s Maxsimal 250 Karakter',
 				)
 			),
 		);
@@ -508,10 +508,10 @@ class Mhswpindah extends CI_Controller {
 	{	
 		$nim_baru 				= $this->get_nim_baru($_POST['KodeJurusan'], $_POST['TahunAkademik']);
 		
-		$_POST['NIM']					= $nim_baru['nim_baru'];
-		$_POST['Status'] 			= 'A';
+		$_POST['NIM']			= $nim_baru['nim_baru'];
+		$_POST['Status'] 		= 'A';
 		$_POST['StatusAwal'] 	= 'P';
-		$_POST['Login']				= $nim_baru['nim_baru'];
+		$_POST['Login']			= $nim_baru['nim_baru'];
 		$_POST['Password']		= $nim_baru['nim_baru'].'$';
 
 		$session_name 			= array(
@@ -637,19 +637,19 @@ class Mhswpindah extends CI_Controller {
 			$idProdiFeeder = $this->Model_mahasiswa_pindah->getIdJurusan($mhswLama->KodeJurusan);
 		}
 		$insert_feeder = array(
-			'id_mahasiswa'							=> $mhsw->id_pd,
-			'nim'												=> $mhsw->NIM,
-			'id_jenis_daftar'						=> '2',
-			'id_jalur_daftar'						=> '',
-			'id_periode_masuk'					=> $tahun_pindah,
-			'tanggal_daftar'						=> date("Y-m-d"),
-			'id_perguruan_tinggi'				=> '8e5d195a-0035-41aa-afef-db715a37b8da',
-			'id_prodi'									=> $this->Model_mahasiswa_pindah->getIdJurusan($mhsw->KodeJurusan),
-			'sks_diakui'								=> floatval($mhsw->SKSditerima),
+			'id_mahasiswa'				=> $mhsw->id_pd,
+			'nim'						=> $mhsw->NIM,
+			'id_jenis_daftar'			=> '2',
+			'id_jalur_daftar'			=> '',
+			'id_periode_masuk'			=> $tahun_pindah,
+			'tanggal_daftar'			=> date("Y-m-d"),
+			'id_perguruan_tinggi'		=> '8e5d195a-0035-41aa-afef-db715a37b8da',
+			'id_prodi'					=> $this->Model_mahasiswa_pindah->getIdJurusan($mhsw->KodeJurusan),
+			'sks_diakui'				=> floatval($mhsw->SKSditerima),
 			'id_perguruan_tinggi_asal'	=> '8e5d195a-0035-41aa-afef-db715a37b8da',
-			'id_prodi_asal'							=> $idProdiFeeder,
-			'id_pembiayaan'							=> '',
-			'biaya_masuk'								=> $biaya_masuk_kuliah,
+			'id_prodi_asal'				=> $idProdiFeeder,
+			'id_pembiayaan'				=> '',
+			'biaya_masuk'				=> $biaya_masuk_kuliah,
 		);
 		
 		$res = $this->feeder_untad->insert('InsertRiwayatPendidikanMahasiswa',$insert_feeder);
@@ -748,7 +748,7 @@ class Mhswpindah extends CI_Controller {
 		// echo json_encode($data);
 	}
 	
-	/*
+	
 	public function reSendHistory($nim,$tahun_pindah)
 	{
 		if ($nim) {
@@ -776,5 +776,5 @@ class Mhswpindah extends CI_Controller {
 			echo json_encode($res);
 		}
 	}
-	*/
+	
 }
