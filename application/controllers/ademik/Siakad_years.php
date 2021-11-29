@@ -5,19 +5,25 @@ date_default_timezone_set("Asia/Makassar");
 class Siakad_years extends CI_Controller {
 
 	private $db2;
+	private $secret = "Si4k@d2UnT4D";
 
 	public function __construct(){
 		parent::__construct();
 		$this->db2 = $this->load->database('spc', TRUE);
 		$this->load->library('encryption');
 		$this->load->model('ipk_model');
-	    $this->load->model('krs_model');
+	  $this->load->model('krs_model');
+		$this->app->cek_login();
 	}
 
 	public function index() {
+		$user_proses = $this->session->userdata('unip');
 		//$data['jurusan'] = $this->matakuliah_smtr_model->get_dataSearch();
 		$data['detailperiodeaktif'] = $this->db->query(" SELECT * FROM _v2_periode_aktif where status='aktif'")->row();
 		$data['periodeaktif'] = $this->db->query("SELECT nama_periode, periode_aktif, status FROM _v2_periode_aktif")->result();
+		
+		$data['checksum'] = sha1($data['detailperiodeaktif']->periode_aktif.$this->secret.$user_proses);
+		
 		//$this->app->checksession(); // untuk pengecekan session
 		$this->load->view('dashbord', $data);
 	}
@@ -74,13 +80,6 @@ class Siakad_years extends CI_Controller {
 		);
 		$tempSpc = [];
 		if (!empty($user_proses)){
-			// $id = $this->cek_log();
-			$id = $this->db->query("SELECT max(`tgl`) as waktu_transaksi FROM `_v2_spp2` WHERE `tgl` <= now()")->row()->waktu_transaksi;
-			// $id = "2019-06-01"
-			// $limit_waktu = " and p.waktu_transaksi > '$id' ";
-			$limit_waktu = "";
-			$qrspc="SELECT p.id_record_tagihan,p.key_val_2 as key_val_2,t.nama,t.kode_fakultas,t.kode_prodi,p.waktu_transaksi,p.total_nilai_pembayaran, dt.kode_jenis_biaya FROM pembayaran AS p, tagihan AS t, detil_tagihan as dt WHERE t.id_record_tagihan=p.id_record_tagihan $limit_waktu and kode_periode >='$tahun' and t.id_record_tagihan=dt.id_record_tagihan and ( dt.kode_jenis_biaya like '%SPP%' or dt.kode_jenis_biaya like '%UKT%' or dt.kode_jenis_biaya like '%COA%' or dt.kode_jenis_biaya like '%SP%' or dt.kode_jenis_biaya like '%RMD%' or dt.kode_jenis_biaya like '%REMEDIAL%' or dt.kode_jenis_biaya like '%P3S%') order by p.waktu_transaksi ASC";
-			$wspc1 = $this->db2->query($qrspc);
 			// echo json_encode($qrspc);exit;
 			// echo json_encode($wspc1->result_array());exit;
 			/*
@@ -141,7 +140,6 @@ class Siakad_years extends CI_Controller {
 			}
 			*/
 			$this->db->trans_start();
-				$this->db->insert_batch('_v2_tempSpc',$wspc1->result_array());
 				$tempSpc = $this->db->select(" 
 										'A' as StatusMhs, 
 										_v2_tempSpc.key_val_2 as nim,
@@ -175,7 +173,7 @@ class Siakad_years extends CI_Controller {
 			);
 
 			if (ENVIRONMENT=="development") {
-				$dataError['kueriSpc'] = $this->db2->last_query();
+				// $dataError['kueriSpc'] = $this->db2->last_query();
 				$dataError['kuerispp2'] = $this->db->last_query();
 				$dataError['data']	= ['spc'=>$wspc1->result_array(),'spp2'=>$tempSpc];
 			}else {
@@ -184,6 +182,107 @@ class Siakad_years extends CI_Controller {
 			$this->db->query("TRUNCATE TABLE _v2_tempSpc");
 		}
 		echo json_encode($dataError);
+	}
+
+	// get pembayaran dari SPC dan menyimpan kedalam tabel temporary '_v2_tempSpc'
+	public function get_spctosiakad($checksum)
+	{
+		$user_proses = $this->session->userdata('unip');
+		$tahun = $this->input->post('tahun');
+		if ($checksum != sha1($tahun.$this->secret.$user_proses)) {
+			echo json_encode([
+				'status' => False,
+				'message' => 'Checksum tidak sesuai.',
+			]);
+		}else {
+			// $id = $this->cek_log();
+			$id = $this->db->query("SELECT max(`tgl`) as waktu_transaksi FROM `_v2_spp2` WHERE `tgl` <= now()")->row()->waktu_transaksi;
+			// $id = "2019-06-01"
+			// $limit_waktu = " and p.waktu_transaksi > '$id' ";
+			$limit_waktu = "";
+			$qrspc="SELECT p.id_record_tagihan,p.key_val_2 as key_val_2,t.nama,t.kode_fakultas,t.kode_prodi,p.waktu_transaksi,p.total_nilai_pembayaran, dt.kode_jenis_biaya FROM pembayaran AS p, tagihan AS t, detil_tagihan as dt WHERE t.id_record_tagihan=p.id_record_tagihan $limit_waktu and kode_periode >='$tahun' and t.id_record_tagihan=dt.id_record_tagihan and ( dt.kode_jenis_biaya like '%SPP%' or dt.kode_jenis_biaya like '%UKT%' or dt.kode_jenis_biaya like '%COA%' or dt.kode_jenis_biaya like '%SP%' or dt.kode_jenis_biaya like '%RMD%' or dt.kode_jenis_biaya like '%REMEDIAL%' or dt.kode_jenis_biaya like '%P3S%') order by p.waktu_transaksi ASC";
+			$wspc1 = $this->db2->query($qrspc);
+			if ($wspc1->num_rows() > 0) {
+				$this->db->insert_batch('_v2_tempSpc',$wspc1->result_array());
+				echo json_encode([
+					'status' => TRUE,
+					'message' => 'Berhasil mengambil data dari SPC',
+				]);
+			}else{
+				if (ENVIRONMENT=="production") {
+					echo json_encode([
+						'status' => False,
+						'message' => 'Tidak ada data dari SPC',
+					]);
+				}else{
+					echo json_encode([
+						'status' => False,
+						'message' => 'Tidak ada data dari SPC',
+						'kueri' => $qrspc
+					]);
+				}
+			}
+		}
+	}
+
+	// mengupdate tabel '_v2_spp2' dengan data dari tabel '_v2_tempSpc'
+	function updateBayar($checksum){
+		$user_proses = $this->session->userdata('unip');
+		$tahun = $this->input->post('tahun');
+		if ($checksum != sha1($tahun.$this->secret.$user_proses)) {
+			echo json_encode([
+				'status' => False,
+				'message' => 'Checksum tidak sesuai.',
+			]);
+		}else {
+			$tempSpc = $this->db->select(" 
+														'A' as StatusMhs, 
+														_v2_tempSpc.key_val_2 as nim,
+														'$tahun' as tahun,
+														_v2_tempSpc.kode_fakultas as KodeFakultas,
+														_v2_tempSpc.kode_prodi as KodeJurusan,
+														'1' as bayar,
+														_v2_tempSpc.total_nilai_pembayaran as TotalBayar,
+														_v2_tempSpc.id_record_tagihan as id_record_tagihan,
+														_v2_tempSpc.waktu_transaksi as tgl")
+													->join('_v2_spp2','_v2_tempSpc.id_record_tagihan=_v2_spp2.id_record_tagihan','LEFT')
+													->where("_v2_spp2.id_record_tagihan is null",null,false)
+													->get('_v2_tempSpc');
+			if($tempSpc->num_rows() > 0) {
+				$this->db->trans_start();
+	
+					$this->db->insert_batch('_v2_spp2',$tempSpc->result_array());
+	
+					$dataupdate = array(
+					'point3' => 1,
+					'point3_user' => "$user_proses"
+					);
+					$this->db->set('point3_tgl', 'NOW()', FALSE)
+									 ->where('periode_aktif', $tahun)
+									 ->update('_v2_periode_aktif', $dataupdate);
+					
+					$this->db->query("TRUNCATE TABLE _v2_tempSpc");
+				$this->db->trans_complete();
+	
+				if ($this->db->trans_status() === FALSE)
+				{
+					echo json_encode([
+						'status' => False,
+						'message' => 'Gagal update status pembayaran mahasiswa. Transaksi data gagal, cek database ecara manual.',
+					]);	
+				}else{
+					echo json_encode([
+						'status' => true,
+						'message' => 'Berhasil mengupdate pembayaran mahasiswa.',
+					]);	
+				}
+			}else{
+				echo json_encode([
+					'status' => False,
+					'message' => 'Tidak ada data baru.',
+				]);
+			}
+		}
 	}
 
 	// log waktu pada pembayaran spc

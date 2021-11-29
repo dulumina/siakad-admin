@@ -77,7 +77,51 @@ function simpan_nilai($id, $hadir, $praktek, $mid, $uas, $nilai, $grade)
     return $this->db->update('_v2_krsmbkm');
 }
 
-  
+
+function mhs($nim)
+    {
+        $this->db->select('*');
+        $this->db->where('nim', $nim);
+        return $this->db->get('_v2_mhsw_pmmdn')->row();
+    }
+
+ function periode($nim)
+    {
+        $this->db->distinct();
+        $this->db->select('tahun');
+        $this->db->where('nim', $nim);
+
+
+        return $this->db->get('_v2_krsmbkm')->result();
+    }   
+
+
+   function khs($nim, $periode)
+    {
+        $this->db->select('_v2_krsmbkm.nim, _v2_mhsw_pmmdn.name, _v2_krsmbkm.tahun, _v2_jadwal.NamaMK, _v2_krsmbkm.nilai');
+        $this->db->join('_v2_mhsw_pmmdn', '_v2_mhsw_pmmdn.NIM = _v2_krsmbkm.nim');
+        $this->db->join('_v2_jadwal', '_v2_jadwal.IDJADWAL= _v2_krsmbkm.id_jadwal');
+        $this->db->where('_v2_mhsw_pmmdn.nim', $nim);
+        $this->db->where('_v2_krsmbkm.tahun', $periode);
+        return $this->db->get('_v2_krsmbkm')->result();
+    }   
+
+    function cetak ($nim, $periode)
+    {
+        $this->db->select('*');
+        $this->db->join('_v2_mhsw_pmmdn', '_v2_mhsw_pmmdn.NIM = _v2_krsmbkm.nim');
+        $this->db->join('_v2_jadwal', '_v2_jadwal.IDJADWAL= _v2_krsmbkm.id_jadwal');
+        $this->db->where('_v2_mhsw_pmmdn.nim', $nim);
+        $this->db->where('_v2_krsmbkm.tahun', $periode);
+        return $this->db->get('_v2_krsmbkm')->result();
+    }
+
+    function tperiode ($periode)
+    {
+        $this->db->select('*');
+        $this->db->where('periode_aktif', $periode);
+        return $this->db->get('_v2_periode_aktif')->row();
+    }
 
 
 }
