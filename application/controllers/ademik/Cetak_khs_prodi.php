@@ -767,6 +767,10 @@ class Cetak_khs_prodi extends CI_Controller {
 		if($data->IPK != -1){
 			$NIM = ucfirst($data->NIM);
 
+			if($data->Status == "KM") {
+				$data->status = "M";				
+			}
+
 			$record['id_semester'] 							= $data->Tahun;
 			$record['id_registrasi_mahasiswa']	= $data->id_reg_pd;
 			$record['id_status_mahasiswa'] 			= $data->Status;

@@ -203,7 +203,7 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				<span aria-hidden="true">&times;</span></button>
 			</div>
-			<div class="modal-body" id='isiRegistrasiUlang'>
+			<div class="modal-body container" id='isiRegistrasiUlang'>
 				
 			</div>
 		</div>
@@ -638,13 +638,17 @@
 
 							var button = document.querySelector('#prcaddssi');
 							$display = $("#displayMhsw");
+							let tombol = 'prcAddSsi';
+							if(button.value == 'Pilih') {
+								tombol = 'prcUpdate';
+							}
 							button.addEventListener('click', function (event) {
 								event.preventDefault();
 								$body = $("body");
 								$body.addClass("loading");
 								//alert($('#formPrcKrs').serialize());
 								$.ajax({
-									url: "<?= base_url('ademik/mhswkrs/prcAddSsi'); ?>",
+									url: '<?= base_url('ademik/mhswkrs/'); ?>'+tombol,
 									data: $('#formRegUlang').serialize(),
 									type: 'POST',
 									dataType: 'json',
@@ -700,13 +704,15 @@
 											closeOnCancel: false
 										},
 										function(isConfirm) {
+											let stts = $('#km2').val();
+											console.log(stts);
 											if (isConfirm) {							
 												$display = $("#displayMhsw");
 												$body = $("body");
 												$body.addClass("loading");
 												$.ajax({
 													url: "<?= base_url('ademik/mhswkrs/prcRegUlang'); ?>",
-													data: dataku,
+													data: dataku + '&status='+stts,
 													type: 'POST',
 													dataType: 'json',
 													cache : false,
