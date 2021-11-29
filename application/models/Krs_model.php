@@ -1500,11 +1500,24 @@ class Krs_model extends CI_Model{
 		}
 	}
 
-	public function updateKhsRegUlang($thn, $nim) {
+	public function updateKhsRegUlang($thn, $nim, $status='A') {
 		$nim=$this->db->escape_str($nim);
 		$thn=intval($thn);
 
-		$update = $this->db->query("UPDATE _v2_khs set Status='A', Registrasi='Y', TglRegistrasi=now() where Tahun='$thn' and NIM='$nim'");
+		$update = $this->db->query("UPDATE _v2_khs set Status='$status', Registrasi='Y', TglRegistrasi=now() where Tahun='$thn' and NIM='$nim'");
+
+		if($update){
+			return true;
+		}else{
+			return false;
+		}
+	}	
+
+	public function updateKhs($thn, $nim, $status) {
+		$nim=$this->db->escape_str($nim);
+		$thn=intval($thn);
+
+		$update = $this->db->query("UPDATE _v2_khs set Status='$status' where Tahun='$thn' and NIM='$nim'");
 
 		if($update){
 			return true;
