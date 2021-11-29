@@ -8,7 +8,7 @@ $(document).ready(function(){
       // console.log('tessss');
       $.ajax({
         type: 'POST',
-        url: '<?=base_url()?>ademik/khs_inbound/mhs',
+        url: '<?=base_url()?>ademik/Khs_inbound/mhs',
         data: {
           nim: nim         
         },
@@ -35,7 +35,7 @@ $('#tperiode').click(function(){
 	// console.log(nim);
 	$.ajax({
         type: 'POST',
-        url: '<?=base_url()?>ademik/khs_inbound/tkhs',
+        url: '<?=base_url()?>ademik/Khs_inbound/tkhs',
         data: {
         	nim:nim,
           periode: periode         
@@ -44,6 +44,8 @@ $('#tperiode').click(function(){
         	let isi_khs = JSON.parse(ini);
           console.log(isi_khs);
           renderkhs(isi_khs.dataa);
+          $("#ambil-nim").val(nim);
+          $("#ambil-periode").val(periode);
         }
       });
 
@@ -54,7 +56,7 @@ function in_periode(ini) {
 		// console.log(ini);
 			$.ajax({
 			        type: 'POST',
-			        url: '<?=base_url()?>ademik/khs_inbound/periode',
+			        url: '<?=base_url()?>ademik/Khs_inbound/periode',
 			        data: {
 			          nim: ini         
 			        },
@@ -93,10 +95,8 @@ function in_periode(ini) {
      
     }).draw();
     document.getElementById("cetak_khs").disabled = false;
+
   }
-
-
-
 
 
 
@@ -178,7 +178,9 @@ function in_periode(ini) {
 											<div class="col-sm-4">
 
 												<button class="btn btn-flat btn-info" id="tperiode" name="tperiode"><i class="fa fa-refresh"></i></button> 
-												<button class="btn btn-flat btn-info" id="cetak_khs" disabled> Cetak KHS</button>
+
+												
+												
 											</div>
 											<!-- <div class="col-sm-2">
 												<input class="btn btn-flat btn-info" type="button" id="search" name="search" value="Search">
@@ -186,6 +188,18 @@ function in_periode(ini) {
 									</div>
 
 									<div class="card card-default">
+										<div class="card-header">
+											<form action="<?=base_url()?>ademik/Khs_inbound/Cetak_khs" method="get">
+												<!-- <form name="form" action="" method="post"> -->
+
+												<input type="hidden" name="ambil-nim" id="ambil-nim">
+												<input type="hidden" name="ambil-periode" id="ambil-periode">
+
+												<!-- </form> -->
+												
+												<button class="btn btn-flat btn-info" id="cetak_khs" style="float: right;"  disabled><i class="fa fa-print"></i> Cetak KHS</button>
+											</form>
+										</div>
 			              <div class="card-body">
 			                <table id="example" class="table table-bordered table-striped ">
 			                  <thead>
