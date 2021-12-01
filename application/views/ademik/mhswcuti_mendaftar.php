@@ -3,7 +3,7 @@
 	     <span aria-hidden="true">&times;</span> 
 	    <link rel="shortcut icon" href="" />
 	  </button>
-  	  <h4 class="modal-title">DAFTAR CUTIii</h4>
+  	  <h4 class="modal-title">DAFTAR CUTI</h4>
   </div>
 
 	<div class="modal-body">
