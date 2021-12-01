@@ -43,7 +43,7 @@
 							<div class="form-group row">
 								<label class="col-sm-2 control-label">NIM Mahasiswa</label>
 								<div class="col-sm-4">
-									<input type="text" class="form-control" id="dataSearch" value="" name="dataSearch" placeholder="Silahkan Input" />
+									<input type="text" class="form-control" id="dataSearch" value="<?= (isset($detailmhsw->NIM))? $detailmhsw->NIM : "" ?>" name="dataSearch" placeholder="Silahkan Input" />
 								</div>
 								<div class="col-sm-2">
 									<input class="btn btn-flat btn-info" type="submit" id="search" name="search" value="Search">
@@ -60,135 +60,159 @@
 				<?php } else { ?>
 					<!-- Awal Table -->
 		  			<div class="box">
-			            <!-- Minggu -->
-			            <div class="box-header">
-			              <h3 class="box-title">Kliring Nilai Mahasiswa</h3>
-			            </div>
-			            <div class="box-body">
-		              		<dl class="dl-horizontal">
-		                		<dt>NIM</dt>
-		                		<dd><?= $detailmhsw->NIM ?></dd>
-		                		<dt>Nama Mahasiswa</dt>
-		                		<dd><?= $detailmhsw->Name ?></dd>
-		                		<dt>Jurusan</dt>
-		                		<dd><?= $detailmhsw->KodeJurusan ?>--<?= $detailmhsw->Nama_Indonesia ?></dd>
-								<dt>Status Awal</dt>
-		                		<dd>
-
-		                			<?php if ( $detailmhsw->StatusAwal == 'P' ) {
-		                				echo "Pindahan";
-		                			} elseif ( $detailmhsw->StatusAwal == 'J' ) {
-		                				echo "Alih Jenjang";
-		                			} elseif ( $detailmhsw->StatusAwal == 'B' ) {
-		                				echo "Peserta Didik Baru";
-		                			} ?>
-		                				
-		                		</dd>
-		              		</dl>
-			            </div>
-						<hr>
-
-						<?php if ( empty($detailmhsw->id_reg_pd) or empty($detailmhsw->id_pd) ){ ?>
-
-							<div style="margin-left: 75px;">Mahasiswa Tidak Dapat Kliring Data karena Mahasiswa belum terdaftar di PDDIKTI</div>
-
-						<?php } elseif ( $detailmhsw->StatusAwal != 'P' AND $detailmhsw->StatusAwal != 'J' ) { ?>
-							
-							<div style="margin-left: 75px;">Mahasiswa ini Bukan Mahasiswa Pindahan dan Alih Jenjang </div>
-
-						<?php } else { ?>
-
-				            <div style="margin-left: 75px;">
-				            	<button type="button" data-toggle="modal" data-target="#modal-nilai-transfer" class="btn btn btn-success fa fa-print"> Tambah Nilai Transfer</button>
+							<!-- Minggu -->
+							<div class="box-header">
+								<h3 class="box-title">Kliring Nilai Mahasiswa</h3>
 							</div>
+							<div class="box-body">
+								<div class="row">
+									<dl class="dl-horizontal col-lg-3 col-md-4 col-sm-12">
+										<dt>NIM</dt>
+										<dd><?= $detailmhsw->NIM ?></dd>
+										<dt>Nama Mahasiswa</dt>
+										<dd><?= $detailmhsw->Name ?></dd>
+										<dt>Jurusan</dt>
+										<dd><?= $detailmhsw->KodeJurusan ?>--<?= $detailmhsw->jurusan ?></dd>
+										<dt>Status Awal</dt>
+										<dd>
 
-				            <div class="row col-md-12">	
-					            <div class="col-md-12">
-					            	<div class="box-header">
-					              		<h3 class="box-title">Daftar Nilai</h3>
-					            	</div>
-							        <div class="box-body">
-								        <table id="matakuliah" class="table table-bordered table-striped table-responsive dataTable">
-							                <thead>
-												<tr>
-													<th>Kode MK Asal</th>
-													<th>Nama MK Asal</th>
-													<th>Bobot SKS Asal</th>
-													<th>Nilai Asal</th>
-													<th>Kode MK diakui</th>
-													<th>Nama MK diakui</th>
-													<th>Bobot MK</th>
-													<th>Nilai diakui</th>
-													<th>Nilai index</th>
-													<th>Action</th>
-												</tr>
-											</thead>
-											<tbody>
-
-												<?php if ( empty($record) ) { ?>
-
-												<?php } else { 
-
-													foreach ($record as $tampil ) { ?>
-
-														<tr>
-															<td><?= $tampil->KodeMK_asal ?></td>
-															<td><?= $tampil->NamaMK_asal ?></td>
-															<td><?= $tampil->SKS_asal ?></td>
-															<td><?= $tampil->GradeNilai_asal ?></td>
-															<td><?= $tampil->KodeMK ?></td>
-															<td><?= $tampil->NamaMK ?></td>
-															<td><?= $tampil->SKS ?></td>
-															<td><?= $tampil->GradeNilai ?></td>
-															<td><?= $tampil->Bobot ?></td>
-															<td>
-																
-																<?php if ( empty($tampil->id_transfer) ) { ?>
-
-																	<button type="button" data-toggle="modal" class="btn btn-xs btn-warning" onclick="getEdit('<?= $tampil->ID ?>')">Kirim</button>
-																	<button type="button" class="btn btn-xs btn-danger" onclick="actDelete('<?= $tampil->id_transfer ?>','<?=$tampil->ID ?>')">Hapus</button>
-
-																<?php } else { ?>
-
-																	<button type="button" data-toggle="modal" onclick="getEdit('<?= $tampil->ID ?>')" class="btn btn-xs btn-success" onclick="">Edit</button>
-																	<button type="button" class="btn btn-xs btn-danger" onclick="actDelete('<?= $tampil->id_transfer ?>','<?=$tampil->ID ?>')">Hapus</button>
-
-																<?php } ?>
-
-															</td>
-														</tr>
-
-												<?php }
-
-												} ?>
-
-											</tbody>
-											<tfoot>
-												<tr>
-													<th>Kode MK Asal</th>
-													<th>Nama MK Asal</th>
-													<th>Bobot SKS Asal</th>
-													<th>Nilai Asal</th>
-													<th>Kode MK diakui</th>
-													<th>Nama MK diakui</th>
-													<th>Bobot MK</th>
-													<th>Nilai diakui</th>
-													<th>Nilai index</th>
-													<th>Action</th>
-												</tr>
-											</tfoot>
-										</table>
-									</div>
+											<?php if ( $detailmhsw->StatusAwal == 'P' ) {
+												echo "Pindahan";
+											} elseif ( $detailmhsw->StatusAwal == 'J' ) {
+												echo "Alih Jenjang";
+											} elseif ( $detailmhsw->StatusAwal == 'B' ) {
+												echo "Peserta Didik Baru";
+											} ?>
+												
+										</dd>
+									</dl>
+									<dl class="dl-horizontal col-lg-3 col-md-4 col-sm-12">
+										<dt>Tempat Lahir</dt><dd><?= $detailmhsw->TempatLahir ?></dd>
+										<dt>Tanggal Lahir</dt><dd><?= $detailmhsw->TglLahir ?></dd>
+										<dt>Agama</dt><dd><?= $detailmhsw->Agama ?></dd>
+										<dt>Nama Ibu</dt><dd><?= $detailmhsw->NamaIbu ?></dd>
+									</dl>
+									<dl class="dl-horizontal col-lg-3 col-md-4 col-sm-12">
+										<dt>Kewarganegaraan</dt><dd><?= $detailmhsw->Kewarganegaraan ?></dd>
+										<dt>NIK</dt><dd><?= $detailmhsw->NIK ?></dd>
+										<dt>Kelurahan</dt><dd><?= $detailmhsw->Kelurahan ?></dd>
+										<dt>Kecamatan</dt><dd><?= $detailmhsw->Kecamatan ?></dd>
+									</dl>
+									<dl class="dl-horizontal col-lg-3 col-md-4 col-sm-12">
+										<dt>Universitas Asal</dt><dd><?= $detailmhsw->UniversitasAsal ?></dd>
+										<dt>Prodi Asal</dt><dd><?= $detailmhsw->ProdiAsal ?></dd>
+									</dl>
 								</div>
 							</div>
-					      	<div class="keterangan" style="margin: 5px 0px 15px 27px">
-					      		<b style="color: blue;">Keterangan :</b> <br />
-					      		<span class='glyphicon glyphicon-asterisk' style='color: orange;'></span> Mata Kuliah di Input dari Kliring <br />
-					      		<!--<span class='glyphicon glyphicon-remove' style='color: red;'></span> Mata Kuliah Tidak Aktif-->
-					      	</div>
+							<div class="box-footer">
+								<? if (count($unvalid) == 0 ) : ?>
+									<a class="btn btn-primary pull-right" onclick="kirimBiodataFeeder()">Kirim Biodata</a>
+								<? endif; ?>
+							</div>
+						</div>
 
+						<div class="box">
+							<?php if ( ( $detailmhsw->StatusAwal != 'P' AND $detailmhsw->StatusAwal != 'J' ) or count($unvalid) > 0 ) { ?>
+								<div class="box-header">
+									<h3 class="box-title">Keterangan</h3>
+								</div>
+								<div class="box-body">
+									<? if (count($unvalid) > 0) : ?>
+										<div style="margin-left: 75px;">Biodata mahasiswa ini belum lengkap, mohon dilengkapi pada menu biodata mahasiswa </div>
+										<ol style="margin-left: 75px;">
+											<? for ($i=0; $i < count($unvalid); $i++) { ?>
+												<li><?= $unvalid[$i]  ?></li>
+											<?php } ?>
+										</ol>
+									<? else : ?>
+										<div style="margin-left: 75px;">Mahasiswa ini Bukan Mahasiswa Pindahan dan Alih Jenjang </div>
+									<? endif; ?>
+								</div>
+							<?php } else { ?>
+								<div class="box-header">
+									<h3 class="box-title">Daftar Nilai</h3>
+									<div class="box-tools">
+										<button type="button" data-toggle="modal" data-target="#modal-nilai-transfer" class="btn btn btn-success fa fa-print"> Tambah Nilai Transfer</button>
+									</div>
+								</div>
+								<div class="box-body">
+									<table id="matakuliah" class="table table-bordered table-striped table-responsive dataTable">
+										<thead>
+											<tr>
+												<th>Kode MK Asal</th>
+												<th>Nama MK Asal</th>
+												<th>Bobot SKS Asal</th>
+												<th>Nilai Asal</th>
+												<th>Kode MK diakui</th>
+												<th>Nama MK diakui</th>
+												<th>Bobot MK</th>
+												<th>Nilai diakui</th>
+												<th>Nilai index</th>
+												<th>Action</th>
+											</tr>
+										</thead>
+										<tbody>
+
+											<?php if ( empty($record) ) { ?>
+
+											<?php } else { 
+
+												foreach ($record as $tampil ) { ?>
+
+													<tr>
+														<td><?= $tampil->KodeMK_asal ?></td>
+														<td><?= $tampil->NamaMK_asal ?></td>
+														<td><?= $tampil->SKS_asal ?></td>
+														<td><?= $tampil->GradeNilai_asal ?></td>
+														<td><?= $tampil->KodeMK ?></td>
+														<td><?= $tampil->NamaMK ?></td>
+														<td><?= $tampil->SKS ?></td>
+														<td><?= $tampil->GradeNilai ?></td>
+														<td><?= $tampil->Bobot ?></td>
+														<td>
+															
+															<?php if ( empty($tampil->id_transfer) ) { ?>
+
+																<button type="button" data-toggle="modal" class="btn btn-xs btn-warning" onclick="getEdit('<?= $tampil->ID ?>')">Kirim</button>
+																<button type="button" class="btn btn-xs btn-danger" onclick="actDelete('<?= $tampil->id_transfer ?>','<?=$tampil->ID ?>')">Hapus</button>
+
+															<?php } else { ?>
+
+																<button type="button" data-toggle="modal" onclick="getEdit('<?= $tampil->ID ?>')" class="btn btn-xs btn-success" onclick="">Edit</button>
+																<button type="button" class="btn btn-xs btn-danger" onclick="actDelete('<?= $tampil->id_transfer ?>','<?=$tampil->ID ?>')">Hapus</button>
+
+															<?php } ?>
+
+														</td>
+													</tr>
+
+											<?php }
+
+											} ?>
+
+										</tbody>
+										<tfoot>
+											<tr>
+												<th>Kode MK Asal</th>
+												<th>Nama MK Asal</th>
+												<th>Bobot SKS Asal</th>
+												<th>Nilai Asal</th>
+												<th>Kode MK diakui</th>
+												<th>Nama MK diakui</th>
+												<th>Bobot MK</th>
+												<th>Nilai diakui</th>
+												<th>Nilai index</th>
+												<th>Action</th>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+								<div class="keterangan" style="margin: 5px 0px 15px 27px">
+									<b style="color: blue;">Keterangan :</b> <br />
+									<span class='glyphicon glyphicon-asterisk' style='color: orange;'></span> Mata Kuliah di Input dari Kliring <br />
+									<!--<span class='glyphicon glyphicon-remove' style='color: red;'></span> Mata Kuliah Tidak Aktif-->
+								</div>
 					    <?php } ?>
-
 				    </div>
 		  			<!-- Akhir Table -->
 		  		<?php } ?>
@@ -444,6 +468,31 @@
 
 <script type="text/javascript">
 
+	function kirimBiodataFeeder() {
+		$body = $("body");
+		$body.addClass("loading");
+		let endpoint = "<?= base_url('ademik/kliring_nilaitransfer/InsertMahasiswafeeder'); ?>";
+		let nim = "<?= isset($detailmhsw->NIM)? $detailmhsw->NIM : "" ; ?>";
+		let data={"nim":nim}
+		$.post(endpoint,data)
+			.done((res)=>{
+				// $('#search').click();
+				let response = JSON.parse(res);
+				console.log(response.msg);
+				swal({
+					title:"Kirim biodata",
+					text:response.msg,
+					type: (response.msg!="success")? "warning": "success",
+				})
+			})
+			.fail(function(res) {
+				alert( response.msg );
+			})
+			.always(function() {
+				$body.removeClass("loading");
+			});
+	}
+
 	function simpan(act) {
 
 
@@ -539,32 +588,32 @@
 		$body = $("body");
 		$body.addClass("loading");
 
-	  	$.ajax({
-	    	url : "<?= base_url('ademik/kliring_nilaitransfer/getDataEdit'); ?>/" +id,
-	    	type: "GET",
-	    	dataType: "JSON",
-	    	success: function(data) {
-	    		$body.removeClass("loading");
+			$.ajax({
+				url : "<?= base_url('ademik/kliring_nilaitransfer/getDataEdit'); ?>/" +id,
+				type: "GET",
+				dataType: "JSON",
+				success: function(data) {
+					$body.removeClass("loading");
 
-	    		console.log(data);
+					console.log(data);
 
-	    		$('#id').val(data.ID);
-	    		$('#id_transfer').val(data.id_transfer);
-	        	$('#kodeMKasal_edit').val(data.KodeMK_asal);
-	        	$('#namaMKasal_edit').val(data.NamaMK_asal);
+					$('#id').val(data.ID);
+					$('#id_transfer').val(data.id_transfer);
+						$('#kodeMKasal_edit').val(data.KodeMK_asal);
+						$('#namaMKasal_edit').val(data.NamaMK_asal);
 				$('#SKSasal_edit').val(data.SKS_asal);
 				$('#grade_asal_edit').val(data.GradeNilai_asal);
 				$('#id_mk_edit')
-			        .append($("<option></option>")
-			        .attr("value",data.mk_value)
-			        .attr('selected','selected')
-			        .text(data.mk_tampil));
+							.append($("<option></option>")
+							.attr("value",data.mk_value)
+							.attr('selected','selected')
+							.text(data.mk_tampil));
 
-			    $('#grade_edit')
-			        .append($("<option></option>")
-			        .attr("value",data.nilaivalue)
-			        .attr('selected','selected')
-			        .text(data.nilaitampil));
+					$('#grade_edit')
+							.append($("<option></option>")
+							.attr("value",data.nilaivalue)
+							.attr('selected','selected')
+							.text(data.nilaitampil));
 
 				if ( data.NotActive == 'N' ) {
 					$('#md_checkbox_21').attr('checked','checked');
@@ -572,11 +621,11 @@
 					$('#md_checkbox_21').removeAttr('checked');
 				}
 
-	        	$('#modal-edit-transfer').modal('show'); // show bootstrap modal when complete loaded
-	    	},
-	    	error: function (err) {
-	        	console.log(err);
-	    	}
+						$('#modal-edit-transfer').modal('show'); // show bootstrap modal when complete loaded
+				},
+				error: function (err) {
+						console.log(err);
+				}
 		});
 
 	}
@@ -584,65 +633,65 @@
 	function actDelete(id_transfer, id) {
 
 		swal({
-        title: "Peringatan",
-        text: "Anda Yakin Untuk Menghapus Nilai Transfer ini?",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: '#DD6B55',
-        confirmButtonText: 'Ya',
-        cancelButtonText: "Tidak",
-        closeOnConfirm: false,
-        closeOnCancel: false
-	},
-	    function(isConfirm) {	
-	        if (isConfirm) {
-	            $body = $("body");
-				$body.addClass("loading");
+				title: "Peringatan",
+				text: "Anda Yakin Untuk Menghapus Nilai Transfer ini?",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: '#DD6B55',
+				confirmButtonText: 'Ya',
+				cancelButtonText: "Tidak",
+				closeOnConfirm: false,
+				closeOnCancel: false
+		},
+		function(isConfirm) {	
+				if (isConfirm) {
+						$body = $("body");
+			$body.addClass("loading");
 
-				var dataHapus = 'id='+id+'&id_transfer='+id_transfer;
+			var dataHapus = 'id='+id+'&id_transfer='+id_transfer;
 
-		    	$.ajax({
-					url : "<?= base_url('ademik/kliring_nilaitransfer/setHapusData'); ?>",
-					type: "POST",
-					data: dataHapus,
-					dataType: "JSON",
-					success: function(hasil) {
-						$body.removeClass("loading");
+				$.ajax({
+				url : "<?= base_url('ademik/kliring_nilaitransfer/setHapusData'); ?>",
+				type: "POST",
+				data: dataHapus,
+				dataType: "JSON",
+				success: function(hasil) {
+					$body.removeClass("loading");
 
-						console.log(hasil);
+					console.log(hasil);
 
-						if ( hasil.ket == 'error' ) {
-							//console.log(respon.pesan);
-							swal({   
-								title: 'Peringatan',   
-								type: 'warning',    
-								html: true, 
-								text: hasil.pesan,
-								confirmButtonColor: '#f7cb3b',   
-							});
+					if ( hasil.ket == 'error' ) {
+						//console.log(respon.pesan);
+						swal({   
+							title: 'Peringatan',   
+							type: 'warning',    
+							html: true, 
+							text: hasil.pesan,
+							confirmButtonColor: '#f7cb3b',   
+						});
 
-						} else if (hasil.ket == 'sukses') {
-							swal({   
-								title: 'Pesan',   
-								type: 'success',    
-								html: true, 
-								text: hasil.pesan,
-								confirmButtonColor: 'green',   
-							}, function() {
-								location.reload();
-							});
+					} else if (hasil.ket == 'sukses') {
+						swal({   
+							title: 'Pesan',   
+							type: 'success',    
+							html: true, 
+							text: hasil.pesan,
+							confirmButtonColor: 'green',   
+						}, function() {
+							location.reload();
+						});
 
-						}
-					},
-					error: function (err) {
-				    	console.log(err);
 					}
-				});
+				},
+				error: function (err) {
+						console.log(err);
+				}
+			});
 
-	        } else {
-	            swal("Batal","", "error");
-	        }
-	    });
+				} else {
+						swal("Batal","", "error");
+				}
+		});
 
 	}
 
