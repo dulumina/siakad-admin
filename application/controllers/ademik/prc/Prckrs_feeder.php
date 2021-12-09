@@ -499,7 +499,7 @@ class Prckrs_feeder extends CI_Controller {
 		}
 
 		if($periode && $fakultas){
-			$this->db->where('j.KodeFakultas',$fakultas)
+			$this->db->where('j.KodeFakultas',$fakultas);
 			$this->db->limit(1);
 			$this->db->offset(0);
 			$kuery = $this->Jadwal->get_peserta_kelas_kuliah($periode);
