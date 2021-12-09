@@ -58,7 +58,7 @@ class Jadwal extends CI_Model{
 	}
 	
 	function get_peserta_kelas_kuliah($periode){
-		$data = $this->db->select("m.id_reg_pd id_registrasi_mahasiswa,j.id_kelas_kuliah")
+		$data = $this->db->select("m.id_reg_pd id_registrasi_mahasiswa,j.id_kelas_kuliah,k.id id_krs")
 				->from("_v2_jadwal j")
 				->join("_v2_krs$periode k","k.IDJadwal=j.IDJADWAL","INNER")
 				->join("_v2_mhsw m","m.NIM=k.NIM","INNER")
