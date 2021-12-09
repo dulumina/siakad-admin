@@ -483,7 +483,7 @@ class Prckrs_feeder extends CI_Controller {
 
 	}
 
-	public function siakadToFeeder($periode=null,$fakultas=null){
+	public function siakadToFeeder($periode=null,$fakultas=null,$limit=1,$offset=0){
 		$this->load->model('FeederRunWS');
 		$this->load->model('Jadwal');
 
@@ -500,17 +500,19 @@ class Prckrs_feeder extends CI_Controller {
 
 		if($periode && $fakultas){
 			$this->db->where('j.KodeFakultas',$fakultas);
-			$this->db->limit(1);
-			$this->db->offset(0);
+			$this->db->limit($limit);
+			$this->db->offset($offset);
 			$kuery = $this->Jadwal->get_peserta_kelas_kuliah($periode);
 
 			if($kuery->num_rows() >0){
 				$peserta_kelas = $kuery->result_array();
 				foreach($peserta_kelas as $list){
+					$id_krs = $list['id_krs'];
+					unset($list['id_krs']);
 					$fdr = $this->FeederRunWS->insert('InsertPesertaKelasKuliah',$list);
 					$res['code'] = 0;
-					$res['message']="berhasil mengirim data.";
-					$data['data']=$fdr->data;
+					$res['message']="berhasil mengirim data. $id_krs";
+					$data['data'] = $fdr;
 				}
 			}else{
 				$res['message'] = "Tidak ada data untuk dikirim.";
