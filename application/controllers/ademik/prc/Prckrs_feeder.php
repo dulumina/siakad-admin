@@ -500,6 +500,7 @@ class Prckrs_feeder extends CI_Controller {
 		}
 
 		if($periode && $fakultas){
+			$this->db->where('j.id_kelas_kuliah  IS NOT NULL', NULL, FALSE);
 			$this->db->where('j.KodeFakultas',$fakultas);
 			$this->db->where('k.st_feeder','0');
 			$this->db->limit($limit);
