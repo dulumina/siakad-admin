@@ -508,8 +508,9 @@ class Prckrs_feeder extends CI_Controller {
 				$peserta_kelas = $kuery->result_array();
 				foreach($peserta_kelas as $list){
 					$id_krs = $list['id_krs'];
-					unset($list['id_krs']);
-					$fdr = $this->FeederRunWS->insert('InsertPesertaKelasKuliah',$list);
+					$record['id_kelas_kuliah']=$list['id_kelas_kuliah'];
+					$record['id_registrasi_mahasiswa']=$list['id_registrasi_mahasiswa'];
+					$fdr = $this->FeederRunWS->insert('InsertPesertaKelasKuliah',$record);
 					$res['code'] = 0;
 					$res['message']="berhasil mengirim data. $id_krs";
 					$data['data'] = $fdr;
