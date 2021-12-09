@@ -483,6 +483,46 @@ class Prckrs_feeder extends CI_Controller {
 
 	}
 
+	public function siakadToFeeder($periode=null,$fakultas=null){
+		$this->load->model('FeederRunWS');
+		$this->load->model('Jadwal');
+
+		$res = array(
+			'code'=> null,
+			'message'=>null,
+			'data'=>[]
+		);
+
+		if($periode=null && $fakultas=null){
+			$fakultas = $this->input->post('fakultas');
+			$periode = $this->input->post('tahun');
+		}
+
+		if($periode && $fakultas){
+			$this->db->where('j.KodeFakultas',$fakultas)
+			$this->db->limit(1);
+			$this->db->offset(0);
+			$kuery = $this->Jadwal->get_peserta_kelas_kuliah($periode);
+
+			if($kuery->num_rows() >0){
+				$peserta_kelas = $kuery->result_array();
+				foreach($peserta_kelas as $list){
+					$fdr = $this->FeederRunWS->insert('InsertPesertaKelasKuliah',$list);
+					$res['code'] = 0;
+					$res['message']="berhasil mengirim data.";
+					$data['data']=$fdr->data;
+				}
+			}else{
+				$res['message'] = "Tidak ada data untuk dikirim."
+			}
+		}else{
+			$res['code']='false'
+			$res['message'] = 'Periode dan kode fakultas wajib diisi.'
+		}
+
+		echo json_encode($res);
+	}
+
 	public function prc_khs()
 	{
 		$dataLama = $this->Prc->khsLama($this->input->post('fakultas'));
