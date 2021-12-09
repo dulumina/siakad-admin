@@ -521,14 +521,14 @@ class Prckrs_feeder extends CI_Controller {
 						$this->db->set('st_feeder', '5');
 						$this->db->set('cluster_siakad', date("Y-m-d h:m;s"));
 						$this->db->where('id', $id_krs);
-						$this->db->update("_v2_krs$periode")
+						$this->db->update("_v2_krs$periode");
 					}else{
 						$this->db->set('cluster_siakad', date("Y-m-d h:m;s"));
 						$this->db->set('error_code', $fdr->error_code);
 						$this->db->set('error_desc', $fdr->error_desc);
 						$this->db->set('st_feeder', '-3');
 						$this->db->where('id', $id_krs);
-						$this->db->update("_v2_krs$periode")
+						$this->db->update("_v2_krs$periode");
 					}
 				}
 			}else{
