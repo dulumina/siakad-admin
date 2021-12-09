@@ -513,11 +513,11 @@ class Prckrs_feeder extends CI_Controller {
 					$data['data']=$fdr->data;
 				}
 			}else{
-				$res['message'] = "Tidak ada data untuk dikirim."
+				$res['message'] = "Tidak ada data untuk dikirim.";
 			}
 		}else{
-			$res['code']='false'
-			$res['message'] = 'Periode dan kode fakultas wajib diisi.'
+			$res['code']='false';
+			$res['message'] = 'Periode dan kode fakultas wajib diisi.';
 		}
 
 		echo json_encode($res);
