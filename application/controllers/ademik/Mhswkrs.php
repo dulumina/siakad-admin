@@ -101,15 +101,15 @@ class Mhswkrs extends CI_Controller {
 				
 			}
 
-			$point_1 = 0;
-			$point_2 = 0;
-			$point_3 = 0;
-			$point_4 = 0;
-			$point_5 = 0;
-			$point_6 = 0;
-			$point_7 = 0;
-			$point_8 = 0;
-			$point_9 = 0;
+			$point_1 = 0; // cek point 2 biodata
+			$point_2 = 0; // cek point 3 hutang di _v2_spp2
+			$point_3 = 0; // cek Point 4 cuti tabel riwayat cuti berdasarkan smt_mulai cuti dan akhir cuti
+			$point_4 = 0; // cek nama ibu dan tempat lahir di mhsw
+			$point_5 = 0; // cek mahasiswa aktif untuk di masukkan di rule dari tabel mhsw
+			$point_6 = 0; // cek periode aktif jika tahun semester tidak sama dengan tahun periode aktif maka diluluskan karena telah melewati periode aktif didikti tersebut jika tidak maka dilakukan pengecekkan selanjutnya
+			$point_7 = 0; // cek mahasiswa PDPT
+			$point_8 = 0; // Cek abaikan PDPT
+			$point_9 = 0; // cek sdah ada point 9 abaikan atau belum kalau sdah tampilkan
 
 			$dataKodeMhsw= $this->krs_model->getMhswKode($nim);
 			$kdfMhsw=$dataKodeMhsw->KodeFakultas;
@@ -632,170 +632,6 @@ class Mhswkrs extends CI_Controller {
 							echo json_encode($dataView);
 						}
 					}
-
-
-			/*
-		// cekHutang == point1
-		// cekCuti == point2
-		// cekBiodata == point3
-
-		$point1 = 0;
-		$point2 = 0;
-		$point3 = 0;
-
-//////////////
-		$cekRule = $this->krs_model->cekRule($nim,$semesterAkademik);
-		$point1 = $cekRule->point_1; // 1
-		$point2 = $cekRule->point_2; // 0
-		$point3 = $cekRule->point_3; // 0
-/////////////////
-
-==================
-		if ($point1 == 0){
-			$point1 = $this->cekHutang($nim,$semesterAkademik);
-		} else {
-			$point1 = $point1 // true
-		}
-
-		if ($point2 == 0){
-			$point2 = $this->cekCuti($nim,$semesterAkademik); // true
-			update (true(1), false(0))
-		} else {
-			$point2 = $point2
-		}
-
-		if ($point3 == 0){
-			$point3 = $this->cekBiodata($nim,$semesterAkademik);
-			update (true(1), false(0))
-		} else {
-			$point3 = $point3
-		}
-
-=====================
-
-		if($point1){ cekHutang
-
-			if($point2){
-
-				if($point3){
-
-				}
-
-			}
-
-		}
-
-
-
-
-		}else{
-				$cekHutang = $this->cekHutang($nim,$semesterAkademik);
-				if($cekHutang){
-					$cekCuti = $this->cekCuti($nim,$semesterAkademik);
-					if($cekCuti){
-						$cekBiodata = $this->cekBiodata($nim,$semesterAkademik);
-						if($cekBiodata){
-							$cekMhswAktif = $this->cekMhswAktif($nim,$semesterAkademik);
-							if($cekMhswAktif['status']!=false){
-								$qSemesterAkademikAktif= $this->krs_model->getSemesterAkademikAktif();
-								$semesterAkademikAktif = $qSemesterAkademikAktif->periode_aktif;
-								if($semesterAkademik==$semesterAkademikAktif){
-									$cekMhswDikti = $this->mhsw_pdpt($nim,$semesterAkademik);
-									if($cekMhswDikti==0){
-										$abaikan = $this->abaikan($nim,$semesterAkademik);
-										if($abaikan==0){
-											$tampil = $this->tabel_error($nim,$semesterAkademik);
-											$dataView = array(
-												'view' => $tampil,
-												'data' => $data
-											);
-											echo json_encode($dataView);
-										}else{
-											$tampil = $this->tampilKrs($nim,$semesterAkademik);
-											$dataView = array(
-												'view' => $tampil,
-												'data' => $data
-											);
-											echo json_encode($dataView);
-										}
-									}else{
-										$tampil = $this->tampilKrs($nim,$semesterAkademik);
-										$dataView = array(
-											'view' => $tampil,
-											'data' => $data
-										);
-										echo json_encode($dataView);
-									}
-								}else{
-									$tampil = $this->tampilKrs($nim,$semesterAkademik);
-									$dataView = array(
-										'view' => $tampil,
-										'data' => $data
-									);
-									echo json_encode($dataView);
-								}
-							}else{
-								$dataErr = array(
-									'error' => $cekMhswAktif['msgError'],
-								);
-								echo json_encode($dataErr);
-							}
-						}else{
-							$dataErr = array(
-								'error' => 'Silahkan Isi/Cek Terlebih dahulu Biodata <b>Nama ibu, Tempat/tanggal lahir </b><a style="color:blue;" href="#">Isi Biodata</a>',
-							);
-							echo json_encode($dataErr);
-						}
-					}else{
-						$dataErr = array(
-							'error' => 'Anda Masih Terdaftar Cuti',
-						);
-						echo json_encode($dataErr);
-					}
-				}else{
-					$dataErr = array(
-						'error' => 'Anda Belum Bayar SPP semester '.$semesterAkademik.'<br><b>Hubungi Admin di Fakultas Anda !</b>',
-					);
-					echo json_encode($dataErr);
-				}
-			}*/
-			/*$url = base_url('api/ademik/mhswkrs/search');
-			$semesterAkademik = $this->input->post('semesterAkademik');
-			$nim = $this->input->post('nim');
-
-			$params = array(
-				'semesterAkademik' => $semesterAkademik,
-				'nim' => $nim
-			);
-
-			$options = array(
-				'https' => array(
-					'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-					'method'  => 'POST',
-					'content' => http_build_query($params)
-				),
-				"ssl"=>array(
-					"verify_peer"		=>false,
-					"verify_peer_name"	=>false,
-				)
-			);
-			$context  = stream_context_create($options);
-			$result = file_get_contents($url, false, $context);
-			if ($result === FALSE) {
-				echo "Inputan Salah";
-			}
-
-			echo "<script>console.log(".$result.")</script>";
-			$json = json_decode($result);
-
-			if($json->stats==false){
-				$data['error']=$json->message;
-			}else{
-				$data['success']=$json->message;
-			}
-			$this->load->view('templates/header');
-			$this->load->view('modules/stocks/orders/new',$data);
-			$this->load->view('templates/footer');	*/
 		}
 	}
 
@@ -867,19 +703,12 @@ class Mhswkrs extends CI_Controller {
 		$cekMhswAktif  = $this->krs_model->getMhswAktif($nim,$semesterAkademik);
 		if ($cekMhswAktif->Keluar == 0) {
 			$cekMhswAktifSemester = $this->krs_model->getMhswAktifSemester($nim,$semesterAkademik);
-			/*$s = "select s.Nilai, s.Nama
-			from khs h left outer join statusmhsw s on h.Status=s.Kode
-			where h.Tahun='$thn' and h.NIM='$nim' limit 1	";
-			$r = mysql_query($s) or die ("$strCantQuery: $s");*/
 			if ($cekMhswAktifSemester == false) {
 				$cekKodeFakultas = $this->krs_model->getKodeFakultas($nim);
-				//$kdf = $cekKodeFakultas->KodeFakultas;
 				$ulevel = $_SESSION['ulevel'];
 				if($cekMhswAktif->Kode=='C'){
 					$dataMsg['msgError'] = "Mahasiswa <b>$nim</b> tidak aktif untuk tahun ajaran <b>$semesterAkademik</b>.<br>Status: <b>".$cekMhswAktif->Nama."</b>";
-				}/*elseif($semesterAkademik=='20163' && $ulevel=='4' && $kdf !='A' && $kdf !='F' && $kdf !='F'){
-					$dataMsg['msgError'] = "Mahasiswa <b>$nim</b> tidak aktif untuk tahun ajaran <b>$semesterAkademik</b>.<br>Status: <b>".$cekMhswAktif->Nama."</b><br>Jika belum registrasi ulang, silakan hubungi admin di fakultas Anda !";
-				}*/else{
+				}else{
 					$dataMsg['msgError'] = "Mahasiswa <b>".$nim."</b> tidak aktif untuk tahun ajaran <b>".$semesterAkademik."</b>.<br>Status: <b>".$cekMhswAktif->Nama."</b><br>Jika belum registrasi ulang, silakan registrasi ulang dahulu.<hr size=1 color=silver>Pilihan : <button type='button' class='btn btn-block btn-info' data-toggle='modal' data-nim='".$nim."' data-semester-akademik='".$semesterAkademik."' data-target='#modal-registrasiUlang' id='openModalRegistrasiUlang'>Registrasi Ulang</button>";
 				}
 				$dataMsg['status'] = false;
@@ -2862,7 +2691,7 @@ class Mhswkrs extends CI_Controller {
 		//$valid = GetMhsw($thn, $nim, 'mhswherreg');
 		$valid = $this->krs_model->getMhsw($nim);
 		if($kdf == $kd1 || $kdj == $kd2 || $ulevel==1 || ($nim==$unip) ){
-			$formAddSesi = $this->formAddSesi($nim,$thn);
+			$formAddSesi = "<div class='row'> <div class='col-md-12' >" . $this->formAddSesi($nim,$thn) . "</div></div>";
 			/*if ($valid!=false) {
 				if (isset($_REQUEST['prcaddssi'])) {
 					PrcAddSesi();
@@ -2876,9 +2705,9 @@ class Mhswkrs extends CI_Controller {
 					DispMhswKHS($thn, $nim);
 				}
 			}*/
-			$containerDisplay = "<div id='displayMhsw'>";
+			$containerDisplay = "<div class='row' id='displayMhsw'><div class='col-md-12' >";
 			$displayMhs = $this->DispMhswKHS($thn,$nim);
-			$closeContainerDisplay = "</div>";
+			$closeContainerDisplay = "</div></div>";
 		}else {
 			$msg = "Maaf, Anda tidak berhak mengakses NIM ini !!!..";
 			//die(DisplayHeader($fmtErrorMsg, "Maaf, Anda tidak berhak mengakss NIM ini !!!..", 0));
@@ -2908,7 +2737,7 @@ class Mhswkrs extends CI_Controller {
 			} else {
 				$maxsks = $this->getMaxSKSMhsw($nim);
 			}
-			if ($_SESSION['ulevel']==4){ //untuk mhs
+			if ($_SESSION['ulevel']==4){ // untuk mhs
 				$angkatan = substr($nim,4,2);
 				
 				$sksmax = 11;
@@ -2929,81 +2758,100 @@ class Mhswkrs extends CI_Controller {
 				if (!empty($thn)) {
 				  $qAda = $this->krs_model->getSksTahun($nim,$thn);
 				  if($qAda==false){
-					$ada=false;
+						$ada=false;
 				  }else{
-					$ada = $qAda->Tahun;
+						$ada = $qAda->Tahun;
 				  }
 				  if($ada!=false){
-					$msg = "Tahun ajaran $thn dan Sesi/Semester $ssi sudah ada.";
+						$msg = "Tahun ajaran $thn dan Sesi/Semester $ssi sudah ada.";
 				  }
 				  else {
-					$data = array("NIM"=>$nim, "Tahun"=>$thn, "Sesi"=>$ssi, "Status"=>"A", "MaxSKS"=>$sksmax);
+						$data = array("NIM"=>$nim, "Tahun"=>$thn, "Sesi"=>$ssi, "Status"=>"A", "MaxSKS"=>$sksmax);
 
-					$simpan = $this->krs_model->insertKhs($data);
+						$simpan = $this->krs_model->insertKhs($data);
 
-					if($simpan){
-						$msg = "Data berhasil ditambahkan";
-					}else{
-						$msg = "Data gagal tersimpan";
-					}
+						if($simpan){
+							$msg = "Data berhasil ditambahkan";
+						}else{
+							$msg = "Data gagal tersimpan";
+						}
 				  }
 				}else{
 					$msg = "Tahun Belum Diisi";
 				}
 
 
-				$form = "";
-				/*$form = "
+				$form = "
 					<form method='POST' id='formRegUlang'>
-						<table class=basic cellspacing=1 cellpadding=2>
+						<div class='row'> <div class='col-12'> <h3>Registrasi Semester</h3></hr>
 							<input type=hidden name='syxec' value='mhswherreg'>
 							<input type=hidden name='nim' value='$nim'>
-							<input type=hidden name='maxsks' value='11'>
-							<tr>
-								<th class=ttl colspan=6>Tambah Semester Baru</th>
-								<td class=basic></td>
-							</tr>
-							<td class=ttl>Tahun Ajaran</td>
-							<td class=lst><input type=text name='thn' value='".$thn."' readonly size=5 maxlength=5></td>
-							<td class=ttl>Sesi/Semester</td>
-							<td width=5>$ssi</td>
-							<td class=ttl>Max SKS</td>
-							<td width=5>$sksmax</td>
-							<td class=basic rowspan=2>
-								<input type=button id='prcaddssi' name='prcaddssi' value='Tambah'>
-							</td>
-							</tr>
-						</table>
+							<input type=hidden name='thn' value='$thn'>
+							<div class='form-group row'>
+								<label for='thn' class='col-sm-2 col-form-label'>Tahun Ajaran</label>
+								<div class='col-sm-10'>
+								<p class='form-control' id='thn'>$ThnNext</p>
+								</div>
+							</div>
+							<div class='form-group row'>
+								<label for='km' class='col-sm-2 col-form-label'>Kampus Merdeka</label>
+								<div class='col-sm-10'>
+									<select class='form-control' id='km' name='status'>
+										<option value='A'>Tidak</option>
+										<option value='KM'>Ya</option>
+									</select>
+								</div>
+							</div>
+						</div></div>
+						<div class='row'>
+							<div class='col-12'>
+								<input class='btn btn-primary pull-right' type=button id='prcaddssi' name='prcaddssi' value='Pilih'>
+							</div>
+						</div>
 					</form>
-				";*/
+					<br>
+				";
 			}else{
 				$form = "
 					<form method='POST' id='formRegUlang'>
-						<table class=basic cellspacing=1 cellpadding=2>
+						<div class='row'> <div class='col-12'> <h3>Registrasi Semester</h3></hr>
 							<input type=hidden name='syxec' value='mhswherreg'>
 							<input type=hidden name='nim' value='$nim'>
-							<tr>
-								<th class=ttl colspan=6>Tambah Semester Baru</th>
-								<td class=basic></td>
-							</tr>
-							<td class=ttl>Tahun Ajaran</td>
-							<td class=lst>
-								<input type=text name='thn' value='$ThnNext' size=5 maxlength=5>
-							</td>
-							<td class=ttl>Sesi/Semester</td>
-							<td class=lst>
-								<input type=text name='ssi' value='$ssi' size=5 maxlength=5>
-							</td>
-							<td class=ttl>Max SKS</td>
-							<td class=lst>
-								<input type=text name='maxsks' value='$maxsks' size=5 maxlength=5>
-							</td>
-							<td class=basic rowspan=2>
-								<input type=button id='prcaddssi' name='prcaddssi' value='Tambah'>
-							</td>
-							</tr>
-						</table>
+							<div class='form-group row'>
+								<label for='thn' class='col-sm-2 col-form-label'>Tahun Ajaran</label>
+								<div class='col-sm-10'>
+								<input class='form-control' type='text' name='thn' value='$ThnNext' id='thn'>
+								</div>
+							</div>
+							<div class='form-group row'>
+								<label for='km' class='col-sm-2 col-form-label'>Kampus Merdeka</label>
+								<div class='col-sm-10'>
+									<select class='form-control' id='km' name='status'>
+										<option value='A'>Tidak</option>
+										<option value='KM'>Ya</option>
+									</select>
+								</div>
+							</div>
+							<div class='form-group row'>
+								<label for='ssi' class='col-sm-2 col-form-label'>Sesi/Semester</label>
+								<div class='col-sm-10'>
+								<input class='form-control' type='text' name='ssi' value='$ssi'  id='ssi'>
+								</div>
+							</div>
+							<div class='form-group row'>
+								<label for='maxsks' class='col-sm-2 col-form-label'>Max SKS</label>
+								<div class='col-sm-10'>
+								<input class='form-control' type='text' name='maxsks' value='$maxsks' id='maxsks'>
+								</div>
+							</div>
+						</div></div>
+						<div class='row'>
+							<div class='col-12'>
+								<input class='btn btn-primary pull-right' type=button id='prcaddssi' name='prcaddssi' value='Tambah'>
+							</div>
+						</div>
 					</form>
+					<br>
 				";
 			}
 		}
@@ -3047,6 +2895,30 @@ class Mhswkrs extends CI_Controller {
 		echo json_encode($dataReg);
 	}
 
+	public function prcUpdate(){
+		$thn = $this->input->post('thn');
+		$nim = $this->input->post('nim');
+		
+		if (!empty($thn)) {
+
+			$simpan = $this->krs_model->updateKhs($thn, $nim, $this->input->post('status'));
+
+			if($simpan){
+				$msg = "Data berhasil ditambahkan";
+			}else{
+				$msg = "Data gagal tersimpan";
+			}
+		}else{
+			$msg = "Tahun Belum Diisi";
+		}
+		$displayMhs = $this->DispMhswKHS($thn, $nim);
+		$dataReg = array(
+			'message' => $msg,
+			'displayMhs' => $displayMhs
+		);
+		echo json_encode($dataReg);
+	}
+
 	public function DispMhswKHS($thn, $nim) {
 		$qKdj = $this->krs_model->getKode($nim);
 		$kdj = $qKdj->KodeJurusan;
@@ -3061,6 +2933,7 @@ class Mhswkrs extends CI_Controller {
 				<th class=ttl>Status</th>
 				<th class=ttl># Registrasi</th>
 				<th class=ttl>Tgl Reg.</th>
+				<th class=ttl>Aksi.</th>
 			</thead>
 			<tbody>
 		";
@@ -3080,6 +2953,9 @@ class Mhswkrs extends CI_Controller {
 					$nmrreg = '&nbsp;';
 					//$strreg = "<a href='ademik.php?syxec=mhswherreg&prcreg=1&nim=$nim&thn=$show->Tahun' title='Registrasi Ulang'><img src='image/check.gif' border=0></a>";
 					$strreg = "<button title='Registrasi Ulang' id='displayConfirmReg' data-thn='".$show->Tahun."' data-nim='".$nim."'><span class='glyphicon glyphicon-list-alt'></span> Registrasi Ulang</button>";
+					if ($this->session->userdata('ulevel') == 4) {
+						$strreg = "<span class='glyphicon glyphicon-ok'></span>";
+					}
 				}
 				$isi = $isi."
 				<tr>
@@ -3088,8 +2964,8 @@ class Mhswkrs extends CI_Controller {
 					<td $cls>".$show->STA."</td>
 					<td  $cls>$nmrreg</td>
 					<td $cls>$tglreg</td>
+					<td class=lst align=center>$strreg</td>
 				</tr>";
-				//<td class=lst align=center>$strreg</td>
 			}
 		}
 		$footer = "
@@ -3107,7 +2983,17 @@ class Mhswkrs extends CI_Controller {
 
 		$arrmhsw = $this->krs_model->getMhs3($nim);
 		$title = "Konfirmasi Registrasi Ulang";
-		$msg = "Hallo <b>".$arrmhsw->Name." - ".$arrmhsw->NIM."</b>.<br />Anda akan melakukan Registrasi Ulang untuk Tahun Ajaran <b>".$thn."</b>.<br />Setelah melakukan Registrasi Ulang, status anda akan menjadi <b>AKTIF</b>.<br />Dengan status AKTIF, anda dapat mengisi, mengubah atau menghapus KRS pada tahun ajaran yang AKTIF.";
+		$selectKM = "
+								<div class='form-group row'>
+									<label for='km2' class='col-sm-2 col-form-label'>Kampus Merdeka</label>
+									<div class='col-sm-10'>
+										<select class='form-control' id='km2' name='stts'>
+											<option value='A'>Tidak</option>
+											<option value='KM'>Ya</option>
+										</select>
+									</div>
+								</div>";
+		$msg = "Hallo <b>".$arrmhsw->Name." - ".$arrmhsw->NIM."</b>.<br />Anda akan melakukan Registrasi Ulang untuk Tahun Ajaran <b>".$thn."</b>.<br />$selectKM";
 		/*$arrmhsw = GetFields('mhsw', 'NIM', $nim, 'NIM,Name,KodeJurusan');
 		DisplayDetail($fmtMessage, "Konfirmasi Registrasi Ulang",
 		"Hallo <b>$arrmhsw[Name] - $arrmhsw[NIM]</b>.<br>
@@ -3127,8 +3013,9 @@ class Mhswkrs extends CI_Controller {
 	public function prcRegUlang() {
 		$thn = $this->input->post('thn');
 		$nim = $this->input->post('nim');
+		$status = $this->input->post('status');
 
-		$regUlang = $this->krs_model->updateKhsRegUlang($thn, $nim);
+		$regUlang = $this->krs_model->updateKhsRegUlang($thn, $nim, $status);
 
 		$arrmhsw = $this->krs_model->getMhs3($nim);
 
