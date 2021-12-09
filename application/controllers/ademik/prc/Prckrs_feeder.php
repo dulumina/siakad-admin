@@ -493,7 +493,7 @@ class Prckrs_feeder extends CI_Controller {
 			'data'=>[]
 		);
 
-		if($periode=null && $fakultas=null){
+		if($periode==null && $fakultas==null){
 			$fakultas = $this->input->post('fakultas');
 			$periode = $this->input->post('tahun');
 		}
