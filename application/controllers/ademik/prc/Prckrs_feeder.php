@@ -483,6 +483,66 @@ class Prckrs_feeder extends CI_Controller {
 
 	}
 
+	public function siakadToFeeder($periode=null,$fakultas=null,$limit=1,$offset=0){
+		$this->load->model('FeederRunWS');
+		$this->load->model('Jadwal');
+
+		$res = array(
+			'code'=> null,
+			'message'=>null,
+			'data'=>[]
+		);
+		$dt =[];
+
+		if($periode==null && $fakultas==null){
+			$fakultas = $this->input->post('fakultas');
+			$periode = $this->input->post('tahun');
+		}
+
+		if($periode && $fakultas){
+			$this->db->where('j.id_kelas_kuliah  IS NOT NULL', NULL, FALSE);
+			$this->db->where('j.KodeFakultas',$fakultas);
+			$this->db->where('k.st_feeder','0');
+			$this->db->limit($limit);
+			$this->db->offset($offset);
+			$kuery = $this->Jadwal->get_peserta_kelas_kuliah($periode);
+
+			if($kuery->num_rows() >0){
+				$peserta_kelas = $kuery->result_array();
+				foreach($peserta_kelas as $list){
+					$id_krs = $list['id_krs'];
+					$record['id_kelas_kuliah']=$list['id_kelas_kuliah'];
+					$record['id_registrasi_mahasiswa']=$list['id_registrasi_mahasiswa'];
+					$fdr = $this->FeederRunWS->insert('InsertPesertaKelasKuliah',$record);
+					if($fdr->error_code==0){
+						$res['code'] = 0;
+						$res['message']="berhasil mengirim data.";
+						$dt[] = $fdr->data;
+
+						$this->db->set('st_feeder', '5');
+						$this->db->set('cluster_siakad', date("Y-m-d h:m;s"));
+						$this->db->where('id', $id_krs);
+						$this->db->update("_v2_krs$periode");
+					}else{
+						$this->db->set('cluster_siakad', date("Y-m-d h:m;s"));
+						$this->db->set('error_code', $fdr->error_code);
+						$this->db->set('error_desc', $fdr->error_desc);
+						$this->db->set('st_feeder', '-3');
+						$this->db->where('id', $id_krs);
+						$this->db->update("_v2_krs$periode");
+					}
+				}
+			}else{
+				$res['message'] = "Tidak ada data untuk dikirim.";
+			}
+		}else{
+			$res['code']='false';
+			$res['message'] = 'Periode dan kode fakultas wajib diisi.';
+		}
+		$res['data']=$dt;
+		echo json_encode($res);
+	}
+
 	public function prc_khs()
 	{
 		$dataLama = $this->Prc->khsLama($this->input->post('fakultas'));
