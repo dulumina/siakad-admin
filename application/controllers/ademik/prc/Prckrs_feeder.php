@@ -483,7 +483,7 @@ class Prckrs_feeder extends CI_Controller {
 
 	}
 
-	public function siakadToFeeder($periode=null,$fakultas=null,$limit=1,$offset=0){
+	public function siakadToFeeder($periode=null,$fakultas=null,$limit=50,$offset=0){
 		$this->load->model('FeederRunWS');
 		$this->load->model('Jadwal');
 
@@ -501,7 +501,9 @@ class Prckrs_feeder extends CI_Controller {
 
 		if($periode && $fakultas){
 			$this->db->where('j.id_kelas_kuliah  IS NOT NULL', NULL, FALSE);
-			$this->db->where('j.KodeFakultas',$fakultas);
+			if($fakultas !='ALL'){
+				$this->db->where('j.KodeFakultas',$fakultas);
+			}
 			$this->db->where('k.st_feeder','0');
 			$this->db->limit($limit);
 			$this->db->offset($offset);
