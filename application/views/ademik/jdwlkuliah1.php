@@ -1410,7 +1410,7 @@ function getCookie(cname) {
   return "";
 }
 
-wait$(()={
+wait$(()=>{
 	$('.cetakDaftarNilai').click((e)=>{
 		e.preventDefault();
 		let target = e.attr('href');
