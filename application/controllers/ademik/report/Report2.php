@@ -685,8 +685,8 @@ class Report2 extends CI_Controller {
 
 		$html=$this->load->view('ademik/report/cetak_daftar_nilai', $data,TRUE);
 
-		echo $html;
-		die;
+		// echo $html;
+		// die;
 
 		$filename = "Daftar Nilai Mahasiswa";
 
