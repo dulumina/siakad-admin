@@ -19,21 +19,32 @@
 </head>
 <body>
 	<div class="container-fluid">
+		<table style="width: 100%">
+				<tr>
+						<td rowspan="3" width="85px;"><img style="width: 100px" src="<?= base_url('/assets/Logo_untad.png')?>" /></td>
+						<td style="font-size: 15px; margin-bottom: 0; padding-bottom: 0; margin-left: 20px; text-align: center;">
+								<b>KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI</b>
+						</td>
+				</tr>
+				<tr>
+						<td style="font-size: 22; margin-top: 0; padding-top: 0; margin-bottom: 0; padding-bottom: 0; margin-left: 20px; text-align: center;">
+								<b>UNIVERSITAS TADULAKO</b>
+						</td>
+				</tr>
+				<tr>
+					<td style="text-align: center; font-size: 13px;">
+						<b style="font-size: 11"><?= strtoupper( $detailJadwal->nmf ); ?></b>
+					</td>
+				</tr>
+		</table>
+		<table style="width: 100%;">
+				<tr>
+						<td><div style="border-top: double 6px black;"></div></td>
+				</tr>
+		</table>
+		<br>
 		<div class="row">
-			<div class="col-1">
-				<img style="width: 80px" src="<?= base_url('assets/images/Logo_untad.png'); ?>" >
-			</div>
-			<div class="col-11 text-center">
-				<b style="font-size: 13">
-					KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI
-				</b><br>
-				<b style="font-size: 15">UNIVERSITAS TADULAKO</b><br>
-				<b style="font-size: 11"><?= $detailJadwal->nmf ?></b>
-			</div>
-		</div>
-		<hr>
-		<div class="row">
-			<div class="col-12" style="font-size: 12px;">
+			<div class="col-md-12" style="font-size: 12px;">
 				<table class="text-center" style="width: 100%">
 					<tr>
 						<td>DAFTAR NILAI MAHASISWA</td>
@@ -67,7 +78,7 @@
 			</div>
 		</div><br><br>
 		<div class="row">
-			<div class="col-12" style="font-size: 12px;">
+			<div class="col-md-12" style="font-size: 12px;">
 
 					<!--<tr>
 						<th style="vertical-align: middle;text-align: center;" align="center">Angka</th>
@@ -141,10 +152,10 @@
 			</div>
 		</div><br><br>
 		<div class="row">
-			<div class="col-8" style="display: block;">
+			<div class="col-md-8" style="display: block;">
 
 			</div>
-			<div class="col-4" style="display: block;">
+			<div class="col-md-4" style="display: block;">
 				<?= $tempat.", ".$tglnow ?><br>
 				Yang membuat,<br><br><br><br>
 				<?php
