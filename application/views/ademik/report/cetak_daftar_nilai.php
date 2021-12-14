@@ -20,10 +20,10 @@
 <body>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-1">
+			<div class="col-1">
 				<img style="width: 80px" src="<?= base_url('assets/images/Logo_untad.png'); ?>" >
 			</div>
-			<div class="col-md-11 text-center">
+			<div class="col-11 text-center">
 				<b style="font-size: 13">
 					KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI
 				</b><br>
@@ -33,7 +33,7 @@
 		</div>
 		<hr>
 		<div class="row">
-			<div class="col-md-12" style="font-size: 12px;">
+			<div class="col-12" style="font-size: 12px;">
 				<table class="text-center" style="width: 100%">
 					<tr>
 						<td>DAFTAR NILAI MAHASISWA</td>
@@ -67,7 +67,7 @@
 			</div>
 		</div><br><br>
 		<div class="row">
-			<div class="col-md-12" style="font-size: 12px;">
+			<div class="col-12" style="font-size: 12px;">
 
 					<!--<tr>
 						<th style="vertical-align: middle;text-align: center;" align="center">Angka</th>
@@ -141,10 +141,10 @@
 			</div>
 		</div><br><br>
 		<div class="row">
-			<div class="col-md-8" style="display: block;">
+			<div class="col-8" style="display: block;">
 
 			</div>
-			<div class="col-md-4" style="display: block;">
+			<div class="col-4" style="display: block;">
 				<?= $tempat.", ".$tglnow ?><br>
 				Yang membuat,<br><br><br><br>
 				<?php
