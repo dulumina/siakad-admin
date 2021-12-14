@@ -830,7 +830,7 @@ class Jdwlkuliah1 extends CI_Controller {
 		$opfkip
 		<option name=Gabungan value=Gabungan>Kelas Gabungan</option>
 		<option name=Int-Class value=Int-Class>Kelas Internasional</option>
-		<option name=Int-Class value=Konsentrasi>Konsentrasi</option>
+		<option name=Int-Class value=KONS>Konsentrasi</option>
 		<option name=MBKM value=MBKM>MBKM</option>";
 
 		if ($ulevel == 1 or $ulevel == 5 or $ulevel == 7) {
