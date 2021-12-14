@@ -973,9 +973,10 @@
 
 
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>
 <script>
-	
-	let week = ['','MINGGU','SENIN','SELASA','RABU','KAMIS','JUM\'AT','SABTU'];
+	let creatPdf = new jsPDF();
+let week = ['','MINGGU','SENIN','SELASA','RABU','KAMIS','JUM\'AT','SABTU'];
 function action(id){
 	var actval = $('#act_value'+id).val();
 	if (id !== undefined){
@@ -1408,6 +1409,24 @@ function getCookie(cname) {
   }
   return "";
 }
+
+wait$(()={
+	$('.cetakDaftarNilai').click((e)=>{
+		e.preventDefault();
+		let target = e.attr('href');
+		$.get(target)
+		.done((data)=>{
+			doc.text(10, 10, data);
+			doc.save('Cetak_daftar_nilai.pdf');
+		})
+		.fail((err)=>{
+			console.log(err);
+		})
+		.always(()=>{
+			console.log('cetak pdf');
+		})
+	});
+})
 
 </script>
 
