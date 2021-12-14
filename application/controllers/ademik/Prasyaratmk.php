@@ -22,15 +22,6 @@ class Prasyaratmk extends CI_Controller
 		$this->load->view('dashbord', $a);
 	}
 
-	// public function daftar($id = '')
-	// {
-	// 	$a['uri'] = $this->uri->segment(3);
-	// 	$a['data'] = $this->getDataTabelMK();
-	// 	$a['syarat'] = $this->getsyarat($id);
-
-	// 	$this->load->view('dashbord', $a);
-	// }
-
 	// Get Matakuliah berdasarkan hak akses
 	private function getDataTabelMK()
 	{
@@ -71,7 +62,7 @@ class Prasyaratmk extends CI_Controller
 		$kdj = $this->session->userdata('kdj');
 
 		$data = $this->input->post('data');
-		$respon = $this->prasyartmk_model->getmk($data);
+		$respon = $this->prasyartmk_model->getmk($data, $level, $kdj, $kdf);
 		$namamk = array();
 		foreach ($respon as $mk) {
 			$namamk[] = array(
@@ -102,13 +93,6 @@ class Prasyaratmk extends CI_Controller
 	// Update status
 	public function update()
 	{
-		// $data = array(
-		// 	'IDMK' => $this->input->post('IDMK'),
-		// 	'PraID' => $this->input->post('PraID'),
-		// 	'NotActive' => $this->input->post('NotActive')
-		// );
-		// print_r($data);
-		// die;
 		$IDMK = $this->input->post('IDMK');
 		$PraID = $this->input->post('PraID');
 		$NotActive = $this->input->post('NotActive');

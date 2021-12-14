@@ -35,10 +35,20 @@ class Prasyartmk_model extends CI_Model
 	}
 
 	// Get Syarat
-	public function getmk($data)
+	public function getmk($data, $level, $kdj, $kdf)
 	{
-		$data = $this->db->query("SELECT Kode, CONCAT(Nama_Indonesia, ' - ' ,IDMK) AS Nama FROM _v2_matakuliah WHERE Nama_Indonesia LIKE '%" . $data . "%'");
-		return $data->result();
+		if ($level == 5) {
+			$data = $this->db->query("SELECT Kode, CONCAT(Nama_Indonesia, ' - ' ,IDMK) AS Nama FROM _v2_matakuliah WHERE Nama_Indonesia LIKE '%" . $data . "%' AND KodeFakultas LIKE '$kdf'");
+			return $data->result();
+		} elseif ($level == 7) {
+			$data = $this->db->query("SELECT Kode, CONCAT(Nama_Indonesia, ' - ' ,IDMK) AS Nama FROM _v2_matakuliah WHERE Nama_Indonesia LIKE '%" . $data . "%' AND KodeJurusan LIKE '$kdj'");
+			return $data->result();
+		} elseif ($level == 1) {
+			$data = $this->db->query("SELECT Kode, CONCAT(Nama_Indonesia, ' - ' ,IDMK) AS Nama FROM _v2_matakuliah WHERE Nama_Indonesia LIKE '%" . $data . "%'");
+			return $data->result();
+		}
+		// echo $this->db->last_query();
+		// die;
 	}
 
 	// Get Kode
