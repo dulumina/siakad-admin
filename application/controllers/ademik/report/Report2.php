@@ -686,7 +686,8 @@ class Report2 extends CI_Controller {
 		$html=$this->load->view('ademik/report/cetak_daftar_nilai', $data,TRUE);
 
 		// echo $html;
-		// die;
+		$this->generatePdf($html);
+		exit(200);
 
 		$filename = "Daftar Nilai Mahasiswa";
 
@@ -696,6 +697,15 @@ class Report2 extends CI_Controller {
 		//$this->load->view('ademik/report/cetak_daftar_nilai', $data);
 	}
 	
+	public function generatePdf($html)
+	{
+
+		$filename = "Daftar Nilai Mahasiswa";
+		$this->load->library('pdf');
+		// $html = $this->input->post('html');
+		$this->pdf->create_costum($html, $filename, 'potrait', 'A4');
+	}
+
 	// Rocky Report
 	public function cetak_matkul_per_jenis(){
 
