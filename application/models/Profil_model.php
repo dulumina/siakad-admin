@@ -337,4 +337,25 @@ class Profil_model extends CI_Model {
 
 	}
 
+	public function isCompleteData($nim)
+	{
+		$dataWajib = ['NIM','Name','TempatLahir','TglLahir','Agama','NamaIbu','Kewarganegaraan','NIK','Kelurahan','Kecamatan'];
+
+		$mhsw = $this->getDataTabelJoinMhsw('_v2_mhsw',$nim);
+		$val = [];
+		if (count($mhsw) > 0) {
+			for ($i=0; $i < count($dataWajib); $i++) { 
+				if (!$mhsw->$dataWajib[$i]) {
+					$val[] = $dataWajib[$i];
+					// break;
+				}
+			}
+			if ($mhsw->StatusAwal=='P') {
+				if($mhsw->UniversitasAsal == "" ) { $val[] = "UniversitasAsal"; };
+				if($mhsw->ProdiAsal == "") { $val[] = "ProdiAsal"; };
+			}
+		}
+		return $val;
+	}
+
 }
