@@ -87,8 +87,8 @@ function encode($plaintext = "")
 function decode($chipertext = "")
 {
 	$CI =& get_instance();
-	return str_replace(array('_', '~'), array('/', '='), $chipertext);
-	// return str_replace(array('-', '_', '~'), array('+', '/', '='), $chipertext); // fikri hapus setelah berdebat dengan fandu
+	// return str_replace(array('_', '~'), array('/', '='), $chipertext);
+	return str_replace(array('-', '_', '~'), array('+', '/', '='), $chipertext); // fikri hapus setelah berdebat dengan fandu
 }
 
 function limitKrs($kodeJurusan, $semester_aktif = "" )

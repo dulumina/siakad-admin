@@ -646,13 +646,20 @@ class Report2 extends CI_Controller {
 	}
 
 	// fandu report
-	public function cetak_daftar_nilai(){
-
+	public function cetak_daftar_nilai($key=''){
+		$dataKey = json_decode(
+			$this->encryption->decrypt(
+				decode(
+					$key
+				)
+			)
+		);
+		
 		// $this->app->checksession();
 		$this->app->check_modul();
 
-		$idjad = $this->uri->segment(5);
-		$thn = $this->uri->segment(6);
+		$idjad = $dataKey->id_jadwal;
+		$thn = $dataKey->tahun;
 
 		$getone = $this->app->getOnRow("IDJadwal", "_v2_jadwal", "ID='$idjad'");
 		$idjadwal = $getone->IDJadwal;
@@ -685,8 +692,8 @@ class Report2 extends CI_Controller {
 
 		$html=$this->load->view('ademik/report/cetak_daftar_nilai', $data,TRUE);
 
-		// echo $html;
-		$this->generatePdf($html);
+		echo $html;
+		// $this->generatePdf($html);
 		exit(200);
 
 		$filename = "Daftar Nilai Mahasiswa";
