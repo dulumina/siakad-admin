@@ -77,7 +77,7 @@
 						<?php
 							if($this->session->ulevel==4){
 						?>
-								<a href="<?= base_url('ademik/useraccess/mahasiswa'); ?>" class="btn btn-app bg-blue" style="margin-bottom: 20px;">Management <br>Mahasiswa</a>
+								<a href="<?= base_url('ademik/useraccess/mahasiswa'); ?>" class="btn btn-app bg-blue" style="margin-bottom: 20px;">Management <br>Mahasiswa </a>
 						<?php
 							}
 						?>

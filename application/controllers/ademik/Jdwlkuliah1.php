@@ -328,6 +328,11 @@ class Jdwlkuliah1 extends CI_Controller {
 			$mk  = $row['MK']; //  Nama Matakuliah
 			$kl  = $row['PRG']; // nama indonesia kode program REG/RESO
 
+			$key = encode($this->encryption->encrypt(json_encode([
+				'id_jadwal' => $idjid,
+				'tahun' => $thn
+			])));
+
 			// kondisi jika kode program kosong
 			if (empty($kl)) $kl = '&nbsp;';
 
@@ -438,7 +443,7 @@ class Jdwlkuliah1 extends CI_Controller {
 					<td class=lst align=center><a href='tambah5' target=_blank title='Cetak Rekap Absen'><img src='".base_url()."assets/images/printer.png' border=0></a></td>*/
 					$strnil = "<td class=lst align=center><a href='".base_url('ademik/report/report2/cetak_daftar_hadir/'.$idjid.'/'.$thn)."' target=_blank title='Cetak Absen'><img src='".base_url()."assets/images/printer.png' border=0></a></td>
 					<td class=lst align=center><a href='".base_url('ademik/absensi')."' target=_blank title='Input Absen'><img src='".base_url()."assets/images/printer.png' border=0></a></td>
-					<td class=lst align=center><a href='".base_url('ademik/report/report2/cetak_daftar_nilai/'.$idjid.'/'.$thn)."' target=_blank title='Cetak Daftar Nilai'><img src='".base_url()."assets/images/printer.png' border=0></a></td>
+					<td class=lst align=center><a href='".base_url('ademik/report/report2/cetak_daftar_nilai/'.$key)."' class='cetakDaftarNilai' target=_blank title='Cetak Daftar Nilai'><img src='".base_url()."assets/images/printer.png' border=0></a></td>
 					";
 					// cetak dpna <td class=lst align=center><a href='".base_url('ademik/report/report2/cetak_dpna/'.$idjid.'/'.$thn)."' target=_blank title='Cetak DPNA'><img src='".base_url()."assets/images/printer.png' border=0></a></td>
 					// <a href='#' target=_blank title='Input Absen'>absen</a>
@@ -451,7 +456,7 @@ class Jdwlkuliah1 extends CI_Controller {
 				}*/ else {
 					$strnil = "<td class=lst align=center><a href='".base_url('ademik/report/report2/cetak_daftar_hadir/'.$idjid.'/'.$thn)."' target=_blank title='Cetak Absen'><img src='".base_url()."assets/images/printer.png' border=0></a></td>
 					<td class=lst align=center><a href='".base_url('ademik/absensi')."' target=_blank title='Absen'><img src='".base_url()."assets/images/printer.png' border=0></a></td>
-					<td class=lst align=center><a href='".base_url('ademik/report/report2/cetak_daftar_nilai/'.$idjid.'/'.$thn)."' target=_blank title='Cetak Daftar Nilai'><img src='".base_url()."assets/images/printer.png' border=0></a></td>";
+					<td class=lst align=center><a href='".base_url('ademik/report/report2/cetak_daftar_nilai/'.$key)."' class='cetakDaftarNilai' target=_blank title='Cetak Daftar Nilai'><img src='".base_url()."assets/images/printer.png' border=0></a></td>";
 					// cetak dpna <td class=lst align=center><a href='".base_url('ademik/report/report2/cetak_dpna/'.$idjid.'/'.$thn)."' target=_blank title='Cetak DPNA'><img src='".base_url()."assets/images/printer.png' border=0></a></td>
 				}
 

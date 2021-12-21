@@ -1,2 +1,0 @@
-Stambuk awal = A12116123
-Stambuk baru = A11116232
