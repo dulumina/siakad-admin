@@ -77,13 +77,13 @@ class Mhsw extends CI_Controller {
 			$data['error'] = $pesan;
 			$data['jurusan'] = $this->mhsw_model->get_dataSearch($level,$dataKode);
 			$data['webpage'] = 'dataMhsw';
-
+			
 			$this->load->view('dashbord',$data);
 
 		} else {
 
 			$aksi = $this->mhsw_model->get_dataTabelMhsw($kodeJurusan,$tahunAkademik);
-
+			
 			if ( $aksi == TRUE ) {
 
 				$data['dataTabel'] = $aksi;
