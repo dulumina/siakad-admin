@@ -112,7 +112,7 @@
 						</div>
 
 						<div class="box">
-							<?php if ( ( $detailmhsw->StatusAwal != 'P' AND $detailmhsw->StatusAwal != 'J' ) or count($unvalid) > 0 ) { ?>
+							<?php if ( ( $detailmhsw->StatusAwal != 'P' ) or count($unvalid) > 0 ) { ?>
 								<div class="box-header">
 									<h3 class="box-title">Keterangan</h3>
 								</div>
