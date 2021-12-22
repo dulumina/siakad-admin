@@ -105,7 +105,7 @@
 								</div>
 							</div>
 							<div class="box-footer">
-								<? if (count($unvalid) == 0 or $detailmhsw->StatusAwal != 'J' ) : ?>
+								<? if (count($unvalid) == 0 or $detailmhsw->StatusAwal = 'J' ) : ?>
 									<a class="btn btn-primary pull-right" onclick="kirimBiodataFeeder()">Kirim Biodata</a>
 								<? endif; ?>
 							</div>
