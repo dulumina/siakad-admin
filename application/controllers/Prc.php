@@ -50,7 +50,7 @@ class prc extends CI_Controller {
 			$session = $count + 1 ;
 			$this->session->set_tempdata('count_error_captcha',$session,$ttl);
 			$dataMsg = array(
-				'ip' => $_SERVER['HTTP_X_FORWARDED_FOR'],
+				'ip' => get_ip_client(),
 				'user_agent' => $_SERVER['HTTP_USER_AGENT'],
 				'uname' => $username,
 				// 'upass' => $password,

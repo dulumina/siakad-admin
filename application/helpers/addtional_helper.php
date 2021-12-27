@@ -169,4 +169,33 @@ function getDevice($ua)
 
 	return $device;
 }
+
+/**
+ * function	: get_ip_client()
+ * @desc	: get ip client 
+ * @author	: Moh Dzulfikri
+ * @return	: string
+ */
+ function get_ip_client(){
+	$clientIP = '0.0.0.0';
+
+	if (isset($_SERVER['HTTP_CLIENT_IP'])) {
+		$clientIP = $_SERVER['HTTP_CLIENT_IP'];
+	} elseif (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+		# when behind cloudflare
+		$clientIP = $_SERVER['HTTP_CF_CONNECTING_IP']; 
+	} elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+		$clientIP = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	} elseif (isset($_SERVER['HTTP_X_FORWARDED'])) {
+		$clientIP = $_SERVER['HTTP_X_FORWARDED'];
+	} elseif (isset($_SERVER['HTTP_FORWARDED_FOR'])) {
+		$clientIP = $_SERVER['HTTP_FORWARDED_FOR'];
+	} elseif (isset($_SERVER['HTTP_FORWARDED'])) {
+		$clientIP = $_SERVER['HTTP_FORWARDED'];
+	} elseif (isset($_SERVER['REMOTE_ADDR'])) {
+		$clientIP = $_SERVER['REMOTE_ADDR'];
+	}
+
+	return $clientIP;
+ }
 ?>
