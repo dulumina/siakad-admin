@@ -104,13 +104,25 @@ class Counter{
         }elseif (isset($kf) && $kf!='') {
             $this->CI->db->where('KodeFakultas',$kf);
         }
-        $mhs = $this->CI->db->query("SELECT count(*) jumlah FROM _v2_mhsw WHERE nim IN (Select nim from _v2_spp2 where tahun = $periode)");
+        $arr_nim = $this->db->query("Select nim from _v2_spp2 where tahun = $periode")->result_array();
+        $this->db->select(" count(*) jumlah ");
+        $this->db->where_in("nim",$arr_nim);
+        $mhs = $this->db->get();
+        // $mhs = $this->CI->db->query("SELECT count(*) jumlah FROM _v2_mhsw WHERE nim IN (Select nim from _v2_spp2 where tahun = $periode)");
         if ($mhs->num_rows()==0) {
             return 0;
         }
         return $mhs->row()->jumlah;
     }
-
+    function mhsMembayarSpc($periode){
+        $spc = $this->load->database('spc', TRUE);
+        $kueri = "SELECT count(*) jumlah  FROM `tagihan` WHERE `kode_periode` LIKE '$periode' AND `st_bayar` = 1 AND kode_fakultas !='DAF' GROUP BY nomor_induk";
+        $mhs = $spc->query($kueri);
+        if ($mhs->num_rows()==0) {
+            return 0;
+        }
+        return $mhs->row()->jumlah;
+    }
     public function mhswinbon()
     {
         return $this->CI->db->select("count(*) jumlah")
