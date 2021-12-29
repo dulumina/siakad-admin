@@ -22,7 +22,8 @@ class Dashboard extends CI_Controller {
       $data['countMhsCuti'] = $this->counter->mhsw(['C']);
       $data['countMhsUnregist'] = $this->counter->mhsw(['U']);
       $data['countMhsKrs'] = $this->counter->mhswKrs($periode);
-      $data['countMhsBayar'] = $this->counter->mhswBayar($periode);
+      // $data['countMhsBayar'] = $this->counter->mhswBayar($periode);
+      $data['countMhsBayar'] = $this->counter->mhsMembayarSpc($periode);
       $data['countDosen'] = $this->counter->dosen();
       $data['countMK'] = $this->counter->matakuliah($periode);
       $data['periode'] = $periode;
