@@ -134,7 +134,7 @@ class Counter{
             // $this->CI->db->where('KodeFakultas',$kf);
         }
 
-        $spc = $this->load->database('spc', TRUE);
+        $spc = $this->CI->load->database('spc', TRUE);
         $kueri = "SELECT count(*) jumlah  FROM `tagihan` WHERE `kode_periode` LIKE '$periode' AND `st_bayar` = 1 AND kode_fakultas !='DAF' $otherWhere GROUP BY nomor_induk";
         $mhs = $spc->query($kueri);
         if ($mhs->num_rows()==0) {
