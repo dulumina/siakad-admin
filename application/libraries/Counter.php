@@ -140,7 +140,7 @@ class Counter{
         if ($mhs->num_rows()==0) {
             return 0;
         }
-        return $mhs->row()->jumlah;
+        return $mhs->num_rows();
     }
     public function mhswinbon()
     {
