@@ -152,7 +152,7 @@
 								?>
 									<input type="text" class="form-control" id='nim' name="nim" placeholder="NIM" value="<?= $nim_mhs ?>" readonly>
 								<?php
-								} else if ($ulevel == 1) {
+								} else {
 								?>
 									<input type="text" class="form-control" id='nim' name="nim" placeholder="NIM">
 								<?php
