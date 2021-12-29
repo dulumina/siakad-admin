@@ -12,7 +12,7 @@ class Dashboard extends CI_Controller {
     // $this->load->helper('fikri');
   }
 
-  function card($periode='20201'){
+  function card($periode='20211'){
     if (isset($_SESSION['card'][$periode])) {
       $data = $_SESSION['card'][$periode];
     }else {
