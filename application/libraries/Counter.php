@@ -116,6 +116,7 @@ class Counter{
     }
     function mhsMembayarSpc($periode){
         $otherWhere = "";
+        $ulevel=$this->CI->session->userdata('ulevel');
 
         if (!$periode || $ulevel == '4' || $ulevel == '10') {
             return 0;
