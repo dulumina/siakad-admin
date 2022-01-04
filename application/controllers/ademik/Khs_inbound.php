@@ -44,7 +44,6 @@ class Khs_inbound extends CI_Controller
 		$nim = $this->input->post('nim');
 		$periode = $this->input->post('periode');
 		$isi_khs['dataa'] = $this->Inbound->khs($nim, $periode);
-		// echo $data_khs;
 		echo json_encode($isi_khs);
 	}
 
@@ -67,27 +66,5 @@ class Khs_inbound extends CI_Controller
 		$pdf->Output('Cetak KHS.pdf', "D");
 
 		exit();
-
-
-
-
-		// $data['mhsw'] = $this->cetak_khs_prodi_model->($semester,$program,$jurusan,$angkatan);
-		// $data['controller']=$this;
-		// $data['semester']=$semester;
-		// $data['jurusan']=$jurusan;
-		// $data['fakultas']=$fak;
-		// $html = $this->load->view('ademik/report/cetak_khs_prodi', $data,TRUE);
-
-		//       $pdf = $this->m_pdf->exp_pdf();
-
-		//       $pdf->AddPage('P');
-		//       $pdf->pagenumPrefix = 'Halaman ';
-		// $pdf->nbpgPrefix = ' dari ';
-		//       $pdf->setFooter('{PAGENO}{nbpg}');
-		//       $pdf->WriteHTML($html);
-
-		//       $pdf->Output('Cetak KHS.pdf', "D");
-
-		//       exit();
 	}
 }
