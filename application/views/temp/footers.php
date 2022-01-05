@@ -55,7 +55,7 @@ function activeServer()
 	})
 	}
 	<?php if(ENVIRONMENT=='development') : ?>
-		console.log(JSON.parse(<?= json_encode($_SERVER); ?>))
+		console.log(<?= json_encode($_SERVER); ?>)
 	<?php endif; ?>
 	</script>
 </body>
