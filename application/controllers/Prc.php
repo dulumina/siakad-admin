@@ -78,9 +78,9 @@ class prc extends CI_Controller {
 
 		$is_valid = $this->recaptcha->is_valid();
 		
-		// if ($is_valid['success'] != 1 ) { // jika validasi captcha false 
-		if (false) { // matikan semestara karena error pada producrtion
-			$pesantambahan = "Maaf Captcha Salah.".$pesantambahan;
+		if (!$is_valid['success']) { // jika validasi captcha false 
+		// if (false) { // matikan semestara karena error pada producrtion
+			$pesantambahan = "Maaf Captcha tidak sesuai.".$pesantambahan;
 			$this->session->set_flashdata('konfirmasi',$pesantambahan);
 		}else { // jika validasi captcha true
 			# code...
