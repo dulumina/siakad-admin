@@ -150,6 +150,7 @@ function sendMessage($data=[])
 
 	$data = http_build_query(array(
 		'chat_id' => $bot_msg_id,
+		'parse_mode' => 'html',
 		'text' => json_encode($data)
 	));
 
