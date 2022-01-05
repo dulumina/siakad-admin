@@ -165,7 +165,14 @@ function sendMessage($data=[])
 function getDevice($ua)
 {
 	$url = "http://api.userstack.com/api/detect?access_key=ec1a48617e103c11ffd57cbeead9050b&ua=$ua";
-	$data = json_decode(file_get_contents($url));
+	$options = array(
+		"ssl"=>array(
+			"allow_self_signed"=>true,
+			"verify_peer"=>false,
+			"verify_peer_name"=>false,
+		),
+	);
+	$data = json_decode(file_get_contents($url, false, stream_context_create($options)));
 	$device = $data->device->type.' '.$data->device->brand.' '.$data->device->name." <a href='$url'>info<a>";
 
 	return $device;
