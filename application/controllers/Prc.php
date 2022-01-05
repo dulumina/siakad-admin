@@ -38,9 +38,9 @@ class prc extends CI_Controller {
 			$username=$this->db->escape($this->input->post('username'));
 			$password=$this->db->escape($this->input->post('password'));
 			$loguser=$this->input->post('loguser');
-			$ip_address=$_SERVER['REMOTE_ADDR'];
+			$ip_address=get_ip_client();
 			$info=$_SERVER['HTTP_USER_AGENT'];
-			$hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+			$hostname = gethostbyaddr($ip_address);
 			$log_in = "N";
 		// end login data
 
@@ -78,9 +78,9 @@ class prc extends CI_Controller {
 
 		$is_valid = $this->recaptcha->is_valid();
 		
-		// if ($is_valid['success'] != 1 ) { // jika validasi captcha false 
-		if (false) { // matikan semestara karena error pada producrtion
-			$pesantambahan = "Maaf Captcha Salah.".$pesantambahan;
+		if (!$is_valid['success']) { // jika validasi captcha false 
+		// if (false) { // matikan semestara karena error pada producrtion
+			$pesantambahan = "Maaf Captcha tidak sesuai.".$pesantambahan;
 			$this->session->set_flashdata('konfirmasi',$pesantambahan);
 		}else { // jika validasi captcha true
 			# code...

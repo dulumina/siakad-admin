@@ -452,8 +452,8 @@
 		                        					</div>
 		                     					</div>
 		                     					<div class="form-group row">
-		    				            			<label class="col-sm-2 col-form-label">Penerima KPS?</label>
-		    				            			<div class="col-sm-4">
+																		<label class="col-sm-2 col-form-label">Penerima KPS?</label>
+																		<div class="col-sm-4">
 		                          						<input name="kps" type="radio" id="radio_3" onclick="open_noKPS()" value="0" <?= ($dataProfil->penerimaKPS == '0') ? 'checked' : '' ?> />
 		                          						<label for="radio_3">Tidak</label>
 		                          						<input name="kps" type="radio" id="radio_4" onclick="open_noKPS()" value="1" <?= ($dataProfil->penerimaKPS == '1') ? 'checked' : '' ?> />
@@ -464,6 +464,24 @@
 		                          						<input class="form-control" type="text" name="noKPS" value="<?= $dataProfil->nomorKPS ?>" id="noKPS" disabled />
 		                        					</div>
 		                      					</div>
+																		<?php if ($dataProfil->StatusAwal=='P' or $dataProfil->StatusAwal=='J' or $dataProfil->StatusAwal=='p' or $dataProfil->StatusAwal=='j'): ?>
+																			<div class="form-group row">
+																				<label for="ptAsal" class="col-md-2 col-xs-12 col-form-label">PT Asal</label>
+																				<div class="col-md-10">
+																					<select class="form-control selectPT" style="width: 100%" name="UniversitasAsal" id="UniversitasAsal">
+																						<option value="<?= $univAsal->id_perguruan_tinggi; ?>"><?+ $univAsal->nama_perguruan_tinggi; ?></option>
+																					</select>
+																				</div>				
+																			</div>
+																			<div class="form-group row">
+																				<label for="ptAsal" class="col-md-2 col-xs-12 col-form-label">Prodi Asal</label>
+																				<div class="col-md-10">
+																					<select class="form-control ProdiAsal" style="width: 100%" name="ProdiAsal" id="ProdiAsal">
+																						<option value="<?= $prodAsal->id_prodi; ?>"><?= $prodAsal->nama_program_studi; ?></option>
+																					</select>
+																				</div>				
+																			</div>
+																		<?php endif; ?>
 		                      					<div class="form-group row">
 		                      						<label for="example-text-input" class="col-sm-4 col-form-label">Periode Awal Masuk</label>
 		                        					<div class="col-sm-2">
@@ -699,6 +717,8 @@
 		    var awalMasuk = $('#awalMasuk').val();
 		    var bayarSPP = $('#bayarSPP').val();
 		    var ketSPP = $('#ketSPP').val();
+				let UniversitasAsal = $('#UniversitasAsal').val();
+				let ProdiAsal = $('#ProdiAsal').val();
 
 		    var radiosSex = document.getElementsByName('sex');
 
@@ -718,7 +738,7 @@
 		      	}
 		    }
 
-		    var data = 'id='+id+'&pd='+pd+'&regpd='+regpd+'&nama='+nama+'&fakultas='+fakultas+'&tmpLahir='+tmpLahir+'&tglLahir='+tglLahir+'&sex='+sex+'&agama='+agama+'&ibu='+ibu+'&nik='+nik+'&nisn='+nisn+'&npwp='+npwp+'&alamat='+alamat+'&negara='+negara+'&dusun='+dusun+'&rt='+rt+'&rw='+rw+'&kodepos='+kodepos+'&kelurahan='+kelurahan+'&kecamatan='+kecamatan+'&jnsTinggal='+jnsTinggal+'&alatTrans='+alatTrans+'&telepon='+telepon+'&hp='+hp+'&email='+email+'&kps='+kps+'&noKPS='+noKPS+'&awalMasuk='+awalMasuk+'&bayarSPP='+bayarSPP+'&ketSPP='+ketSPP;
+		    var data = 'id='+id+'&pd='+pd+'&regpd='+regpd+'&nama='+nama+'&fakultas='+fakultas+'&tmpLahir='+tmpLahir+'&tglLahir='+tglLahir+'&sex='+sex+'&agama='+agama+'&ibu='+ibu+'&nik='+nik+'&nisn='+nisn+'&npwp='+npwp+'&alamat='+alamat+'&negara='+negara+'&dusun='+dusun+'&rt='+rt+'&rw='+rw+'&kodepos='+kodepos+'&kelurahan='+kelurahan+'&kecamatan='+kecamatan+'&jnsTinggal='+jnsTinggal+'&alatTrans='+alatTrans+'&telepon='+telepon+'&hp='+hp+'&email='+email+'&kps='+kps+'&noKPS='+noKPS+'&awalMasuk='+awalMasuk+'&bayarSPP='+bayarSPP+'&ketSPP='+ketSPP+'&UniversitasAsal='+UniversitasAsal+'&ProdiAsal='+ProdiAsal;
 
 		    var url = "<?= base_url('ademik/profil/validasiDataMhsw'); ?>";
 
@@ -876,4 +896,60 @@
 				}
 		});
 	}
+let base_url = "<?= base_url() ?>";
+wait$(() => {
+	// $('.select2').select2();
+	
+	$('.selectPT').select2({
+		minimumInputLength: 5,
+		allowClear: true,
+		placeholder: 'masukkan nama Perguruan tinggi',
+		ajax: {
+			dataType: 'json',
+			url: base_url+'ademik/Mhswpindah/GetAllPT',
+			method :'POST',
+			delay: 800,
+			data: function(params) {
+				return {
+					search: ucwords(params.term)
+				}
+			},
+			processResults: function (data, page) {
+				return {
+					results: data
+				};
+			},
+		}
+	})
+
+	$("#UniversitasAsal").change(function(){
+		$('#ProdiAsal').html('');
+		// $("#UniversitasAsal").attr('disabled', true);
+		$.post({
+			url: base_url+'ademik/mhswpindah/getProdiAsal',
+			data: {
+				"id_perguruan_tinggi":$("#UniversitasAsal").val()
+			},
+			method : "POST"
+		}).done(function(res) {
+			let listProdi = JSON.parse(res).data;
+			for (let i = 0; i < listProdi.length; i++) {
+				const prodi = listProdi[i];
+				$('#ProdiAsal').append("<option value='"+prodi.id_prodi+"'>"+prodi.nama_jenjang_pendidikan+" - "+prodi.nama_program_studi+"</option>");
+
+			}
+			$('#ProdiAsal').select2();
+		}).always(function(){
+			$("#UniversitasAsal").attr('disabled', false);
+		});
+	});
+})
+
+function ucwords(str)
+{  
+	return str.replace (/\w\S*/g, 
+		function(txt)
+		{  return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); } );
+}
+
 </script>
