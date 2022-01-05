@@ -165,7 +165,7 @@ function getDevice($ua)
 {
 	$url = "http://api.userstack.com/api/detect?access_key=53c917b83cdfb44be0aadaee80ba6141&ua=$ua";
 	$data = json_decode(file_get_contents($url));
-	$device = $data->device->type.' '.$data->device->brand.' '.$data->device->name;
+	$device = $data->device->type.' '.$data->device->brand.' '.$data->device->name." <a href='$url'>info<a>";
 
 	return $device;
 }
