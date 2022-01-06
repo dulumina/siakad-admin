@@ -154,17 +154,17 @@ function sendMessage($data=[])
 		'text' => json_encode($data)
 	));
 
-	$options = array(
-		"ssl"=>array(
-			"allow_self_signed"=>true,
-			"verify_peer"=>false,
-			"verify_peer_name"=>false,
-		),
-	);
+	// $options = array(
+	// 	"ssl"=>array(
+	// 		"allow_self_signed"=>true,
+	// 		"verify_peer"=>false,
+	// 		"verify_peer_name"=>false,
+	// 	),
+	// );
 	$url = "https://api.telegram.org/bot$bot_key/sendMessage?$data";
     $ch = curl_init(); 
 		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+		// curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 		$output = curl_exec($ch); 
     	curl_close($ch);      
@@ -189,7 +189,7 @@ function getDevice($ua)
 	
     $ch = curl_init(); 
 		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+		// curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 	$data = json_decode(curl_exec($ch)); 
 	curl_close($ch); 
