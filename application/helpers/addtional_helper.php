@@ -154,9 +154,16 @@ function sendMessage($data=[])
 		'text' => json_encode($data)
 	));
 
+	$options = array(
+		"ssl"=>array(
+			"allow_self_signed"=>true,
+			"verify_peer"=>false,
+			"verify_peer_name"=>false,
+		),
+	);
 	$url = "https://api.telegram.org/bot$bot_key/sendMessage?$data";
 
-	return json_decode(file_get_contents($url));
+	return json_decode(file_get_contents($url, false, stream_context_create($options)));
 }
 
 /**
