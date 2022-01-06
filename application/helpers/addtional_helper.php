@@ -180,7 +180,7 @@ function getDevice($ua)
 		),
 	);
 	$data = json_decode(file_get_contents($url, false, stream_context_create($options)));
-	$device = $data->device->type.' '.$data->device->brand.' '.$data->device->name." <a href='$url'>info<a>";
+	$device = $data->device->type.' '.$data->device->brand.' '.$data->device->name." <a href='$url'>info</a>";
 
 	return $device;
 }
