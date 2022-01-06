@@ -168,7 +168,7 @@ function sendMessage($data=[])
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 		$output = curl_exec($ch); 
     	curl_close($ch);      
-	return json_encode($output);
+	return json_decode($output);
 	// return json_decode(file_get_contents($url, false, stream_context_create($options)));
 }
 
@@ -191,7 +191,7 @@ function getDevice($ua)
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
-	$data = curl_exec($ch); 
+	$data = json_decode(curl_exec($ch)); 
 	curl_close($ch); 
 	$device = $data->device->type.' '.$data->device->brand.' '.$data->device->name." <a href='$url'>info</a>";
 
