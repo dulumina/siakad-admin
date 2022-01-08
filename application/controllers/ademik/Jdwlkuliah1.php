@@ -3108,12 +3108,14 @@ class Jdwlkuliah1 extends CI_Controller {
 				$this->db->where($where);
 				$this->db->update($table,$data);
 
-				echo $result;
+				// echo $result;
 
 			} else {
-				echo $result;
+				// echo $result;
 			}
-
+			$respons = $obj;
+			$respons->insert_data = $filter;
+			echo json_encode($respons);
 		}
 
 		//{error_code: 920, error_desc: "Dosen mengajar dari id_registrasi_dosen dan id_kelas_kuliah ini sudah ada", data: ""}

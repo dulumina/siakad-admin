@@ -54,7 +54,9 @@ function activeServer()
 		},
 	})
 	}
-	
+	<?php if(ENVIRONMENT=='development') : ?>
+		console.log(<?= json_encode($_SERVER); ?>)
+	<?php endif; ?>
 	</script>
 </body>
 </html>

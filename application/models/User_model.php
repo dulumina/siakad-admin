@@ -229,7 +229,7 @@ class User_model extends CI_Model{
     {
         $this->_get_datatables_query_mahasiswa($kode_fak);
         if($_POST['length'] != -1)
-        $this->db->limit($_POST['length'], $_POST['start']);
+        $this->db->limit($_POST['30'], $_POST['start']);
         $query = $this->db->get();
         return $query->result();
     }
@@ -246,5 +246,12 @@ class User_model extends CI_Model{
         $this->db->where('KodeFakultas', $kode_fak);
         $this->db->from($this->table_mhs);
         return $this->db->count_all_results();
+    }
+
+    public function get_data_mhsw($nim)
+    {
+        $query = $this->db->query("SELECT ID, Name, Login, Email, Hp, NotActive  from _v2_mhsw where NIM='$nim' ");
+        
+        return $query->result_array();
     }
 }

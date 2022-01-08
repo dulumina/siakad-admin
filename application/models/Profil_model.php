@@ -181,8 +181,15 @@ class Profil_model extends CI_Model {
 				'Semester' => intval($data['awalMasuk']),
 				'TipePembayaran' => $this->db->escape_str($data['bayarSPP']),
 				'KetPembayaran' => $this->db->escape_str($data['ketSPP']),
-				'count_edit_password' => 1
+				'count_edit_password' => 1,
 			);
+			
+			if (isset($data['UniversitasAsal'])) {
+				$dataUpdate['UniversitasAsal'] = $data['UniversitasAsal'];
+			}
+			if (isset($data['ProdiAsal'])) {
+				$dataUpdate['ProdiAsal'] = $data['ProdiAsal'];
+			}
 
 		} elseif ( $act == 'dataOrtuMhsw' ) {
 

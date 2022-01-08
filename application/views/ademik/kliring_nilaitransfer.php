@@ -105,19 +105,19 @@
 								</div>
 							</div>
 							<div class="box-footer">
-								<? if (count($unvalid) == 0 ) : ?>
+								<? if (count($unvalid) == 0 or $detailmhsw->StatusAwal = 'J' ) : ?>
 									<a class="btn btn-primary pull-right" onclick="kirimBiodataFeeder()">Kirim Biodata</a>
 								<? endif; ?>
 							</div>
 						</div>
 
 						<div class="box">
-							<?php if ( ( $detailmhsw->StatusAwal != 'P' AND $detailmhsw->StatusAwal != 'J' ) or count($unvalid) > 0 ) { ?>
+							<?php if ( ( $detailmhsw->StatusAwal != 'P' AND $detailmhsw->StatusAwal != 'J') or ( count($unvalid) > 0  and $detailmhsw->StatusAwal != 'J') ) { ?>
 								<div class="box-header">
 									<h3 class="box-title">Keterangan</h3>
 								</div>
 								<div class="box-body">
-									<? if (count($unvalid) > 0) : ?>
+									<? if (count($unvalid) > 0 or $detailmhsw->StatusAwal != 'J' ) : ?>
 										<div style="margin-left: 75px;">Biodata mahasiswa ini belum lengkap, mohon dilengkapi pada menu biodata mahasiswa </div>
 										<ol style="margin-left: 75px;">
 											<? for ($i=0; $i < count($unvalid); $i++) { ?>
