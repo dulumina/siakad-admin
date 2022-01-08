@@ -932,7 +932,7 @@ class Kliring_nilaitransfer extends CI_Controller {
 		if ( $this->input->post('nim') ) {
 			$nim = $this->input->post('nim');
 		}
-
+		$resFeeder=[];
 		$lengkap = $this->profil->isCompleteData($nim);
 		$this->db->select('j.id_sms');
 		$dataLengkap = $this->profil->getDataTabelJoinMhsw('_v2_mhsw',$nim);

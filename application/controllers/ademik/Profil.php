@@ -411,9 +411,14 @@ class Profil extends CI_Controller {
 				'ketSPP' => $this->input->post('ketSPP'),
 				'SKSDiterima' => $this->input->post('SKSDiterima')
 			);
-
+			if (isset($_POST['UniversitasAsal'])) {
+				$dataSukses['UniversitasAsal'] = $this->input->post('UniversitasAsal');
+			}
+			if (isset($_POST['ProdiAsal'])) {
+				$dataSukses['ProdiAsal'] = $this->input->post('ProdiAsal');
+			}
 			$dataClean = $this->security->xss_clean($dataSukses);
-
+			
 			if ( $this->input->post('fakultas') == 'N' AND $this->session->userdata('ulevel') == 4 ) {
 
 				$simpan = $this->profil_model->updateData($dataClean,'dataMhsw','_v2_mhsw');
@@ -440,7 +445,8 @@ class Profil extends CI_Controller {
 
 			} else {
 
-				$dataFeeder = $this->kirimDataMhswFeeder($dataClean);
+				// $dataFeeder = $this->kirimDataMhswFeeder($dataClean);
+				$dataFeeder['error_code'] = 0;
 
 				if ( $dataFeeder['error_code'] == 0 ) {
 
