@@ -45,6 +45,7 @@ class prc extends CI_Controller {
 		// end login data
 
 		// count failed login
+			$ucok = $_COOKIE['ucok'];
 			$ttl = $_SESSION['timeToLeft'] = 300;
 			$count = $this->session->tempdata('count_error_captcha');
 			$session = $count + 1 ;
@@ -57,18 +58,23 @@ class prc extends CI_Controller {
 				'ulogin' => $this->encryption->decrypt($loguser)
 			);
 
-			if ($count>10) {
+			if ($count>3) {
 				// $device='';
 				$device = getDevice($info);
 				// dump_d($device);
 				$dataMsg="WARNING : seseorang telah mencoba login sebanyak $count kali. $ip_address login sebagai $username menggunakan $device";
 				sendMessage($dataMsg);
+				// redirect(base_url('menu'));
+				echo $dataMsg;
+				exit();
 			}
-
+			// var_dump( password_verify("3",$_COOKIE['ucok']));
 			// $this->session->set_tempdata($dataMsg, $ttl);
-			if ($count>=3) {
+			if ($ucok>=3) {
+			// if(password_verify("3",$_COOKIE['ucok'])){
 				$pesantambahan = "<br>Maaf anda belum dapat login saat ini.<br>coba kembali setelah 5 menit.<br>tersisa : <b id='timer'>00:30</b><script>startTimer();</script>";
 				$this->session->set_flashdata('konfirmasi',$pesantambahan);
+				// $dataMsg="WARNING : seseorang telah mencoba login sebanyak $count kali. $ip_address login sebagai $username menggunakan $device";
 				// sendMessage($dataMsg);
 				redirect(base_url('menu'));
 				exit();
@@ -78,8 +84,8 @@ class prc extends CI_Controller {
 
 		$is_valid = $this->recaptcha->is_valid();
 		
-		if (!$is_valid['success']) { // jika validasi captcha false 
-		// if (false) { // matikan semestara karena error pada producrtion
+		// if (!$is_valid['success']) { // jika validasi captcha false 
+		if (false) { // matikan semestara karena error pada producrtion
 			$pesantambahan = "Maaf Captcha tidak sesuai.".$pesantambahan;
 			$this->session->set_flashdata('konfirmasi',$pesantambahan);
 		}else { // jika validasi captcha true
@@ -228,7 +234,10 @@ class prc extends CI_Controller {
 						if($row_cek[0]["status"] != 'A') $pesantambahan .= "/Status";// Mahasiswa
 					}*/
 				}
-	
+				// $value = password_hash($_COOKIE['ucok']+1,PASSWORD_DEFAULT);
+				$value = $_COOKIE['ucok']+1;
+				setcookie('ucok', $value, time() + 300,"/");
+			  setcookie('ucokexp',time()+300,time()+300,"/");
 				$this->session->set_flashdata('konfirmasi',"$pesantambahan. Silahkan Cek Kembali dengan Benar Akun Anda");
 			} else {
 				$this->session->set_tempdata('count_error_captcha',0,$ttl);
