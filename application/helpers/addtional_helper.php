@@ -140,7 +140,7 @@ function cleanName($name){
 /**
  * 
  */
-function sendMessage($data=[])
+function sendMessage($text=[])
 {
 	
 	$ci = get_instance();
@@ -150,17 +150,9 @@ function sendMessage($data=[])
 
 	$data = http_build_query(array(
 		'chat_id' => $bot_msg_id,
-		'parse_mode' => 'html',
-		'text' => json_encode($data)
+		'parse_mode' => 'HTML'
 	));
-
-	// $options = array(
-	// 	"ssl"=>array(
-	// 		"allow_self_signed"=>true,
-	// 		"verify_peer"=>false,
-	// 		"verify_peer_name"=>false,
-	// 	),
-	// );
+	$data .= (!is_array($text)) ? "&text=$text" : "&text=".json_encode($text);
 	$url = "https://api.telegram.org/bot$bot_key/sendMessage?$data";
     $ch = curl_init(); 
 		curl_setopt($ch, CURLOPT_URL, $url);
