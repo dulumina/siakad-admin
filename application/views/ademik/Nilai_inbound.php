@@ -23,12 +23,53 @@
       });
     });
 
-    $('#mk').change(function() {
-      let dosen = $("#dosen").val();
-      if (dosen == '') {
+    $(document).ready(function() {
+      $('#hadir, #praktek, #mid, #uas').change(function() {
+        let hadir = $("#hadir").val();
+        let praktek = $("#praktek").val();
+        let mid = $("#mid").val();
+        let uas = $("#uas").val();
+        let j_hadir = hadir * 0.1;
+        let j_praktek = praktek * 0.2;
+        let j_mid = mid * 0.35;
+        let j_uas = uas * 0.35;
+        let total = j_hadir + j_praktek + j_mid + j_uas;
 
-      }
+        $.ajax({
+          type: 'POST',
+          url: '<?= base_url() ?>ademik/Nilai_inbound/grade',
+          data: {
+            tahun: '2015',
+            total: total
+          },
+          success: function(nilai) {
+            let res = JSON.parse(nilai);
+            // console.log(res);
+            $("#jml_nilai").val(total.toFixed(2));
+            $("#grade").val(res);
+          }
+        });
+      });
     });
+
+    $(document).ready(function() {
+      $('#jml_nilai').change(function() {
+        console.log("masuk nilai");
+        // let hadir = $("#hadir").val();
+        // let praktek = $("#praktek").val();
+        // let mid = $("#mid").val();
+        // let uas = $("#uas").val();
+        // let j_hadir = hadir * 0.1;
+        // let j_praktek = praktek * 0.2;
+        // let j_mid = mid * 0.35;
+        // let j_uas = uas * 0.35;
+        // let total = j_hadir + j_praktek + j_mid + j_uas;
+        // $("#grade").val('masuk');
+
+      });
+    });
+
+
 
     $(document).ready(function() {
       $('#submit').click(function() {
@@ -219,8 +260,15 @@
       text: $pesan,
       type: "success"
     })
-
   };
+
+  function hanyaAngka(evt) {
+    var charCode = (evt.which) ? evt.which : event.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57))
+
+      return false;
+    return true;
+  }
 </script>
 <div class="content-wrapper">
   <section class="content-header">
@@ -254,7 +302,7 @@
                   <div class="col-md-3 col-12">
                     <div class="form-group">
                       <label>TahunAkademik</label>
-                      <input style="width: 100%;" type="text" class="form-control" id="tahunakademik" name="tahunakademik" placeholder="Tahun Akademik" value="" />
+                      <input style="width: 100%;" type="text" class="form-control" id="tahunakademik" name="tahunakademik" placeholder="Tahun Akademik" value="" onkeypress="return hanyaAngka(event)" />
                     </div>
                   </div>
 
@@ -362,21 +410,21 @@
                     <input style="width: 100%;" type="hidden" class="form-control" id="id" name="id" />
                     <div class="form-group">
                       <label>Nama Mahasiswa</label>
-                      <input style="width: 100%;" type="text" class="form-control" id="nama_mhs" name="nama_mhs" placeholder="Nama Mahasiswa" />
+                      <input style="width: 100%;" type="text" class="form-control" id="nama_mhs" name="nama_mhs" placeholder="Nama Mahasiswa" readonly />
                     </div>
                   </div>
 
                   <div class="col">
                     <div class="form-group">
                       <label>NIM</label>
-                      <input style="width: 100%;" type="text" class="form-control" id="nim" name="nim" placeholder="NIM" />
+                      <input style="width: 100%;" type="text" class="form-control" id="nim" name="nim" placeholder="NIM" readonly />
                     </div>
                   </div>
 
                   <div class="col">
                     <div class="form-group">
                       <label>Mata Kuliah</label>
-                      <input style="width: 100%;" type="text" class="form-control" id="matkul" name="matkul" placeholder="Mata Kuliah" />
+                      <input style="width: 100%;" type="text" class="form-control" id="matkul" name="matkul" placeholder="Mata Kuliah" readonly />
                     </div>
                   </div>
                 </div>
@@ -392,19 +440,19 @@
                     <div class="col">
                       <div class="form-group">
                         <label>Jumlah Hadir</label>
-                        <input style="width: 100%;" type="text" class="form-control" id="hadir" name="hadir" placeholder="Jumlah Hadir" value="" />
+                        <input style="width: 100%;" type="number" class="form-control" id="hadir" name="hadir" placeholder="Jumlah Hadir" value="" onkeypress="return hanyaAngka(event)" min="0" max="100" />
                       </div>
                     </div>
                     <div class="col">
                       <div class="form-group">
                         <label>Nilai Praktek</label>
-                        <input style="width: 100%;" type="text" class="form-control" id="praktek" name="praktek" placeholder="Nilai Praktek" value="" />
+                        <input style="width: 100%;" type="number" class="form-control" id="praktek" name="praktek" placeholder="Nilai Praktek" value="" onkeypress="return hanyaAngka(event)" min="0" max="100" />
                       </div>
                     </div>
                     <div class="col">
                       <div class="form-group">
                         <label>Nilai MID</label>
-                        <input style="width: 100%;" type="text" class="form-control" id="mid" name="mid" placeholder="Nilai MID" value="" />
+                        <input style="width: 100%;" type="number" class="form-control" id="mid" name="mid" placeholder="Nilai MID" value="" onkeypress="return hanyaAngka(event)" min="0" max="100" />
                       </div>
                     </div>
                   </div>
@@ -413,19 +461,19 @@
                     <div class="col">
                       <div class="form-group">
                         <label>Nilai UAS</label>
-                        <input style="width: 100%;" type="text" class="form-control" id="uas" name="uas" placeholder="Nilai UAS" value="" />
+                        <input style="width: 100%;" type="number" class="form-control" id="uas" name="uas" placeholder="Nilai UAS" value="" onkeypress="return hanyaAngka(event)" min="0" max="100" />
                       </div>
                     </div>
                     <div class="col">
                       <div class="form-group">
                         <label>Nilai</label>
-                        <input style="width: 100%;" type="text" class="form-control" id="jml_nilai" name="jml_nilai" placeholder="Nilai" />
+                        <input style="width: 100%;" type="text" class="form-control" id="jml_nilai" name="jml_nilai" placeholder="Nilai" readonly />
                       </div>
                     </div>
                     <div class="col">
                       <div class="form-group">
                         <label>Grade Nilai</label>
-                        <input style="width: 100%;" type="text" class="form-control" id="grade" name="grade" placeholder="Grade Nilai" value="" />
+                        <input style="width: 100%;" type="text" class="form-control" id="grade" name="grade" placeholder="Grade Nilai" readonly />
                       </div>
                     </div>
                   </div>

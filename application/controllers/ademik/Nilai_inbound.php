@@ -81,7 +81,7 @@ class Nilai_inbound extends CI_Controller
 		// var_dump($cetak_dpna);
 		$html = $this->load->view('ademik/report/Cetak_dpna_inbound', $cetak_dpna, TRUE);
 		$pdf = $this->m_pdf->exp_pdf();
-		$pdf->AddPage('P');
+		$pdf->AddPage('L');
 		$pdf->pagenumPrefix = 'Halaman ';
 		$pdf->nbpgPrefix = ' dari ';
 		$pdf->setFooter('{PAGENO}{nbpg}');
@@ -90,5 +90,45 @@ class Nilai_inbound extends CI_Controller
 		$pdf->Output('Cetak DPNA.pdf', "D");
 
 		exit();
+	}
+
+
+	public function grade()
+	{
+		$tahun = $this->input->post('tahun');
+		$total = $this->input->post('total');
+		$data_grade = $this->Inbound->grade_nilai($tahun, $total);
+
+		// --------------- ambil patokan nilai didalam data base -----------------
+		// foreach ($data_grade as $row) {
+		// 	$bawah = $row->BatasBawah;
+		// 	$atas = $row->BatasAtas;
+		// echo $bawah . "--" . $atas . "<br>";
+		// if ($total >= $bawah && $total <= $atas) {
+		// 	$ambil = $row->Nilai;
+		// echo "nilainya  = " . $ambil . "<br>";
+		// }
+		// }
+		// ------------------------------------------------------------------------------
+
+		if ($total >= 85.00 && $total <= 100.00) {
+			$ambil = 'A';
+		} elseif ($total >= 80.00 && $total <= 90.99) {
+			$ambil = 'A-';
+		} elseif ($total >= 80.00 && $total <= 84.99) {
+			$ambil = 'B+';
+		} elseif ($total >= 72.00 && $total <= 79.99) {
+			$ambil = 'B';
+		} elseif ($total >= 65.00 && $total <= 71.99) {
+			$ambil = 'B-';
+		} elseif ($total >= 58.00 && $total <= 64.99) {
+			$ambil = 'C';
+		} elseif ($total >= 45.00 && $total <= 57.99) {
+			$ambil = 'D';
+		} elseif ($total >= 0 && $total <= 44.99) {
+			$ambil = 'E';
+		}
+
+		echo json_encode($ambil);
 	}
 }

@@ -48,7 +48,7 @@
              			<!-- Kaledo24 -->
 
              			<div class="box-body">
-							<form class="form-horizontal" action="<?=base_url();?>ademik/UserAccess/datamhsw" method="POST">
+							<form class="form-horizontal" action="<?=base_url();?>ademik/useraccess/datamhsw" method="POST">
 								<div class="form-group row">
 									<label class="col-sm-1 control-label">STAMBUK</label>
 									<div class="col-sm-3">
