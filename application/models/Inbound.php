@@ -100,7 +100,7 @@ class Inbound extends CI_Model
 
     function khs($nim, $periode)
     {
-        $this->db->select('_v2_krsmbkm.nim, _v2_mhsw_pmmdn.name, _v2_krsmbkm.tahun, _v2_jadwal.NamaMK, _v2_krsmbkm.nilai');
+        $this->db->select('_v2_krsmbkm.nim, _v2_mhsw_pmmdn.name, _v2_krsmbkm.tahun, _v2_jadwal.NamaMK, _v2_krsmbkm.nilai, _v2_krsmbkm.GradeNilai');
         $this->db->join('_v2_mhsw_pmmdn', '_v2_mhsw_pmmdn.NIM = _v2_krsmbkm.nim');
         $this->db->join('_v2_jadwal', '_v2_jadwal.IDJADWAL= _v2_krsmbkm.id_jadwal');
         $this->db->where('_v2_mhsw_pmmdn.nim', $nim);
@@ -123,5 +123,16 @@ class Inbound extends CI_Model
         $this->db->select('*');
         $this->db->where('periode_aktif', $periode);
         return $this->db->get('_v2_periode_aktif')->row();
+    }
+
+    function grade_nilai($tahun, $total)
+    {
+        // $query = $this->db->query("SELECT * FROM _v2_nilai WHERE Kode='Umum' AND KodeFakultas='All' AND AngkatanKebawah=$tahun");
+        $this->db->select('*');
+        $this->db->where('Kode', 'Umum');
+        $this->db->where('KodeFakultas', 'All');
+        $this->db->where('AngkatanKebawah', $tahun);
+        // return $query->result();
+        return $this->db->get('_v2_nilai')->result();
     }
 }

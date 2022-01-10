@@ -95,19 +95,37 @@
 						<th style="width: 1px; text-align: center;" align="center">No.</th>
 						<th style="width: 1px; text-align: center;" align="center">Kode MK</th>
 						<th style="width: 1px; text-align: center;" align="center">Mata Kuliah</th>
-						<th style="width: 1px; text-align: center;" align="center">SKS</th>
-						<th style="width: 1px; text-align: center;" align="center">NxK</th>
-						<th style="width: 1px; text-align: center;" align="center">Nilai</th>
+						<th style="width: 50px; text-align: center;" align="center">SKS</th>
+						<th style="width: 60px; text-align: center;" align="center">Nilai</th>
 					</tr>
 					<?php
 					$n = 0;
 					$TSKS = 0;
 					$IPS = 0;
 					$IP = 0;
+					$bobot = 0;
 					foreach ($data_khs as $khs1) {
 						$n++;
+						$gradenilai = $khs1->GradeNilai;
+
+						if ($gradenilai == 'A') {
+							$bobot = 4.00 * $khs1->SKS;
+						} elseif ($gradenilai == 'A-') {
+							$bobot = 3.75 * $khs1->SKS;
+						} elseif ($gradenilai == 'B+') {
+							$bobot = 3.50 * $khs1->SKS;
+						} elseif ($gradenilai == 'B') {
+							$bobot = 3.00 * $khs1->SKS;
+						} elseif ($gradenilai == 'C') {
+							$bobot = 2.50 * $khs1->SKS;
+						} elseif ($gradenilai == 'D') {
+							$bobot = 1.00 * $khs1->SKS;
+						} elseif ($gradenilai == 'E') {
+							$bobot = 0 * $khs1->SKS;
+						}
+
 						$TSKS = $TSKS + $khs1->SKS;
-						$IP = $IP + $khs1->nilai;
+						$IP = $IP + $bobot;
 						$IPS = $IP / $TSKS;
 					?>
 						<tr>
@@ -115,7 +133,7 @@
 							<td><?= $khs1->KodeMK; ?></td>
 							<td><?= $khs1->NamaMK; ?></td>
 							<td align="center"><?= $khs1->SKS; ?></td>
-							<td align="center"><?= $khs1->nilai; ?></td>
+
 							<td align="center"><?= $khs1->GradeNilai; ?></td>
 						</tr>
 					<?php

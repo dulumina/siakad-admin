@@ -53,7 +53,7 @@
 		});
 
 		function in_periode(ini) {
-			// console.log(ini);
+
 			$.ajax({
 				type: 'POST',
 				url: '<?= base_url() ?>ademik/Khs_inbound/periode',
@@ -98,7 +98,7 @@
 						data: 'NamaMK'
 					},
 					{
-						data: 'nilai'
+						data: 'GradeNilai'
 					},
 				],
 
@@ -225,7 +225,8 @@
 
 							<div class="card card-default">
 								<div class="card-header">
-									<form action="<?= base_url() ?>ademik/Nilai_inbound/Cetak_dpna" method="get">
+									<!-- <form action="<?= base_url() ?>ademik/Nilai_inbound/Cetak_dpna" method="get"> -->
+									<form action="<?= base_url() ?>ademik/Khs_inbound/cetak_khs" method="get">
 										<!-- <form name="form" action="" method="post"> -->
 
 										<input type="hidden" name="ambil-nim" id="ambil-nim">

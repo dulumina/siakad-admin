@@ -70,7 +70,7 @@
       <div class="col-md-12" style="font-size: 15px;">
         <table style="width: 100%">
           <tr>
-            <td>Mata Kuliah</td>
+            <td style="width: 100px;">Mata Kuliah</td>
             <td>: <?= $data_dpna[0]->NamaMK ?></td>
           </tr>
           <tr>
@@ -96,9 +96,13 @@
             <th style="width: 1px; text-align: center;" align="center">No.</th>
             <th style="width: 1px; text-align: center;" align="center">NIM</th>
             <th style="width: 1px; text-align: center;" align="center">Nama</th>
-            <th style="width: 1px; text-align: center;" align="center">Asal Univ</th>
+            <th style="width: 1px; text-align: center;" align="center">Asal Universitas</th>
             <!-- <th style="width: 1px; text-align: center;" align="center">Asal Prodi</th> -->
-            <th style="width: 1px; text-align: center;" align="center">Nilai</th>
+            <th style="width: 20px; text-align: center;" align="center">Kehadiran</th>
+            <th style="width: 20px; text-align: center;" align="center">Tugas</th>
+            <th style="width: 50px; text-align: center;" align="center">UTS</th>
+            <th style="width: 50px; text-align: center;" align="center">UAS</th>
+            <th style="width: 50px; text-align: center;" align="center">Nilai</th>
           </tr>
           <?php
           $n = 0;
@@ -117,6 +121,10 @@
               <td><?= $dpna1->name; ?></td>
               <td><?= $dpna1->univ_asal; ?></td>
               <td align="center"></td>
+              <td align="center"></td>
+              <td align="center"></td>
+              <td align="center"></td>
+              <td align="center"></td>
             </tr>
           <?php
           }
@@ -126,24 +134,10 @@
     </div>
     <br>
 
-    <div class="row" style="margin-bottom: 13px;">
-      <div class="col-md-12" style="font-size: 15px;">
-        <table style="width: 25%">
-          <tr>
-            <td>IP Semester</td>
-            <td>: <?= round($IPS, 2) ?></td>
-          </tr>
-          <tr>
-            <td>SKS Semester</td>
-            <td>: <?= $TSKS ?> </td>
-          </tr>
-        </table>
-      </div>
-    </div>
 
 
     <div class="row tandatangan">
-      <table width="100%" style="margin-left: 600px; font-size: 20px;">
+      <table width="100%" style="margin-left: 1200px; font-size: 20px;">
         <?php
         $tgl = date('d-m-Y');
         ?>

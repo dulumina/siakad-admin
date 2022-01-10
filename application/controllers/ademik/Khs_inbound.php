@@ -64,7 +64,6 @@ class Khs_inbound extends CI_Controller
 		$pdf->WriteHTML($html);
 
 		$pdf->Output('Cetak KHS.pdf', "D");
-
 		exit();
 	}
 }
