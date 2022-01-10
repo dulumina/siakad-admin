@@ -1452,7 +1452,8 @@ class Jdwlkuliah1 extends CI_Controller {
 
 		
 
-		$idjadwal 		= decode($this->input->post('idjadwal'));
+		// $idjadwal 		= decode($this->input->post('idjadwal'));
+		$idjadwal 		= $this->input->post('idjadwal');
 		$thn 			= $this->input->post('tahun');
 		$angkatan 		= $this->input->post('angkatan');
 		$daftar 		= $this->daftar_mhsw($idjadwal,$thn,$angkatan);
