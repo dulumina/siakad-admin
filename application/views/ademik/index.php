@@ -1,3 +1,8 @@
+<?php
+		if(!isset($_COOKIE['ucok'])) { 
+			setcookie('ucok',0,time()+300,"/");
+		};
+?>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -34,8 +39,17 @@
                 <!-- /.login-logo -->
                 <div class="login-box-body">
                   <p class="login-box-msg">Sign in</p>
-                <span id="flashdata" class="login-box-msg" style='color:red'><?=$this->session->flashdata('konfirmasi')?></span>
+                <span id="flashdata" class="login-box-msg" style='color:red'>
+                  <?=$this->session->flashdata('konfirmasi')?>
+                  <?php if($lock): ?>
+                    <br>Maaf anda belum dapat login saat ini.<br>coba kembali setelah 5 menit.<br>tersisa : <b id='timer'>05:00</b><script>startTimer();</script>
+                  <?php endif; ?>
+                </span>
+                <?php if($lock) : ?>
+                  <br>Hubungi admin (prodi/fakultas) bila lupa password.
+                <?php endif; ?>
                   
+                  <?php if(!$lock) : ?>
                   <form action="<?=base_url()?>prc/prc_login" method="post" class="form-element" id="frm-login">
                     <div class="form-group has-feedback">
                       <input type="text" name="username" id="username" class="form-control" placeholder="Username" maxlength="20" size="15" class="required">
@@ -76,7 +90,7 @@
                       <!-- /.col -->
                     </div>
                   </form>
-
+                  <?php endif; ?>
                   <!-- <div class="social-auth-links text-center">
                     <p>- OR -</p>
                     <a href="#" class="btn btn-social-icon btn-circle btn-facebook"><i class="fa fa-facebook"></i></a>
