@@ -31,6 +31,9 @@ class Menu extends CI_Controller {
 
 	public function index()
 	{
+		if(!isset($_COOKIE['ucok'])) { 
+			setcookie('ucok',0,time()+300,"/");
+		};
 		$uname=$this->session->userdata('uname');
 		$ulevel=$this->session->userdata('ulevel');
 		if (!empty($uname) and !empty($ulevel)){
@@ -60,6 +63,12 @@ class Menu extends CI_Controller {
 			$recaptcha = $this->recaptcha->create_box();
 			$data['recaptcha'] = $recaptcha;
 
+			$data['lock'] = false;
+			if(isset($_COOKIE['ucok'])) {
+				if($_COOKIE['ucok'] >= 3){
+					$data['lock'] = true;
+				}
+			}
 			$this->load->view('login',$data);
 		}
 	}

@@ -106,7 +106,7 @@
 												<tr>
 													<th style="text-align: center;"><?= $no++ ?></th>
 													<th style="text-align: center;">
-														<a style="color: red;" href="<?=base_url();?>ademik/UserAccess/editadminmahasiswa/<?= $tampil['ID'] ?>">
+														<a style="color: red;" href="<?=base_url();?>ademik/useraccess/editadminmahasiswa/<?= $tampil['ID'] ?>">
 															<?php echo $tampil['Login']; ?>	
 														</a>
 													</th>
