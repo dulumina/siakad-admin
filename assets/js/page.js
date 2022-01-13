@@ -59,3 +59,9 @@ function getCookie(name) {
   // Return null if not found
   return null;
 }
+
+wait$(()=>{
+  $('#submit').on('click',()=>{
+    $('#submit').prop('disabled', true);
+  })
+})
