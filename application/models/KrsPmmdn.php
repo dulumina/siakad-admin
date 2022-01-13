@@ -73,5 +73,15 @@ class KrsPmmdn extends CI_Model{
     $this->db->group_by('_v2_mhsw_pmmdn.nim,_v2_jurusan.kode');
     return $this->db->get('_v2_krsmbkm')->result_array();
   }
+
+  public function getTahunKrs($nim)
+  {
+    $tahun = $this->db->select('tahun')
+              ->where('nim',$nim)
+              ->group_by('tahun')
+              ->get('_v2_krsmbkm')
+              ->result_array();
+    return $tahun;
+  }
 }
 ?>
