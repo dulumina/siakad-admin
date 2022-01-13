@@ -196,13 +196,16 @@ class App extends CI_Model{
 			'_v2_tahun.NotActive' => 'N',
 			'_v2_jurusan.NotActive' => 'N',
 			'_v2_bataskrs.NotActive' => 'N',
-			'_v2_bataskrs.krsm <= ' => date('Y-m-d'),
-			'_v2_bataskrs.krss >= ' => date('Y-m-d'),
+			// '_v2_bataskrs.krsm <= ' => date('Y-m-d'),
+			// '_v2_bataskrs.krss >= ' => date('Y-m-d'),
 
 		);
 		
 		if ($periode!='') {
 			$where['_v2_tahun.kode'] = $periode;
+		}else {
+			$where['_v2_bataskrs.krsm <= '] = date('Y-m-d');
+			$where['_v2_bataskrs.krss >= '] = date('Y-m-d');
 		}
 		if ($prodi!='') {
 			$where['_v2_jurusan.kode'] = $prodi;

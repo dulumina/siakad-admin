@@ -29,17 +29,33 @@ class Krs_pmmdn extends CI_Controller {
 		$data['totalSKS'] = $totalSKS;
 		$profile = $this->pmmdn->getProfile($nim);
 		$data['profile'] = $profile;
+
 		$this->db->select('_v2_tahun.kode,_v2_tahun.nama');
 		$this->db->group_by('_v2_tahun.kode');
 		$this->db->where('_v2_jurusan.jenjang',$this->session->userdata('jenjang'));
 		$data['tahun_semester'] = $this->app->getPeriodeKrsProdi();
-		
+		// $data['tahun_semester']=[];
+		// $data['kueri'] = [];
+		$thnKrs = $this->pmmdn->getTahunKrs($nim);
+		// $data['thnKrs'] = $thnKrs;
+		if (!empty($thnKrs)) {
+			foreach ($thnKrs as $thn){
+				$this->db->select('_v2_tahun.kode,_v2_tahun.nama');
+				$this->db->group_by('_v2_tahun.kode');
+				$this->db->where('_v2_jurusan.jenjang',$this->session->userdata('jenjang'));
+				$thnFromKrs = $this->app->getPeriodeKrsProdi($thn['tahun']);
+				array_push($data['tahun_semester'],$thnFromKrs[0]);
+				// array_push($data['kueri'],$this->db->last_query());
+
+			}
+		}
+
 		$this->db->select('_v2_jurusan.kode,_v2_jurusan.nama_indonesia nama');
 		$this->db->group_by('_v2_jurusan.kode');
 		$this->db->where('_v2_jurusan.jenjang',$this->session->userdata('jenjang'));
 		$data['daftar_prodi'] = $this->app->getProdi();
 
-		// echo json_encode($data['daftar_prodi']);exit;
+		// echo json_encode($data);exit;
 		$this->load->view('dashbord',$data);
 		$this->load->view('fikri.js/krs_pmmdn');
 
