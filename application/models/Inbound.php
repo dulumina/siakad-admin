@@ -56,7 +56,7 @@ class Inbound extends CI_Model
 
     function in_nilai($id)
     {
-        $this->db->select('_v2_krsmbkm.id_jadwal, _v2_krsmbkm.nim, _v2_mhsw_pmmdn.name, _v2_krsmbkm.tahun, _v2_krsmbkm.nilai, _v2_jadwal.KodeMK, _v2_jadwal.NamaMK, _v2_jadwal.IDDosen, _v2_dosen.Name, _v2_krsmbkm.id, _v2_krsmbkm.JmlHadir, _v2_krsmbkm.NilaiPraktek, _v2_krsmbkm.NilaiNID, _v2_krsmbkm.NilaiUjian, _v2_krsmbkm.nilai, _v2_krsmbkm.GradeNilai');
+        $this->db->select('_v2_krsmbkm.id_jadwal, _v2_krsmbkm.nim, _v2_mhsw_pmmdn.name, _v2_krsmbkm.tahun, _v2_krsmbkm.nilai, _v2_jadwal.KodeMK, _v2_jadwal.NamaMK, _v2_jadwal.IDDosen, _v2_dosen.Name, _v2_krsmbkm.id, _v2_krsmbkm.JmlHadir, _v2_krsmbkm.NilaiPraktek, _v2_krsmbkm.NilaiTugas, _v2_krsmbkm.NilaiNID, _v2_krsmbkm.NilaiUjian, _v2_krsmbkm.nilai, _v2_krsmbkm.GradeNilai');
         $this->db->join('_v2_jadwal', '_v2_jadwal.IDJADWAL=_v2_krsmbkm.id_jadwal');
         $this->db->join('_v2_dosen', '_v2_dosen.nip=_v2_jadwal.IDDosen');
         $this->db->join('_v2_mhsw_pmmdn', '_v2_mhsw_pmmdn.nim=_v2_krsmbkm.nim');
@@ -66,10 +66,11 @@ class Inbound extends CI_Model
     }
 
 
-    function simpan_nilai($id, $hadir, $praktek, $mid, $uas, $nilai, $grade)
+    function simpan_nilai($id, $hadir, $praktek, $tugas, $mid, $uas, $nilai, $grade)
     {
         $this->db->set('JmlHadir', $hadir);
         $this->db->set('NilaiPraktek', $praktek);
+        $this->db->set('NilaiTugas', $tugas);
         $this->db->set('NilaiNID', $mid);
         $this->db->set('NilaiUjian', $uas);
         $this->db->set('nilai', $nilai);
