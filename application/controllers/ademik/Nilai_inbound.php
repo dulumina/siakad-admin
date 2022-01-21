@@ -64,8 +64,9 @@ class Nilai_inbound extends CI_Controller
 		$uas = $this->input->post('uas');
 		$nilai = $this->input->post('nilai');
 		$grade = $this->input->post('grade');
+		$tugas = $this->input->post('tugas');
 
-		$data_krs = $this->Inbound->simpan_nilai($id, $hadir, $praktek, $mid, $uas, $nilai, $grade);
+		$data_krs = $this->Inbound->simpan_nilai($id, $hadir, $praktek, $tugas, $mid, $uas, $nilai, $grade);
 		echo json_encode($data_krs);
 	}
 
