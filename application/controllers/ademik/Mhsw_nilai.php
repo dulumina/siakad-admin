@@ -272,7 +272,8 @@ class Mhsw_nilai extends CI_Controller {
 					$jur == "B501" or
 					$jur == "O121" or
 					$jur == "O271" or
-					$jur == "L131"
+					$jur == "L131" or
+					$jur == "P211" 
 
 				){
 				$ket_jenjang = $row_jur->Ket_Jenjang;

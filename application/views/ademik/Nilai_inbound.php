@@ -24,31 +24,59 @@
     });
 
     $(document).ready(function() {
-      $('#hadir, #praktek, #mid, #uas').change(function() {
+      $('#hadir, #praktek, #mid, #uas, #tugas, #jml_nilai').change(function() {
         let hadir = $("#hadir").val();
         let praktek = $("#praktek").val();
         let mid = $("#mid").val();
         let uas = $("#uas").val();
-        let j_hadir = hadir * 0.1;
-        let j_praktek = praktek * 0.2;
-        let j_mid = mid * 0.35;
-        let j_uas = uas * 0.35;
-        let total = j_hadir + j_praktek + j_mid + j_uas;
-
-        $.ajax({
-          type: 'POST',
-          url: '<?= base_url() ?>ademik/Nilai_inbound/grade',
-          data: {
-            tahun: '2015',
-            total: total
-          },
-          success: function(nilai) {
-            let res = JSON.parse(nilai);
-            // console.log(res);
-            $("#jml_nilai").val(total.toFixed(2));
-            $("#grade").val(res);
+        let season = $("#season").val();
+        let tugas = $("#tugas").val();
+        // console.log(season);
+        let jml_nilai = $("#jml_nilai").val();
+        let total = '';
+        if (season == 'F') {
+          let j_tugas = tugas * 0.25;
+          let j_mid = mid * 0.35;
+          let j_uas = uas * 0.4;
+          let total = j_tugas + j_mid + j_uas;
+          if (total >= 85.00 && total <= 100.00) {
+            $("#grade").val('A');
+          } else if (total >= 80.00 && total <= 90.99) {
+            $("#grade").val('A-');
+          } else if (total >= 80.00 && total <= 84.99) {
+            $("#grade").val('B+');
+          } else if (total >= 72.00 && total <= 79.99) {
+            $("#grade").val('B');
+          } else if (total >= 65.00 && total <= 71.99) {
+            $("#grade").val('B-');
+          } else if (total >= 58.00 && total <= 64.99) {
+            $("#grade").val('C');
+          } else if (total >= 45.00 && total <= 57.99) {
+            $("#grade").val('D');
+          } else if (total >= 0 && total <= 44.99) {
+            $("#grade").val('E');
           }
-        });
+
+        } else {
+          total = jml_nilai;
+          if (total >= 85.00 && total <= 100.00) {
+            $("#grade").val('A');
+          } else if (total >= 80.00 && total <= 90.99) {
+            $("#grade").val('A-');
+          } else if (total >= 80.00 && total <= 84.99) {
+            $("#grade").val('B+');
+          } else if (total >= 72.00 && total <= 79.99) {
+            $("#grade").val('B');
+          } else if (total >= 65.00 && total <= 71.99) {
+            $("#grade").val('B-');
+          } else if (total >= 58.00 && total <= 64.99) {
+            $("#grade").val('C');
+          } else if (total >= 45.00 && total <= 57.99) {
+            $("#grade").val('D');
+          } else if (total >= 0 && total <= 44.99) {
+            $("#grade").val('E');
+          }
+        }
       });
     });
 
@@ -108,6 +136,7 @@
         let uas = $("#uas").val();
         let nilai = $("#jml_nilai").val();
         let grade = $("#grade").val();
+        let tugas = $("#tugas").val();
 
         $.ajax({
           type: 'POST',
@@ -116,6 +145,7 @@
             id: id,
             hadir: hadir,
             praktek: praktek,
+            tugas: tugas,
             mid: mid,
             uas: uas,
             nilai: nilai,
@@ -232,7 +262,7 @@
       },
       success: function(ini_nilai) {
         let res = JSON.parse(ini_nilai);
-        console.log(res.nilai);
+        console.log(res);
 
 
         $("#id").val(res.id);
@@ -241,6 +271,7 @@
         $("#matkul").val(res.NamaMK);
         $("#hadir").val(res.JmlHadir);
         $("#praktek").val(res.NilaiPraktek);
+        $("#tugas").val(res.NilaiTugas);
         $("#mid").val(res.NilaiNID);
         $("#uas").val(res.NilaiUjian);
         $("#jml_nilai").val(res.nilai);
@@ -302,7 +333,11 @@
                   <div class="col-md-3 col-12">
                     <div class="form-group">
                       <label>TahunAkademik</label>
+                      <?php
+                      $fakul = $this->session->userdata('kdf');
+                      ?>
                       <input style="width: 100%;" type="text" class="form-control" id="tahunakademik" name="tahunakademik" placeholder="Tahun Akademik" value="" onkeypress="return hanyaAngka(event)" />
+                      <input type="hidden" id="season" name="season" value="<?= $fakul ?>">
                     </div>
                   </div>
 
@@ -440,15 +475,48 @@
                     <div class="col">
                       <div class="form-group">
                         <label>Jumlah Hadir</label>
-                        <input style="width: 100%;" type="number" class="form-control" id="hadir" name="hadir" placeholder="Jumlah Hadir" value="" onkeypress="return hanyaAngka(event)" min="0" max="100" />
+                        <?php
+                        if ($fakul == 'F') {
+                        ?>
+                          <input style="width: 100%;" type="number" class="form-control" id="hadir" name="hadir" placeholder="Jumlah Hadir" value="" onkeypress="return hanyaAngka(event)" min="0" max="100" readonly />
+                        <?php
+                        } else {
+                        ?>
+                          <input style="width: 100%;" type="number" class="form-control" id="hadir" name="hadir" placeholder="Jumlah Hadir" value="" onkeypress="return hanyaAngka(event)" min="0" max="100" />
+                        <?php
+                        }
+                        ?>
                       </div>
                     </div>
+                    <?php
+                    if ($fakul == 'F') {
+                    ?>
+                      <div class="col">
+                        <div class="form-group">
+                          <label style="display: none;">Nilai Praktek</label>
+                          <input style="width: 100%;" type="hidden" class="form-control" id="praktek" name="praktek" placeholder="Nilai Praktek" value="" onkeypress="return hanyaAngka(event)" min="0" max="100" readonly />
+                        </div>
+                      </div>
+                    <?php
+                    } else {
+                    ?>
+                      <div class="col">
+                        <div class="form-group">
+                          <label>Nilai Praktek</label>
+                          <input style="width: 100%;" type="number" class="form-control" id="praktek" name="praktek" placeholder="Nilai Praktek" value="" onkeypress="return hanyaAngka(event)" min="0" max="100" />
+                        </div>
+                      </div>
+                    <?php
+                    }
+                    ?>
+
                     <div class="col">
                       <div class="form-group">
-                        <label>Nilai Praktek</label>
-                        <input style="width: 100%;" type="number" class="form-control" id="praktek" name="praktek" placeholder="Nilai Praktek" value="" onkeypress="return hanyaAngka(event)" min="0" max="100" />
+                        <label>Nilai Tugas</label>
+                        <input style="width: 100%;" type="number" class="form-control" id="tugas" name="tugas" placeholder="Nilai Tugas" value="" onkeypress="return hanyaAngka(event)" min="0" max="100" />
                       </div>
                     </div>
+
                     <div class="col">
                       <div class="form-group">
                         <label>Nilai MID</label>
@@ -467,7 +535,17 @@
                     <div class="col">
                       <div class="form-group">
                         <label>Nilai</label>
-                        <input style="width: 100%;" type="text" class="form-control" id="jml_nilai" name="jml_nilai" placeholder="Nilai" readonly />
+                        <?php
+                        if ($fakul == 'F') {
+                        ?>
+                          <input style="width: 100%;" type="text" class="form-control" id="jml_nilai" name="jml_nilai" placeholder="Nilai" readonly />
+                        <?php
+                        } else {
+                        ?>
+                          <input style="width: 100%;" type="text" class="form-control" id="jml_nilai" name="jml_nilai" placeholder="Nilai" />
+                        <?php
+                        }
+                        ?>
                       </div>
                     </div>
                     <div class="col">
