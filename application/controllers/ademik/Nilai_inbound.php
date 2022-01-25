@@ -42,7 +42,6 @@ class Nilai_inbound extends CI_Controller
 		$dosen = $this->input->post('dosen');
 		$mk = $this->input->post('mk');
 		$res['data'] = $this->Inbound->krs($tahunakademik, $dosen, $mk);
-		$res['query']=$this->db->last_query();
 		echo json_encode($res);
 	}
 
