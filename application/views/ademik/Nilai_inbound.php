@@ -34,7 +34,7 @@
         // console.log(season);
         let jml_nilai = $("#jml_nilai").val();
         let total = '';
-        if (season == 'F') {
+        if (season == 'C') {
           let j_tugas = tugas * 0.25;
           let j_mid = mid * 0.35;
           let j_uas = uas * 0.4;
@@ -476,7 +476,7 @@
                       <div class="form-group">
                         <label>Jumlah Hadir</label>
                         <?php
-                        if ($fakul == 'F') {
+                        if ($fakul == 'C') {
                         ?>
                           <input style="width: 100%;" type="number" class="form-control" id="hadir" name="hadir" placeholder="Jumlah Hadir" value="" onkeypress="return hanyaAngka(event)" min="0" max="100" readonly />
                         <?php
@@ -489,7 +489,7 @@
                       </div>
                     </div>
                     <?php
-                    if ($fakul == 'F') {
+                    if ($fakul == 'C') {
                     ?>
                       <div class="col">
                         <div class="form-group">
@@ -536,7 +536,7 @@
                       <div class="form-group">
                         <label>Nilai</label>
                         <?php
-                        if ($fakul == 'F') {
+                        if ($fakul == 'C') {
                         ?>
                           <input style="width: 100%;" type="text" class="form-control" id="jml_nilai" name="jml_nilai" placeholder="Nilai" readonly />
                         <?php
