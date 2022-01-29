@@ -445,7 +445,7 @@ class Profil extends CI_Controller {
 
 			} else {
 
-				// $dataFeeder = $this->kirimDataMhswFeeder($dataClean);
+				$dataFeeder = $this->kirimDataMhswFeeder($dataClean);
 				$dataFeeder['error_code'] = 0;
 
 				if ( $dataFeeder['error_code'] == 0 ) {
