@@ -59,11 +59,11 @@ class prc extends CI_Controller {
 			);
 
 			if ($count>3) {
-				// $device='';
-				$device = getDevice($info);
+				$device='';
+				// $device = getDevice($info); // matikan sementara karena lambat loading
 				// dump_d($device);
 				$dataMsg="WARNING : seseorang telah mencoba login sebanyak $count kali. $ip_address login sebagai $username menggunakan $device";
-				sendMessage($dataMsg);
+				// sendMessage($dataMsg); // matikan sementara karena lambat loading
 				// redirect(base_url('menu'));
 				echo $dataMsg;
 				exit();
