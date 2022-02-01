@@ -73,7 +73,7 @@ class Khs_inbound extends CI_Controller
 			$idjadwal = $this->input->post('idjadwal');
 		}
 		if($idjadwal!=''){
-			$data = $this->inbound->dosen_kelas($idjadwal);
+			$data = $this->Inbound->dosen_kelas($idjadwal);
 		}
 		echo json_encode($data);
 	}
