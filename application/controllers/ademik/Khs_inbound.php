@@ -66,4 +66,15 @@ class Khs_inbound extends CI_Controller
 		$pdf->Output('Cetak KHS.pdf', "D");
 		exit();
 	}
+
+	function get_dosen_kelas($idjadwal=''){
+		$data=[];
+		if(isset($this->input->post('idjadwal'))){
+			$idjadwal = $this->input->post('idjadwal');
+		}
+		if($idjadwal!=''){
+			$data = $this->inbound->dosen_kelas($idjadwal);
+		}
+		echo json_encode($data);
+	}
 }
