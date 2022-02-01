@@ -126,31 +126,36 @@
 				</table>
 			</div> 
 		</div><br><br>
+
 		<div class="row tandatangan">
-					<table width="100%">
-						<tbody>
-							<tr>
-								<td style="width: 40%"></td>
-								<td style="width: 30%"></td>
-								<td style="width: 30%">Palu, ...................</td>
-							</tr>
-							<tr>
-								<td>Koordinator PMMDN</td>
-								<td style="height: 50"></td>
-								<td>Mahasiswa</td>
-							</tr>
-							<tr >
-								<td></td>
-								<td style="height: 50"></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td style="width: 350">Drs. Anang Wahid Muhammad Diah, M.Si., Ph.D<br>NIP 19690910 199603 1 003</td>
-								<td style="height: 50"></td>
-								<td><?= $profile->name ?></td>
-							</tr>
-						</tbody>
-					</table>	
+			<table width="100%" style="margin-left: 600px; font-size: 20px;">
+				<?php
+				$tgl = date('d-m-Y');
+				?>
+				<tbody>
+					<tr>
+						<td style="width: 30%">Palu, <?= $tgl ?></td>
+					</tr>
+					<tr>
+						<td style="width: 30%">Kepala BAKP Universitas Tadulako</td>
+					</tr>
+					<tr>
+						<td style="width: 40%"></td>
+						<td style="width: 30%"></td>
+						<td style="width: 30%"></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td style="height: 50"></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td style="width: 500">Dr. Ir. H. Munari, S.T., M.M.<br>NIP 19650515 198603 1 006</td>
+						<td style="height: 50"></td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 
