@@ -69,7 +69,7 @@ class Khs_inbound extends CI_Controller
 
 	function get_dosen_kelas($idjadwal=''){
 		$data=[];
-		if(isset($this->input->post('idjadwal'))){
+		if(isset($_POST['idjadwal'])){
 			$idjadwal = $this->input->post('idjadwal');
 		}
 		if($idjadwal!=''){
