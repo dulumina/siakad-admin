@@ -65,6 +65,24 @@ class Inbound extends CI_Model
         return $this->db->get('_v2_krsmbkm')->row();
     }
 
+    function dosen_kelas($idjadwal){
+        $query = "SELECT IDJADWAL,IDDosen ,_v2_dosen.Name nama_dosen
+            FROM `_v2_jadwal`  
+            JOIN _v2_dosen ON _v2_jadwal.IDDosen=_v2_dosen.nip
+            WHERE IDJADWAL='$idjadwal' 
+            UNION
+            SELECT _v2_jadwalassdsn.IDJadwal,_v2_jadwalassdsn.IDDosen , _v2_dosen.Name nama_dosen
+            FROM `_v2_jadwalassdsn` 
+            JOIN _v2_dosen ON _v2_dosen.nip=_v2_jadwalassdsn.IDDosen
+            WHERE IDJADWAL='$idjadwal'";
+        $res['data'] = [];
+        $data = $this->db->query($query);
+        if($data->num_rows() > 0 ){
+            $res['data'] = $data->result();
+        }
+        $res['query'] = $this->db->last_query();
+        return $res;
+    }
 
     function simpan_nilai($id, $hadir, $praktek, $tugas, $mid, $uas, $nilai, $grade)
     {
@@ -101,7 +119,7 @@ class Inbound extends CI_Model
 
     function khs($nim, $periode)
     {
-        $this->db->select('_v2_krsmbkm.nim, _v2_mhsw_pmmdn.name, _v2_krsmbkm.tahun, _v2_jadwal.NamaMK, _v2_krsmbkm.nilai, _v2_krsmbkm.GradeNilai');
+        $this->db->select('_v2_krsmbkm.nim, _v2_mhsw_pmmdn.name, _v2_krsmbkm.tahun, _v2_jadwal.NamaMK, _v2_krsmbkm.nilai, _v2_krsmbkm.GradeNilai,_v2_jadwal.IDJADWAL');
         $this->db->join('_v2_mhsw_pmmdn', '_v2_mhsw_pmmdn.NIM = _v2_krsmbkm.nim');
         $this->db->join('_v2_jadwal', '_v2_jadwal.IDJADWAL= _v2_krsmbkm.id_jadwal');
         $this->db->where('_v2_mhsw_pmmdn.nim', $nim);
