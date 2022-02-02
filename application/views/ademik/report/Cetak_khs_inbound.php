@@ -170,7 +170,7 @@
 						<td style="width: 30%">Palu, <?= $tgl ?></td>
 					</tr>
 					<tr>
-						<td style="width: 30%">Koordinator PMMDN</td>
+						<td style="width: 30%">Kepala BAKP Universitas Tadulako</td>
 					</tr>
 					<tr>
 						<td style="width: 40%"></td>
@@ -184,7 +184,7 @@
 						<td></td>
 					</tr>
 					<tr>
-						<td style="width: 500">Drs. Anang Wahid Muhammad Diah, M.Si., Ph.D<br>NIP 19690910 199603 1 003</td>
+						<td style="width: 500">Dr. Ir. H. Munari, S.T., M.M.<br>NIP 19650515 198603 1 006</td>
 						<td style="height: 50"></td>
 					</tr>
 				</tbody>
