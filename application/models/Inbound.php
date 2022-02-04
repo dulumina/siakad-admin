@@ -106,6 +106,16 @@ class Inbound extends CI_Model
         return $this->db->get('_v2_mhsw_pmmdn')->row();
     }
 
+    function cariMhswByNim($keyWord,$limit='10')
+    {
+        $this->db->select('id, nim, name, Login, hp, univ_asal, prodi_asal, KodeFakultas, KodeJurusan, jenjang, Sex, fotoktm, status, NotActive');
+        $this->db->like('nim', "$keyWord");
+        $this->db->or_like('name', "$keyWord");
+        $this->db->limit($limit);
+        return $this->db->get('_v2_mhsw_pmmdn')->result();
+    }
+
+
     function periode($nim)
     {
         $this->db->distinct();
