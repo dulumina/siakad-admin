@@ -203,9 +203,11 @@ class App extends CI_Model{
 		
 		if ($periode!='') {
 			$where['_v2_tahun.kode'] = $periode;
+		}elseif(in_array($this->session->userdata('ulevel'),[1,5,6,7])){
+
 		}else {
-			$where['_v2_bataskrs.krsm <= '] = date('Y-m-d');
-			$where['_v2_bataskrs.krss >= '] = date('Y-m-d');
+			// $where['_v2_bataskrs.krsm <= '] = date('Y-m-d');
+			// $where['_v2_bataskrs.krss >= '] = date('Y-m-d');
 		}
 		if ($prodi!='') {
 			$where['_v2_jurusan.kode'] = $prodi;
