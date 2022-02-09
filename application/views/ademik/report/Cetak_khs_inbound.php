@@ -161,32 +161,34 @@
 
 
 		<div class="row tandatangan">
-			<table width="100%" style="margin-left: 600px; font-size: 20px;">
+			<table width="100%" style="margin-left: 540px; font-size: 20px;">
 				<?php
 				$tgl = date('d-m-Y');
 				?>
 				<tbody>
 					<tr>
-						<td style="width: 30%">Palu, <?= $tgl ?></td>
+						<td style="padding-left: 100px; width: 30%">Palu, <?= $tgl ?></td>
 					</tr>
 					<tr>
-						<td style="width: 30%">Kepala BAKP Universitas Tadulako</td>
+						<td style="padding-left: 100px; width: 80%">Kepala BAKP Universitas Tadulako</td>
 					</tr>
 					<tr>
+						<td><img style="width: 400px;" src="./assets/baru.png"></td>
 						<td style="width: 40%"></td>
 						<td style="width: 30%"></td>
 						<td style="width: 30%"></td>
 						<td></td>
 					</tr>
-					<tr>
+					<!-- <tr>
 						<td></td>
+
 						<td style="height: 50"></td>
 						<td></td>
 					</tr>
 					<tr>
 						<td style="width: 500">Dr. Ir. H. Munari, S.T., M.M.<br>NIP 19650515 198603 1 006</td>
 						<td style="height: 50"></td>
-					</tr>
+					</tr> -->
 				</tbody>
 			</table>
 		</div>

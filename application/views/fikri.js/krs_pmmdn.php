@@ -203,9 +203,12 @@ function getKrs(params) {
 
       $('#dwnldKrs').attr('href', "<?= base_url('ademik/Krs_pmmdn/cetakKrs/'); ?>" + response.token);
       $('button').prop('disabled', false);
+      $('#dwnldKrs').css({display:''})
+      $('#tblKrs').css({display:''})
     }
   })
   .always(function() {
+    $('#boxTabelKrs').css({display:''})
     $('body').removeClass("loading")
   });
 }
