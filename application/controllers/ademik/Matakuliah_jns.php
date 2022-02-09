@@ -400,10 +400,15 @@ class Matakuliah_jns extends CI_Controller {
 
 		$dataMK = $this->matakuliah_jns_model->getDataEdit($id);
 		$kodeMK = $dataMK->Kode;
+
+		// echo "<pre>";
+		// echo var_dump($dataMK);
+		// echo "</pre>";
+		// exit;
 		$kodeJurusan = $dataMK->KodeJurusan;
 		$CountJadwal = $this->Jadwal->two_val('_v2_jadwal','KodeMK',$kodeMK,'KodeJurusan', $kodeJurusan)->num_rows();
 		
-		if ($dataMK->KurikulumID == null) {
+		if ($dataMK->KurikulumID != null or $dataMK->KurikulumID != '' ) {
 			$dataSukses = array(
 				'ket' => 'error',
 				'pesan' => 'Mata Kuliah sudah terdaftar pada Kurikulum.'
