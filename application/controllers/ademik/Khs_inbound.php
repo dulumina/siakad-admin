@@ -43,7 +43,13 @@ class Khs_inbound extends CI_Controller
 	{
 		$nim = $this->input->post('nim');
 		$periode = $this->input->post('periode');
-		$isi_khs['dataa'] = $this->Inbound->khs($nim, $periode);
+		$khs = $this->Inbound->khs($nim, $periode);
+		$i=0;
+		foreach ($khs as $row) {
+			$khs[$i]->dosen = $this->Inbound->dosen_kelas($row->IDJADWAL)['data'];
+			$i++;
+		}
+		$isi_khs['dataa'] = $khs;
 		echo json_encode($isi_khs);
 	}
 

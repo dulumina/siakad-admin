@@ -79,7 +79,7 @@
 		}
 
 
-		function renderkhs(params) {
+	function renderkhs(params) {
 			let nilai = $('#example').DataTable();
 			nilai.clear();
 			nilai.destroy();
@@ -101,14 +101,22 @@
 						data: 'GradeNilai'
 					},
 				],
+				columnDefs:[{
+					targets:3,
+					render: function (data, type, row, meta) {
+						let listDosen=row.dosen;
+						let dosen='';
+						for (let i = 0; i < listDosen.length; i++) {
+							dosen += i+1 + '). ' + listDosen[i].nama_dosen+'<br>';
+						}
+						return '<b>' + data +'</b><br>'+dosen
+					}
+				}]
 
 			}).draw();
 			document.getElementById("cetak_khs").disabled = false;
 
 		}
-
-
-
 	})
 </script>
 
