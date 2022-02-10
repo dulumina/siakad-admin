@@ -2631,11 +2631,11 @@ class Jdwlkuliah1 extends CI_Controller {
 				$res_feeder = $this->FeederRunWS->insert('InsertKelasKuliah',$record);
 			}
 			
-			$id_kls = $res_feeder->data->id_kelas_kuliah;
 			$error_code = $res_feeder->error_code;
 			$error_desc = $res_feeder->error_desc;
 			
-			if($id_kls){
+			if($error_code=='0'){
+				$id_kls = $res_feeder->data->id_kelas_kuliah;
 				$qupdate = "update _v2_jadwal set id_kelas_kuliah='$id_kls',st_feeder=2 where IDJADWAL='$IDJadwal'";
 				$this->db->query($qupdate);
 				
