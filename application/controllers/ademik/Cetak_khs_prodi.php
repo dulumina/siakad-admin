@@ -825,6 +825,8 @@ class Cetak_khs_prodi extends CI_Controller {
 			redirect('ademik/cetak_khs_prodi');*/
 			$status['pesan'] = 'IPK bernilai 0 tidak dapat di import ke feeder';
 		}
+		
+		$status['record'] = $record;
 		echo json_encode($status);
 	}
 
