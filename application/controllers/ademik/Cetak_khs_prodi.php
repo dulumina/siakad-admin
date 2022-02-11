@@ -721,7 +721,7 @@ class Cetak_khs_prodi extends CI_Controller {
 				break;		
 			
 			default:
-					$ukt = '';
+					$ukt = '0';
 				break;
 		}
 
