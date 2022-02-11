@@ -721,7 +721,7 @@ class Cetak_khs_prodi extends CI_Controller {
 				break;		
 			
 			default:
-					$ukt = '';
+					$ukt = '0';
 				break;
 		}
 
@@ -731,7 +731,9 @@ class Cetak_khs_prodi extends CI_Controller {
 	public function import_khs_feeder(){
 		$nim = $this->input->post('nim');
 		$tahun = $this->input->post('thn');
-
+		$mhsw = $this->db->get_where('_v2_mhsw',['NIM'=> $nim])->row();
+		$kdj = $mhsw->KodeJurusan;
+		$kdf = $mhsw->KodeFakultas;
 		$status['action'] = '';
 		$status['error_code'] = '';
 		$status['error_desc'] = '';
@@ -745,21 +747,19 @@ class Cetak_khs_prodi extends CI_Controller {
 		if ($data->Status == 'C' ) {
 			$spp = 0;
 		} else {
+			$spp = 0;
+			// if ( empty($spp_db[0]->KodeFakultas) ) {
+			// 	$kdf = substr($nim, 0,1);
+			// 	$kdj = substr($nim, 0,4);
+			// } else {
+			// 	$kdf = $spp_db[0]->KodeFakultas;
+			// 	$kdj = $spp_db[0]->KodeJurusan;
+			// }
 
-			if ( empty($spp_db[0]->KodeFakultas) ) {
-				$kdf = substr($nim, 0,1);
-				$kdj = substr($nim, 0,4);
-			} else {
-				$kdf = $spp_db[0]->KodeFakultas;
-				$kdj = $spp_db[0]->KodeJurusan;
-			}
-
-			if ( $spp_db[0]->TotalBayar == NULL OR $spp_db[0]->TotalBayar == 0 ) {
+			if(count($spp_db) > 0 ){
+				$spp = ($spp_db[0]->TotalBayar != null && $spp_db[0]->TotalBayar != '')? $spp_db[0]->TotalBayar : $this->spp_default($kdj) ;
+			}else{
 				$spp = $this->spp_default($kdj);
-			} elseif ( $tahun == $tahun_akademik->Semester ) {
-				$spp = $this->spp_default($tahun_akademik->KodeJurusan);
-			} else {
-				$spp = $spp_db[0]->TotalBayar;
 			}
 
 		}
