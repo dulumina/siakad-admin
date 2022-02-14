@@ -471,7 +471,9 @@ class Profil extends CI_Controller {
 							'ket' => 'sukses',
 							'pesan' => "Data Berhasil diupdate dan Terkirim Ke Dikti"
 						);
-
+						if(ENVIRONMENT == 'development'){
+							$dataSukses['data'] = $dataClean;
+						}
 						echo json_encode($dataSukses);
 						
 					}
