@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Profil_model extends CI_Model {
 
 	public function getProfileMhsw($nim){
+		$this->db->select('*');
 		$this->db->join('_v2_jurusan','_v2_jurusan.kode=_v2_mhsw.KodeJurusan','INNER');
 		$this->db->join('fakultas','fakultas.kode=_v2_jurusan.KodeFakultas','INNER');
 		return $this->db->get_where('_v2_mhsw',['NIM'=>$nim]);
