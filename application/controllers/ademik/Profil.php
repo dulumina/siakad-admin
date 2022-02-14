@@ -1449,7 +1449,7 @@ class Profil extends CI_Controller {
 
 	public function syncFeeder($nim=''){
 		if($nim!=''){
-			$dataMhsw = $this->Profil_model->getProfileMhsw($nim)->row();
+			$dataMhsw = $this->profil_model->getProfileMhsw($nim)->row();
 		}else{
 			$dataMhsw = [];
 		}
