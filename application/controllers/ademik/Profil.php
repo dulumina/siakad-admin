@@ -1862,6 +1862,18 @@ class Profil extends CI_Controller {
 			 	$error_codeMhs = $objMhs->{'error_code'};
 			 	$error_descMhs = $objMhs->{'error_desc'};
 
+
+				$dataUpdateNim = array();
+				$dataUpdateNim['nim'] = $dataNIM->NIM;
+				$dataUpdateNim['id_jenis_daftar'] = 1;
+				$dataUpdateNim['id_periode_masuk'] = $data['awalMasuk'];
+				$dataUpdateNim['tanggal_daftar'] = $dataNIM->Tanggal;
+				$dataUpdateNim['id_perguruan_tinggi'] = '8e5d195a-0035-41aa-afef-db715a37b8da';
+				$dataUpdateNim['id_prodi'] = $dataNIM->id_sms;
+				$dataUpdateNim['biaya_masuk'] = '250000';
+
+				$this->FeederRunWS->update('UpdateRiwayatPendidikanMahasiswa',$data['regpd'],$dataUpdateNim);
+
 			 	if ( $error_codeMhs == 0 ) {
 
 			 		$dataFeeder = array(
