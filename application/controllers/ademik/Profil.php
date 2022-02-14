@@ -1817,7 +1817,7 @@ class Profil extends CI_Controller {
 					 			'error_code' => $error_codeNIM,
 					 			'error_desc' => $error_descNIM
 					 		);
-
+							$dataFeeder['dataNim'] = $dataNIMforFeeder;
 					 		return $dataFeeder;
 
 					 	}
