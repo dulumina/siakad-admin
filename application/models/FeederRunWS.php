@@ -43,7 +43,7 @@ class FeederRunWS extends CI_Model{
     return $result;
   }
 
-  private function token()
+  public function token()
   {
    
     $res = $this->runWS(array(
