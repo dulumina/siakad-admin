@@ -77,13 +77,13 @@ class Mhsw extends CI_Controller {
 			$data['error'] = $pesan;
 			$data['jurusan'] = $this->mhsw_model->get_dataSearch($level,$dataKode);
 			$data['webpage'] = 'dataMhsw';
-
+			
 			$this->load->view('dashbord',$data);
 
 		} else {
 
 			$aksi = $this->mhsw_model->get_dataTabelMhsw($kodeJurusan,$tahunAkademik);
-
+			
 			if ( $aksi == TRUE ) {
 
 				$data['dataTabel'] = $aksi;
@@ -118,6 +118,7 @@ class Mhsw extends CI_Controller {
 	public function biodataMhsw($nim) {
 
 		$kode = $this->userKode();
+		$this->load->model('FeederRunWS');
 
 		if ( $this->session->userdata('ulevel') == 5 ) {
 			$data['dataDosen'] = $this->profil_model->getDataDosen('kodeFakultas',$kode);
@@ -138,6 +139,19 @@ class Mhsw extends CI_Controller {
 			$data['dataWilayah'] = $this->profil_model->getDataWilayah($data['dataProfil']->Kewarganegaraan);
 		}
 
+		if ($data['dataProfil']->StatusAwal== 'P' || $data['dataProfil']->StatusAwal== 'J' || $data['dataProfil']->StatusAwal== 'p' || $data['dataProfil']->StatusAwal== 'j' ) {
+			if ($data['dataProfil']->UniversitasAsal != null) {
+				$univAsl = $data['dataProfil']->UniversitasAsal;
+				$data['univAsal'] = $this->FeederRunWS->get('GetAllPT',"id_perguruan_tinggi='$univAsl'")->data[0];
+			}
+			if ($data['dataProfil']->ProdiAsal != '') {
+				$prodAsl = $data['dataProfil']->ProdiAsal;
+				$data['prodAsal'] = $this->FeederRunWS->get('GetAllProdi',"id_prodi='$prodAsl'")->data[0];
+			}
+		}
+			// echo "<pre>";
+			// print_r($data);die;
+			// echo "</pre>";
 		$this->load->view('dashbord',$data);
 
 		/*$this->load->view('temp/head');

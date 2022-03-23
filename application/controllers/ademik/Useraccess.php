@@ -6,6 +6,7 @@ class useraccess extends CI_Controller {
 		parent::__construct();
 		$this->load->library('form_validation');
 	    $this->load->library('encryption');
+	    $this->load->helper('security');
 	    $this->load->library('datatables');
 	    $this->load->model('user_model');
 			date_default_timezone_set("Asia/Makassar");
@@ -468,76 +469,76 @@ class useraccess extends CI_Controller {
 	}
 
 	public function mahasiswa(){
-		$data['footerSection'] = "
-		    <script type='text/javascript'>
+	// 	$data['footerSection'] = "
+	// 	    <script type='text/javascript'>
  
-            var save_method; //for save method string
-            var table;
+ //            var save_method; //for save method string
+ //            var table;
  
-            $(document).ready(function() {
-				var oTable = $('#table_admin').dataTable({
-		            'processing': true, 
-		            'serverSide': true, 
-		            'order': [], 
+ //            $(document).ready(function() {
+	// 			var oTable = $('#table_admin').dataTable({
+	// 	            'processing': true, 
+	// 	            'serverSide': true, 
+	// 	            'order': [], 
 		             
-		            'ajax': {
-		                'url': '".base_url('ademik/useraccess/datamahasiswa')."',
-		                'type': 'POST'
-		            },
+	// 	            'ajax': {
+	// 	                'url': '".base_url('ademik/useraccess/datamahasiswa')."',
+	// 	                'type': 'POST'
+	// 	            },
 		 
 		             
-		            'columnDefs': [
-		            { 
-		                'targets': [ 0 ], 
-		                'orderable': false, 
-		            },
-		            ],
-					'drawCallback': function( settings ) {
-				    	$('.hapus').on('click',function(e){
-							var currentBtn = $(this);
+	// 	            'columnDefs': [
+	// 	            { 
+	// 	                'targets': [ 0 ], 
+	// 	                'orderable': false, 
+	// 	            },
+	// 	            ],
+	// 				'drawCallback': function( settings ) {
+	// 			    	$('.hapus').on('click',function(e){
+	// 						var currentBtn = $(this);
 
-							uri = currentBtn.attr('data-uri');
-							login = currentBtn.attr('data-login');
+	// 						uri = currentBtn.attr('data-uri');
+	// 						login = currentBtn.attr('data-login');
 
-							swal({   
-							    title: 'Yakin data ingin dihapus?',   
-							    text: 'Data tidak dapat dikembalikan lagi',   
-							    type: 'warning',   
-							    showCancelButton: true,   
-							    confirmButtonColor: '#fcb03b',   
-							    confirmButtonText: 'Iya',
-							    cancelButtonText: 'Tidak',   
-							    closeOnConfirm: false,   
-							    closeOnCancel: false 
-							}, function(isConfirm){   
-							    if (isConfirm) {     
-							         $.ajax({
-							            type: 'POST',
-							            data : 'login='+login,
-							            url: uri,
-							            success: function(data){
-											window.location.reload(false); 
-							            }
-							        });
+	// 						swal({   
+	// 						    title: 'Yakin data ingin dihapus?',   
+	// 						    text: 'Data tidak dapat dikembalikan lagi',   
+	// 						    type: 'warning',   
+	// 						    showCancelButton: true,   
+	// 						    confirmButtonColor: '#fcb03b',   
+	// 						    confirmButtonText: 'Iya',
+	// 						    cancelButtonText: 'Tidak',   
+	// 						    closeOnConfirm: false,   
+	// 						    closeOnCancel: false 
+	// 						}, function(isConfirm){   
+	// 						    if (isConfirm) {     
+	// 						         $.ajax({
+	// 						            type: 'POST',
+	// 						            data : 'login='+login,
+	// 						            url: uri,
+	// 						            success: function(data){
+	// 										window.location.reload(false); 
+	// 						            }
+	// 						        });
 							           
-							    } else {     
-							        swal('Batal', 'Data tidak jadi dihapus', 'error');   
-							    } 
-							});
-							return false;
-						});
-					}
-			   });
+	// 						    } else {     
+	// 						        swal('Batal', 'Data tidak jadi dihapus', 'error');   
+	// 						    } 
+	// 						});
+	// 						return false;
+	// 					});
+	// 				}
+	// 		   });
 
 			   	
 
-            });
-        </script>"; 
+ //            });
+ //        </script>"; 
 
 		$this->load->view('temp/head');
 		$this->load->view('ademik/useraccess/adminmahasiswa');
-		$this->load->view('temp/footers',$data);
-	}
+		$this->load->view('temp/footers');
+	 }
 
 	public function dataadmin(){
         $this->datatables->select('CONCAT("<a href=\"'.base_url("ademik/useraccess/editadmin").'/",ID,"\">",Name,"</a>"), Login, Email, Phone, NotActive, CONCAT("<button data-uri=\"'.base_url("ademik/useraccess/deleteadmin").'\" data-login=\"",Login,"\"  class=\"btn hapus btn-danger btn-icon-anim btn-square\"><i class=\"fa fa-trash-o\"></i></button>")');
@@ -631,41 +632,93 @@ class useraccess extends CI_Controller {
         echo json_encode($output);
 	}
 
-	public function datamahasiswa(){
-				if(isset($this->session->kdf))
-			{
-				$kode_fak = $this->session->kdf;
-			}	else{
-				$kode_fak = '';
-			}$list = $this->user_model->get_datatablesmahasiswa($kode_fak);
-        $data = array();
-        $no = $_POST['start']+1;
-        foreach ($list as $field) {
+	// public function datamahasiswa(){
+	// 			if(isset($this->session->kdf))
+	// 		{
+	// 			$kode_fak = $this->session->kdf;
+	// 		}	else{
+	// 			$kode_fak = '';
+	// 		}
+	// 	$list = $this->user_model->get_datatablesmahasiswa($kode_fak);
+ //        $data = array();
+ //        $no = $_POST['start']+1;
+ //        foreach ($list as $field) {
 
-            $row = array();
-            $row[] = "<a href='".base_url("ademik/useraccess/editadminmahasiswa/".$field->ID)."'>".$field->Name."</a>";
-            $row[] = $field->Login;
-            $row[] = $field->Email;
-            $row[] = $field->Phone;
-            $row[] = $field->NotActive;
-			if($this->session->ulevel==1){
-				$row[] = "<button data-uri='".base_url("ademik/useraccess/deleteadminmahasiswa")."' data-login='".$field->Login."' class='btn hapus btn-danger btn-icon-anim btn-square'><i class='fa fa-trash-o'></i></button>";
-			}
+ //            $row = array();
+ //            $row[] = "<a href='".base_url("ademik/useraccess/editadminmahasiswa/".$field->ID)."'>".$field->Name."</a>";
+ //            $row[] = $field->Login;
+ //            $row[] = $field->Email;
+ //            $row[] = $field->Phone;
+ //            $row[] = $field->NotActive;
+	// 		if($this->session->ulevel==1){
+	// 			$row[] = "<button data-uri='".base_url("ademik/useraccess/deleteadminmahasiswa")."' data-login='".$field->Login."' class='btn hapus btn-danger btn-icon-anim btn-square'><i class='fa fa-trash-o'></i></button>";
+	// 		}
 
-            $no++;
+ //            $no++;
 
-			$data[] = $row;
-        }
+	// 		$data[] = $row;
+ //        }
  
-        $output = array(
-            "draw" => $_POST['draw'],
-            "recordsTotal" => $this->user_model->count_allmahasiswa($kode_fak),
-            "recordsFiltered" => $this->user_model->count_filteredmahasiswa($kode_fak),
-            "data" => $data,
-        );
-        //output dalam format JSON
-        echo json_encode($output);
-	}
+ //        $output = array(
+ //            "draw" => $_POST['draw'],
+ //            "recordsTotal" => $this->user_model->count_allmahasiswa($kode_fak),
+ //            "recordsFiltered" => $this->user_model->count_filteredmahasiswa($kode_fak),
+ //            "data" => $data,
+ //        );
+ //        //output dalam format JSON
+ //        echo json_encode($output);
+	// }
+
+	public function datamhsw(){
+		$config = array(
+			array(
+				'field' => 'nim',
+				'label' => 'Stambuk',
+				'rules' => 'required|max_length[9]',
+				'errors' => array(
+					'required' => ' Anda Belum Mengisi Stambuk %s, Silakan Pilih %s yang Anda Ingin Tampilkan',
+					'max_length' => '%s Maksimal 9 Karakter',
+				)
+			),
+		);
+
+		$nim = $this->input->post('nim');
+		
+		$getdata 	= $this->user_model->get_data_mhsw($nim);
+
+
+		if ( $getdata == TRUE ) {
+
+				$data['dataTabel'] = $getdata;
+				$data['webpage'] = 'dataMhsw';
+
+				// echo "<pre>";
+				// print_r($data);
+				$this->load->view('temp/head');
+				$this->load->view('ademik/useraccess/adminmahasiswa',$data);
+				$this->load->view('temp/footers');
+
+			} else {
+
+				//$data['jurusan'] = $this->user_model->get_data_mhsw($);
+				$data['webpage'] = 'dataMhsw';
+				$data['footerSection'] = "<script type='text/javascript'>
+	 				swal({   
+						title: 'Pemberitahuan',   
+						type: 'warning',    
+						html: true, 
+						text: 'Data Mahasiswa Tidak Ditemukan',
+						confirmButtonColor: '#f7cb3b',   
+					});
+			    </script>";
+
+			    $this->load->view('temp/head');
+				$this->load->view('ademik/useraccess/adminmahasiswa', $data);
+				$this->load->view('temp/footers');
+					
+				}
+		
+	}	
 
 	public function addadmin(){
 		$this->load->view('temp/head');
@@ -1521,6 +1574,7 @@ class useraccess extends CI_Controller {
 	public function editadminmahasiswa($id){
 		if($this->session->ulevel==1 or $this->session->ulevel==6 or $this->session->ulevel==5 or $this->session->ulevel==7){
 			$data['edit'] = $this->user_model->getAdmin($id, "_v2_mhsw")->row();
+
 			$this->load->view('temp/head');
 			$this->load->view('ademik/useraccess/editadminmahasiswa',$data);
 			$this->load->view('temp/footers');	
@@ -2217,7 +2271,8 @@ class useraccess extends CI_Controller {
 			       	'Phone' => $this->user_model->db->escape_str($this->input->post('Phone')),
 			       	'NotActive' => $this->user_model->db->escape_str($this->input->post('NotActive'))
 			    );
-				
+			 //    echo "1 <pre>";
+				// print_r($data);
 			 	$this->user_model->update($data, '_v2_mhsw');   	
 	    	}else{
 	    		$data = array(
@@ -2230,9 +2285,12 @@ class useraccess extends CI_Controller {
 			       	'NotActive' => $this->user_model->db->escape_str($this->input->post('NotActive')),
 			       	'count_edit_password' => '0'
 			    );
+	    		// echo "2 <pre>";
+			    // print_r($data);
 				
 			 	$this->user_model->updatePassword($data, '_v2_mhsw');
 	    	}
+			
 			
 			$dataLog = array(
 		        'username' => $this->user_model->db->escape_str($this->input->post('Login')),
@@ -2243,6 +2301,8 @@ class useraccess extends CI_Controller {
 		       	'status' => 'Edit'
 		    );
 			
+			// echo "3 <pre>";
+			// print_r($dataLog);
 		 	$this->user_model->insertLog($dataLog, '_v2_log_user');
 
 	        redirect('ademik/useraccess/mahasiswa');

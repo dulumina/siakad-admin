@@ -51,6 +51,7 @@ class Model_mahasiswa_pindah extends CI_Model {
 		return $result->result_array();
 	}
 
+
 	public function getDataMhswKeluar($nim) {
 
 		$this->db->select('m.NIM, m.Name, m.Alamat, m.AlamatSP, m.AlasanPindah, m.UniversitasPindah, f.Singkatan, j.Nama_Indonesia');

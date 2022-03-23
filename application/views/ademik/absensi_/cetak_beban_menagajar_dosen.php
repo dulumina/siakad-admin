@@ -241,8 +241,8 @@ $month = array(
                 <dt>An. Dekan,</dt>
                 <dt>Wakil Dekan Bidang Akademik </dt>
                 <br><br><br>
-                <dt><u>Dr. LEMBANG PALIPADANG, S.H, M.H.</u></dt>
-                <dt>NIP. 19630526 198903 1 002</dt>
+                <dt><u>Dr. Agus Lanini, SH.MH.</u></dt>
+                <dt>NIP. 19660525 199403 1 003</dt>
             </dl>
         </div>
     <body>

@@ -38,37 +38,43 @@ class prc extends CI_Controller {
 			$username=$this->db->escape($this->input->post('username'));
 			$password=$this->db->escape($this->input->post('password'));
 			$loguser=$this->input->post('loguser');
-			$ip_address=$_SERVER['REMOTE_ADDR'];
+			$ip_address=get_ip_client();
 			$info=$_SERVER['HTTP_USER_AGENT'];
-			$hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+			$hostname = gethostbyaddr($ip_address);
 			$log_in = "N";
 		// end login data
 
 		// count failed login
+			$ucok = $_COOKIE['ucok'];
 			$ttl = $_SESSION['timeToLeft'] = 300;
 			$count = $this->session->tempdata('count_error_captcha');
 			$session = $count + 1 ;
 			$this->session->set_tempdata('count_error_captcha',$session,$ttl);
 			$dataMsg = array(
-				'ip' => $_SERVER['REMOTE_ADDR'],
+				'ip' => get_ip_client(),
 				'user_agent' => $_SERVER['HTTP_USER_AGENT'],
 				'uname' => $username,
 				// 'upass' => $password,
 				'ulogin' => $this->encryption->decrypt($loguser)
 			);
 
-			if ($count>10) {
-				// $device='';
-				$device = getDevice($info);
+			if ($count>3) {
+				$device='';
+				// $device = getDevice($info); // matikan sementara karena lambat loading
 				// dump_d($device);
 				$dataMsg="WARNING : seseorang telah mencoba login sebanyak $count kali. $ip_address login sebagai $username menggunakan $device";
-				sendMessage($dataMsg);
+				// sendMessage($dataMsg); // matikan sementara karena lambat loading
+				// redirect(base_url('menu'));
+				echo $dataMsg;
+				exit();
 			}
-
+			// var_dump( password_verify("3",$_COOKIE['ucok']));
 			// $this->session->set_tempdata($dataMsg, $ttl);
-			if ($count>=3) {
+			if ($ucok>=3) {
+			// if(password_verify("3",$_COOKIE['ucok'])){
 				$pesantambahan = "<br>Maaf anda belum dapat login saat ini.<br>coba kembali setelah 5 menit.<br>tersisa : <b id='timer'>00:30</b><script>startTimer();</script>";
 				$this->session->set_flashdata('konfirmasi',$pesantambahan);
+				// $dataMsg="WARNING : seseorang telah mencoba login sebanyak $count kali. $ip_address login sebagai $username menggunakan $device";
 				// sendMessage($dataMsg);
 				redirect(base_url('menu'));
 				exit();
@@ -78,9 +84,9 @@ class prc extends CI_Controller {
 
 		$is_valid = $this->recaptcha->is_valid();
 		
-		// if ($is_valid['success'] != 1 ) { // jika validasi captcha false 
-		if (false) { // matikan semestara karena error pada producrtion
-			$pesantambahan = "Maaf Captcha Salah.".$pesantambahan;
+		if (!$is_valid['success'] && ENVIRONMENT =='production') { // jika validasi captcha false 
+		// if (false) { // matikan semestara karena error pada producrtion
+			$pesantambahan = "Maaf Captcha tidak sesuai.".$pesantambahan;
 			$this->session->set_flashdata('konfirmasi',$pesantambahan);
 		}else { // jika validasi captcha true
 			# code...
@@ -228,7 +234,10 @@ class prc extends CI_Controller {
 						if($row_cek[0]["status"] != 'A') $pesantambahan .= "/Status";// Mahasiswa
 					}*/
 				}
-	
+				// $value = password_hash($_COOKIE['ucok']+1,PASSWORD_DEFAULT);
+				$value = $_COOKIE['ucok']+1;
+				setcookie('ucok', $value, time() + 300,"/");
+			  setcookie('ucokexp',time()+300,time()+300,"/");
 				$this->session->set_flashdata('konfirmasi',"$pesantambahan. Silahkan Cek Kembali dengan Benar Akun Anda");
 			} else {
 				$this->session->set_tempdata('count_error_captcha',0,$ttl);

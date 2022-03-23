@@ -7,9 +7,12 @@ class Matakuliah_jns extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->load->library('form_validation');
-	    $this->load->library('encryption');
-	    $this->load->helper('security');
-	    $this->load->model('matakuliah_jns_model');
+		$this->load->library('encryption');
+		$this->load->helper('security');
+		$this->load->model('matakuliah_jns_model');
+		$this->load->model('Jadwal');
+		$this->load->model('FeederRunWS');
+
 	}
 
 	public function index() {
@@ -392,14 +395,45 @@ class Matakuliah_jns extends CI_Controller {
 
 	}
 
-	public function setDeleteData() {
+	public function setDeleteData($id='') {
+		$id = $this->input->post('id');
 
-		$this->matakuliah_jns_model->deleteData($this->input->post('id'));
+		$dataMK = $this->matakuliah_jns_model->getDataEdit($id);
+		$kodeMK = $dataMK->Kode;
 
-		$dataSukses = array(
-			'ket' => 'sukses',
-			'pesan' => 'Mata Kuliah Berhasil Dihapus'
-		);
+		// echo "<pre>";
+		// echo var_dump($dataMK);
+		// echo "</pre>";
+		// exit;
+		$kodeJurusan = $dataMK->KodeJurusan;
+		$CountJadwal = $this->Jadwal->two_val('_v2_jadwal','KodeMK',$kodeMK,'KodeJurusan', $kodeJurusan)->num_rows();
+		
+		if ($dataMK->KurikulumID != null or $dataMK->KurikulumID != '' ) {
+			$dataSukses = array(
+				'ket' => 'error',
+				'pesan' => 'Mata Kuliah sudah terdaftar pada Kurikulum.'
+			);
+		}elseif ($CountJadwal <= 0 ) {
+			$dataSukses = array(
+				'ket' => 'error',
+				'pesan' => 'Mata Kuliah sudah terjadwalkan.'
+			);
+		}else{
+
+			$this->matakuliah_jns_model->deleteData($id);
+			$dataSukses = array(
+				'ket' => 'sukses',
+				'pesan' => 'Mata Kuliah Berhasil Dihapus'
+			);
+			$idfeeder = $dataMK->id_mk;
+			$resFeeder = $this->FeederRunWS->delete('DeleteMataKuliah',$idfeeder);
+			if ($resFeeder->error_code != 0) {
+				$dataSukses = array(
+					'ket' => 'sukses',
+					'pesan' => 'Mata Kuliah Berhasil Dihapus dan gagal hapus di feeder'
+				);
+			}
+		}
 
 		echo json_encode($dataSukses);
 

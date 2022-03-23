@@ -3,6 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Profil_model extends CI_Model {
 
+	public function getProfileMhsw($nim){
+		$this->db->select('*');
+		$this->db->join('_v2_jurusan','_v2_jurusan.kode=_v2_mhsw.KodeJurusan','INNER');
+		$this->db->join('fakultas','fakultas.kode=_v2_jurusan.KodeFakultas','INNER');
+		return $this->db->get_where('_v2_mhsw',['NIM'=>$nim]);
+	}
+
 	public function getDataAgama() {
 
 		$this->db->select('AgamaID, Agama');
@@ -181,8 +188,15 @@ class Profil_model extends CI_Model {
 				'Semester' => intval($data['awalMasuk']),
 				'TipePembayaran' => $this->db->escape_str($data['bayarSPP']),
 				'KetPembayaran' => $this->db->escape_str($data['ketSPP']),
-				'count_edit_password' => 1
+				'count_edit_password' => 1,
 			);
+			
+			if (isset($data['UniversitasAsal'])) {
+				$dataUpdate['UniversitasAsal'] = $data['UniversitasAsal'];
+			}
+			if (isset($data['ProdiAsal'])) {
+				$dataUpdate['ProdiAsal'] = $data['ProdiAsal'];
+			}
 
 		} elseif ( $act == 'dataOrtuMhsw' ) {
 
@@ -335,6 +349,27 @@ class Profil_model extends CI_Model {
 
 		return $this->db->update($tabel);
 
+	}
+
+	public function isCompleteData($nim)
+	{
+		$dataWajib = ['NIM','Name','TempatLahir','TglLahir','Agama','NamaIbu','Kewarganegaraan','NIK','Kelurahan','Kecamatan'];
+
+		$mhsw = $this->getDataTabelJoinMhsw('_v2_mhsw',$nim);
+		$val = [];
+		if (count($mhsw) > 0) {
+			for ($i=0; $i < count($dataWajib); $i++) { 
+				if (!$mhsw->$dataWajib[$i]) {
+					$val[] = $dataWajib[$i];
+					// break;
+				}
+			}
+			if ($mhsw->StatusAwal=='P') {
+				if($mhsw->UniversitasAsal == "" ) { $val[] = "UniversitasAsal"; };
+				if($mhsw->ProdiAsal == "") { $val[] = "ProdiAsal"; };
+			}
+		}
+		return $val;
 	}
 
 }

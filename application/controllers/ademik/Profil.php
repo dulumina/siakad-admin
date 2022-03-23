@@ -10,6 +10,7 @@ class Profil extends CI_Controller {
 	    $this->load->library('encryption');
 	    $this->load->helper('security');
 	    $this->load->model('profil_model');
+		$this->load->model('FeederRunWS');
 	}
 
 
@@ -411,9 +412,14 @@ class Profil extends CI_Controller {
 				'ketSPP' => $this->input->post('ketSPP'),
 				'SKSDiterima' => $this->input->post('SKSDiterima')
 			);
-
+			if (isset($_POST['UniversitasAsal'])) {
+				$dataSukses['UniversitasAsal'] = $this->input->post('UniversitasAsal');
+			}
+			if (isset($_POST['ProdiAsal'])) {
+				$dataSukses['ProdiAsal'] = $this->input->post('ProdiAsal');
+			}
 			$dataClean = $this->security->xss_clean($dataSukses);
-
+			
 			if ( $this->input->post('fakultas') == 'N' AND $this->session->userdata('ulevel') == 4 ) {
 
 				$simpan = $this->profil_model->updateData($dataClean,'dataMhsw','_v2_mhsw');
@@ -441,6 +447,7 @@ class Profil extends CI_Controller {
 			} else {
 
 				$dataFeeder = $this->kirimDataMhswFeeder($dataClean);
+				$dataFeeder['error_code'] = 0;
 
 				if ( $dataFeeder['error_code'] == 0 ) {
 
@@ -465,7 +472,9 @@ class Profil extends CI_Controller {
 							'ket' => 'sukses',
 							'pesan' => "Data Berhasil diupdate dan Terkirim Ke Dikti"
 						);
-
+						if(ENVIRONMENT == 'development'){
+							$dataSukses['data'] = $dataClean;
+						}
 						echo json_encode($dataSukses);
 						
 					}
@@ -1439,88 +1448,102 @@ class Profil extends CI_Controller {
 
 	}*/
 
+	public function syncFeeder($nim=''){
+		if($nim!=''){
+			$dataMhsw = $this->profil_model->getProfileMhsw($nim)->row();
+		}else{
+			$dataMhsw = [];
+		}
+		echo json_encode($dataMhsw);
+	}
+
 	private function kirimDataMhswFeeder($data) {
 
 		$dataNIM = $this->profil_model->getDataNIM($data['id']);
 
-		$dataToken = array (
-			'act' => 'GetToken',
-			'username' => '001028e1',
-			'password' => 'az18^^'
-		);
+		// $dataToken = array (
+		// 	'act' => 'GetToken',
+		// 	'username' => $this->config->item('user_feeder');,
+		// 	'password' => $this->config->item('password_feeder');
+		// );
 
-		$tokenFeeder = $this->runWS($dataToken);
-		$obj = json_decode($tokenFeeder);
-		$token = $obj->data->token;
+		// $tokenFeeder = $this->runWS($dataToken);
+
+		// $obj = json_decode($tokenFeeder);
+		// $token = $obj->data->token;
+
+		$token = $this->FeederRunWS->token();
 
 		$dataMhsw = array();
-		$dataMhsw['nama_mahasiswa'] = $data['nama'];
-		$dataMhsw['tempat_lahir'] = $data['tmpLahir'];
-		$dataMhsw['tanggal_lahir'] = $data['tglLahir'];
-		$dataMhsw['jenis_kelamin'] = $data['sex'];
-		$dataMhsw['id_agama'] = $data['agama'];
-		$dataMhsw['nama_ibu_kandung'] = $data['ibu'];
-		$dataMhsw['nik'] = $data['nik'];
-		$dataMhsw['nisn'] = $data['nisn'];
-		$dataMhsw['npwp'] = $data['npwp'];
-		$dataMhsw['jalan'] = $data['alamat'];
-		$dataMhsw['kewarganegaraan'] = $data['negara'];
-		$dataMhsw['dusun'] = $data['dusun'];
-		$dataMhsw['rt'] = $data['rt'];
-		$dataMhsw['rw'] = $data['rw'];
-		$dataMhsw['kode_pos'] = $data['kodepos'];
-		$dataMhsw['kelurahan'] = $data['kelurahan'];
-		$dataMhsw['id_wilayah'] = $data['kecamatan'];
-		$dataMhsw['id_jenis_tinggal'] = $data['jnsTinggal'];
-		$dataMhsw['id_alat_transportasi'] = $data['alatTrans'];
-		$dataMhsw['handphone'] = $data['hp'];
-		$dataMhsw['telepon'] = $data['telepon'];
-		$dataMhsw['email'] = $data['email'];
-		$dataMhsw['penerima_kps'] = $data['kps'];
-		$dataMhsw['nomor_kps'] = $data['noKPS'];
-		$dataMhsw['id_kebutuhan_khusus_ayah'] = 0;
-		$dataMhsw['id_kebutuhan_khusus_ibu'] = 0;
-		$dataMhsw['id_kebutuhan_khusus_mahasiswa'] = 0;
+			$dataMhsw['nama_mahasiswa'] = $data['nama'];
+			$dataMhsw['tempat_lahir'] = $data['tmpLahir'];
+			$dataMhsw['tanggal_lahir'] = $data['tglLahir'];
+			$dataMhsw['jenis_kelamin'] = $data['sex'];
+			$dataMhsw['id_agama'] = $data['agama'];
+			$dataMhsw['nama_ibu_kandung'] = $data['ibu'];
+			$dataMhsw['nik'] = $data['nik'];
+			$dataMhsw['nisn'] = $data['nisn'];
+			$dataMhsw['npwp'] = $data['npwp'];
+			$dataMhsw['jalan'] = $data['alamat'];
+			$dataMhsw['kewarganegaraan'] = $data['negara'];
+			$dataMhsw['dusun'] = $data['dusun'];
+			$dataMhsw['rt'] = $data['rt'];
+			$dataMhsw['rw'] = $data['rw'];
+			$dataMhsw['kode_pos'] = $data['kodepos'];
+			$dataMhsw['kelurahan'] = $data['kelurahan'];
+			$dataMhsw['id_wilayah'] = $data['kecamatan'];
+			$dataMhsw['id_jenis_tinggal'] = $data['jnsTinggal'];
+			$dataMhsw['id_alat_transportasi'] = $data['alatTrans'];
+			$dataMhsw['handphone'] = $data['hp'];
+			$dataMhsw['telepon'] = $data['telepon'];
+			$dataMhsw['email'] = $data['email'];
+			$dataMhsw['penerima_kps'] = $data['kps'];
+			$dataMhsw['nomor_kps'] = $data['noKPS'];
+			$dataMhsw['id_kebutuhan_khusus_ayah'] = 0;
+			$dataMhsw['id_kebutuhan_khusus_ibu'] = 0;
+			$dataMhsw['id_kebutuhan_khusus_mahasiswa'] = 0;
 
 		$dataMhswUpdate = array();
-		$dataMhswUpdate['jenis_kelamin'] = $data['sex'];
-		$dataMhswUpdate['id_agama'] = $data['agama'];
-		$dataMhswUpdate['nik'] = $data['nik'];
-		$dataMhswUpdate['nisn'] = $data['nisn'];
-		$dataMhswUpdate['npwp'] = $data['npwp'];
-		$dataMhswUpdate['jalan'] = $data['alamat'];
-		$dataMhswUpdate['kewarganegaraan'] = $data['negara'];
-		$dataMhswUpdate['dusun'] = $data['dusun'];
-		$dataMhswUpdate['rt'] = $data['rt'];
-		$dataMhswUpdate['rw'] = $data['rw'];
-		$dataMhswUpdate['kode_pos'] = $data['kodepos'];
-		$dataMhswUpdate['kelurahan'] = $data['kelurahan'];
-		$dataMhswUpdate['id_wilayah'] = $data['kecamatan'];
-		$dataMhswUpdate['id_jenis_tinggal'] = $data['jnsTinggal'];
-		$dataMhswUpdate['id_alat_transportasi'] = $data['alatTrans'];
-		$dataMhswUpdate['handphone'] = $data['hp'];
-		$dataMhswUpdate['telepon'] = $data['telepon'];
-		$dataMhswUpdate['email'] = $data['email'];
-		$dataMhswUpdate['penerima_kps'] = $data['kps'];
-		$dataMhswUpdate['nomor_kps'] = $data['noKPS'];
-		$dataMhswUpdate['id_kebutuhan_khusus_ayah'] = 0;
-		$dataMhswUpdate['id_kebutuhan_khusus_ibu'] = 0;
-		$dataMhswUpdate['id_kebutuhan_khusus_mahasiswa'] = 0;
+			$dataMhswUpdate['jenis_kelamin'] = $data['sex'];
+			$dataMhswUpdate['id_agama'] = $data['agama'];
+			$dataMhswUpdate['nik'] = $data['nik'];
+			$dataMhswUpdate['nisn'] = $data['nisn'];
+			$dataMhswUpdate['npwp'] = $data['npwp'];
+			$dataMhswUpdate['jalan'] = $data['alamat'];
+			$dataMhswUpdate['kewarganegaraan'] = $data['negara'];
+			$dataMhswUpdate['dusun'] = $data['dusun'];
+			$dataMhswUpdate['rt'] = $data['rt'];
+			$dataMhswUpdate['rw'] = $data['rw'];
+			$dataMhswUpdate['kode_pos'] = $data['kodepos'];
+			$dataMhswUpdate['kelurahan'] = $data['kelurahan'];
+			$dataMhswUpdate['id_wilayah'] = $data['kecamatan'];
+			$dataMhswUpdate['id_jenis_tinggal'] = $data['jnsTinggal'];
+			$dataMhswUpdate['id_alat_transportasi'] = $data['alatTrans'];
+			$dataMhswUpdate['handphone'] = $data['hp'];
+			$dataMhswUpdate['telepon'] = $data['telepon'];
+			$dataMhswUpdate['email'] = $data['email'];
+			$dataMhswUpdate['penerima_kps'] = $data['kps'];
+			$dataMhswUpdate['nomor_kps'] = $data['noKPS'];
+			$dataMhswUpdate['id_kebutuhan_khusus_ayah'] = 0;
+			$dataMhswUpdate['id_kebutuhan_khusus_ibu'] = 0;
+			$dataMhswUpdate['id_kebutuhan_khusus_mahasiswa'] = 0;
 
 
 		if ( empty($data['pd']) ) {
 
-			$dataInsertMhsw = array(
-				'act' => 'InsertBiodataMahasiswa',
-				'token' => $token,
-				'record' => $dataMhsw
-			);
+			// $dataInsertMhsw = array(
+			// 	'act' => 'InsertBiodataMahasiswa',
+			// 	'token' => $token,
+			// 	'record' => $dataMhsw
+			// );
 
-			$dataMhswFeeder = $this->runWS($dataInsertMhsw);
-		 	$objMhs = json_decode($dataMhswFeeder);
+			// $dataMhswFeeder = $this->runWS($dataInsertMhsw);
+		 	// $objMhs = json_decode($dataMhswFeeder);
+
+			$objMhs = $this->FeederRunWS->insert('InsertBiodataMahasiswa',$dataMhsw);
+
 		 	$error_codeMhs = $objMhs->{'error_code'};
 		 	$error_descMhs = $objMhs->{'error_desc'};
-
 		 	if ( $error_codeMhs == 0 ) {
 
 		 		$id_mahasiswa = $objMhs->{'data'}->{'id_mahasiswa'};
@@ -1540,16 +1563,18 @@ class Profil extends CI_Controller {
 						$dataNIMforFeeder['id_prodi'] = $dataNIM->id_sms;
 						$dataNIMforFeeder['biaya_masuk'] = '250000';
 
-			 			$dataInsertNIM = array(
-			 				'act' => 'InsertRiwayatPendidikanMahasiswa',
-			 				'token' => $token,
-				 			'record'=> $dataNIMforFeeder
+			 			// $dataInsertNIM = array(
+			 			// 	'act' => 'InsertRiwayatPendidikanMahasiswa',
+			 			// 	'token' => $token,
+				 		// 	'record'=> $dataNIMforFeeder
 
-				 		);
+				 		// );
 
 
-				 		$dataNIMFeeder = $this->runWS($dataInsertNIM);
-					 	$objNIM = json_decode($dataNIMFeeder);
+				 		// $dataNIMFeeder = $this->runWS($dataInsertNIM);
+					 	// $objNIM = json_decode($dataNIMFeeder);
+
+						$objNIM = $this->FeederRunWS->insert('InsertRiwayatPendidikanMahasiswa',$dataNIMforFeeder);
 					 	$error_codeNIM = $objNIM->{'error_code'};
 					 	$error_descNIM = $objNIM->{'error_desc'};
 
@@ -1792,7 +1817,7 @@ class Profil extends CI_Controller {
 					 			'error_code' => $error_codeNIM,
 					 			'error_desc' => $error_descNIM
 					 		);
-
+							$dataFeeder['dataNim'] = $dataNIMforFeeder;
 					 		return $dataFeeder;
 
 					 	}
@@ -1836,6 +1861,18 @@ class Profil extends CI_Controller {
 			 	$objMhs = json_decode($dataMhswFeeder);
 			 	$error_codeMhs = $objMhs->{'error_code'};
 			 	$error_descMhs = $objMhs->{'error_desc'};
+
+
+				$dataUpdateNim = array();
+				$dataUpdateNim['nim'] = $dataNIM->NIM;
+				$dataUpdateNim['id_jenis_daftar'] = 1;
+				$dataUpdateNim['id_periode_masuk'] = $data['awalMasuk'];
+				$dataUpdateNim['tanggal_daftar'] = $dataNIM->Tanggal;
+				$dataUpdateNim['id_perguruan_tinggi'] = '8e5d195a-0035-41aa-afef-db715a37b8da';
+				$dataUpdateNim['id_prodi'] = $dataNIM->id_sms;
+				$dataUpdateNim['biaya_masuk'] = '250000';
+
+				$this->FeederRunWS->update('UpdateRiwayatPendidikanMahasiswa',$data['regpd'],$dataUpdateNim);
 
 			 	if ( $error_codeMhs == 0 ) {
 

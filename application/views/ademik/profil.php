@@ -336,13 +336,13 @@
 		                      					<div class="form-group row">
 		                        					<label for="example-tel-input" class="col-sm-4 col-form-label">Tipe Pembayaran SPP/UKT</label>
 		                        					<div class="col-sm-4">
-														<select class="form-control select2" name="bayarSPP" id="bayarSPP" onchange="delete_disable()">
-															<option value="Reguler" <?= ($dataProfil->TipePembayaran == 'Reguler' || $dataProfil->TipePembayaran == '') ? 'selected' : ''; ?> >Reguler</option>
-															<option value="Beasiswa" <?= ($dataProfil->TipePembayaran == 'Beasiswa') ? 'selected' : ''; ?> >Beasiswa</option>
-															<option value="Potongan UKT" <?= ($dataProfil->TipePembayaran == 'Potongan UKT') ? 'selected' : ''; ?> >Potongan UKT</option>
-															<option value="Lain-Lain" <?= ($dataProfil->TipePembayaran == 'Lain-Lain') ? 'selected' : ''; ?> >Lain-Lain</option>
-														</select>
-													</div>
+																				<select class="form-control select2" name="bayarSPP" id="bayarSPP" onchange="delete_disable()">
+																					<option value="Reguler" <?= ($dataProfil->TipePembayaran == 'Reguler' || $dataProfil->TipePembayaran == '') ? 'selected' : ''; ?> >Reguler</option>
+																					<option value="Beasiswa" <?= ($dataProfil->TipePembayaran == 'Beasiswa') ? 'selected' : ''; ?> >Beasiswa</option>
+																					<option value="Potongan UKT" <?= ($dataProfil->TipePembayaran == 'Potongan UKT') ? 'selected' : ''; ?> >Potongan UKT</option>
+																					<option value="Lain-Lain" <?= ($dataProfil->TipePembayaran == 'Lain-Lain') ? 'selected' : ''; ?> >Lain-Lain</option>
+																				</select>
+																			</div>
 		                      					</div>
 		                      					<div class="form-group row">
 		                        					<label for="example-text-input" class="col-sm-4 col-form-label">Keterangan Beasiswa,Potongan UKT,dll</label>
@@ -1843,5 +1843,4 @@ function uploadFoto(act) {
 	});*/
 
 }
-
 </script>

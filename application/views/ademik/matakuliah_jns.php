@@ -168,8 +168,12 @@
 															<?php } ?>
 														</th>
 														<th>
-															<a href="<?=base_url();?>ademik/Matakuliah_jns/formEdit/<?= $kurikulum->KodeJurusan ?>/<?= $nmJurusan ?> /<?= $tampil->ID ?>" class="<?= ( empty($tampil->id_mk) ) ? 'btn btn btn-danger fa fa-save' : 'btn btn btn-success fa fa-edit' ?>"> <?= ( empty($tampil->id_mk) ) ? 'Kirim' : 'Update' ?>
-															</a>
+															<div class="btn-group btn-group-justified">
+
+																		<a href="<?=base_url();?>ademik/Matakuliah_jns/formEdit/<?= $kurikulum->KodeJurusan ?>/<?= $nmJurusan ?> /<?= $tampil->ID ?>" class="<?= ( empty($tampil->id_mk) ) ? 'btn btn btn-danger fa fa-save' : 'btn btn btn-success fa fa-edit' ?>"> <?= ( empty($tampil->id_mk) ) ? 'Kirim' : 'Update' ?>
+																		</a>
+																		<button onclick="hapus('<?= $tampil->ID ?>')"> <i class="fa fa-trash"></i> Hapus</button>
+															</div>
 														</th>
 													</tr>
 

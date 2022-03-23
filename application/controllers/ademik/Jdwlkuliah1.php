@@ -328,6 +328,11 @@ class Jdwlkuliah1 extends CI_Controller {
 			$mk  = $row['MK']; //  Nama Matakuliah
 			$kl  = $row['PRG']; // nama indonesia kode program REG/RESO
 
+			$key = encode($this->encryption->encrypt(json_encode([
+				'id_jadwal' => $idjid,
+				'tahun' => $thn
+			])));
+
 			// kondisi jika kode program kosong
 			if (empty($kl)) $kl = '&nbsp;';
 
@@ -438,7 +443,7 @@ class Jdwlkuliah1 extends CI_Controller {
 					<td class=lst align=center><a href='tambah5' target=_blank title='Cetak Rekap Absen'><img src='".base_url()."assets/images/printer.png' border=0></a></td>*/
 					$strnil = "<td class=lst align=center><a href='".base_url('ademik/report/report2/cetak_daftar_hadir/'.$idjid.'/'.$thn)."' target=_blank title='Cetak Absen'><img src='".base_url()."assets/images/printer.png' border=0></a></td>
 					<td class=lst align=center><a href='".base_url('ademik/absensi')."' target=_blank title='Input Absen'><img src='".base_url()."assets/images/printer.png' border=0></a></td>
-					<td class=lst align=center><a href='".base_url('ademik/report/report2/cetak_daftar_nilai/'.$idjid.'/'.$thn)."' target=_blank title='Cetak Daftar Nilai'><img src='".base_url()."assets/images/printer.png' border=0></a></td>
+					<td class=lst align=center><a href='".base_url('ademik/report/report2/cetak_daftar_nilai/'.$key)."' class='cetakDaftarNilai' target=_blank title='Cetak Daftar Nilai'><img src='".base_url()."assets/images/printer.png' border=0></a></td>
 					";
 					// cetak dpna <td class=lst align=center><a href='".base_url('ademik/report/report2/cetak_dpna/'.$idjid.'/'.$thn)."' target=_blank title='Cetak DPNA'><img src='".base_url()."assets/images/printer.png' border=0></a></td>
 					// <a href='#' target=_blank title='Input Absen'>absen</a>
@@ -451,7 +456,7 @@ class Jdwlkuliah1 extends CI_Controller {
 				}*/ else {
 					$strnil = "<td class=lst align=center><a href='".base_url('ademik/report/report2/cetak_daftar_hadir/'.$idjid.'/'.$thn)."' target=_blank title='Cetak Absen'><img src='".base_url()."assets/images/printer.png' border=0></a></td>
 					<td class=lst align=center><a href='".base_url('ademik/absensi')."' target=_blank title='Absen'><img src='".base_url()."assets/images/printer.png' border=0></a></td>
-					<td class=lst align=center><a href='".base_url('ademik/report/report2/cetak_daftar_nilai/'.$idjid.'/'.$thn)."' target=_blank title='Cetak Daftar Nilai'><img src='".base_url()."assets/images/printer.png' border=0></a></td>";
+					<td class=lst align=center><a href='".base_url('ademik/report/report2/cetak_daftar_nilai/'.$key)."' class='cetakDaftarNilai' target=_blank title='Cetak Daftar Nilai'><img src='".base_url()."assets/images/printer.png' border=0></a></td>";
 					// cetak dpna <td class=lst align=center><a href='".base_url('ademik/report/report2/cetak_dpna/'.$idjid.'/'.$thn)."' target=_blank title='Cetak DPNA'><img src='".base_url()."assets/images/printer.png' border=0></a></td>
 				}
 
@@ -830,7 +835,7 @@ class Jdwlkuliah1 extends CI_Controller {
 		$opfkip
 		<option name=Gabungan value=Gabungan>Kelas Gabungan</option>
 		<option name=Int-Class value=Int-Class>Kelas Internasional</option>
-		<option name=Int-Class value=Konsentrasi>Konsentrasi</option>
+		<option name=Int-Class value=KONS>Konsentrasi</option>
 		<option name=MBKM value=MBKM>MBKM</option>";
 
 		if ($ulevel == 1 or $ulevel == 5 or $ulevel == 7) {
@@ -1447,7 +1452,8 @@ class Jdwlkuliah1 extends CI_Controller {
 
 		
 
-		$idjadwal 		= decode($this->input->post('idjadwal'));
+		// $idjadwal 		= decode($this->input->post('idjadwal'));
+		$idjadwal 		= $this->input->post('idjadwal');
 		$thn 			= $this->input->post('tahun');
 		$angkatan 		= $this->input->post('angkatan');
 		$daftar 		= $this->daftar_mhsw($idjadwal,$thn,$angkatan);
@@ -2610,7 +2616,7 @@ class Jdwlkuliah1 extends CI_Controller {
 			$data_raw = $this->db->query($query);
 
 			$count_data = $data_raw->num_rows();
-
+			$tahun = $data_raw['tahun'];
 			if ($count_data != 1) {
 				return "Kesalahan pada data yang dikirim, Periksa matakuliah perjenis / jadwal ";
 			}
@@ -2625,11 +2631,11 @@ class Jdwlkuliah1 extends CI_Controller {
 				$res_feeder = $this->FeederRunWS->insert('InsertKelasKuliah',$record);
 			}
 			
-			$id_kls = $res_feeder->data->id_kelas_kuliah;
 			$error_code = $res_feeder->error_code;
 			$error_desc = $res_feeder->error_desc;
 			
-			if($id_kls){
+			if($error_code=='0'){
+				$id_kls = $res_feeder->data->id_kelas_kuliah;
 				$qupdate = "update _v2_jadwal set id_kelas_kuliah='$id_kls',st_feeder=2 where IDJADWAL='$IDJadwal'";
 				$this->db->query($qupdate);
 				
@@ -3103,12 +3109,14 @@ class Jdwlkuliah1 extends CI_Controller {
 				$this->db->where($where);
 				$this->db->update($table,$data);
 
-				echo $result;
+				// echo $result;
 
 			} else {
-				echo $result;
+				// echo $result;
 			}
-
+			$respons = $obj;
+			$respons->insert_data = $filter;
+			echo json_encode($respons);
 		}
 
 		//{error_code: 920, error_desc: "Dosen mengajar dari id_registrasi_dosen dan id_kelas_kuliah ini sudah ada", data: ""}

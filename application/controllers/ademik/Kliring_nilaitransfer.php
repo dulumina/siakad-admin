@@ -10,6 +10,8 @@ class Kliring_nilaitransfer extends CI_Controller {
 	    $this->load->library('encryption');
 	    $this->load->helper('security');
 	    $this->load->model('nilai_transfer_model');
+	    $this->load->model('feederRunWS');
+			$this->load->model('Profil_model', 'profil');
 	}
 
 	private function check_modul() {
@@ -72,10 +74,10 @@ class Kliring_nilaitransfer extends CI_Controller {
 			$this->load->view('dashbord',$data);
 
 		} else {
-
-			
-			$dataMhsw = $this->nilai_transfer_model->get_dataSearch($dataSearch);
-
+			$data['unvalid'] = $this->profil->isCompleteData($dataSearch);
+			// $dataMhsw = $this->nilai_transfer_model->get_dataSearch($dataSearch);
+			$this->db->select('j.Ket_Jenjang');
+			$dataMhsw = $this->profil->getDataTabelJoinMhsw('_v2_mhsw',$dataSearch);
 			//print_r($dataMhsw);
 
 			if ( $dataMhsw == TRUE ) {
@@ -659,27 +661,6 @@ class Kliring_nilaitransfer extends CI_Controller {
 
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	public function changestatus() {
 		$act = $this->input->post('act');
 		$nim = $this->input->post('nim');
@@ -946,4 +927,114 @@ class Kliring_nilaitransfer extends CI_Controller {
 
 	}
 
+	public function InsertMahasiswafeeder($nim='')
+	{
+		if ( $this->input->post('nim') ) {
+			$nim = $this->input->post('nim');
+		}
+		$resFeeder=[];
+		$lengkap = $this->profil->isCompleteData($nim);
+		$this->db->select('j.id_sms');
+		$dataLengkap = $this->profil->getDataTabelJoinMhsw('_v2_mhsw',$nim);
+		$msg = "success";
+		if (count($lengkap) == 0) {
+			$dataBiodataFeeder = array(
+				'nama_mahasiswa'  => $dataLengkap->Name,
+				'jenis_kelamin' => $dataLengkap->Sex,
+				'tempat_lahir'  => $dataLengkap->TempatLahir,
+				'tanggal_lahir' => $dataLengkap->TglLahir,
+				'id_agama'  => (int) $dataLengkap->AgamaID,
+				'nik' => (int) $dataLengkap->NIK,
+				'nisn'  => $dataLengkap->NISN,
+				'npwp'  => $dataLengkap->NPWP,
+				'kewarganegaraan' => $dataLengkap->Kewarganegaraan,
+				'jalan' => $dataLengkap->Alamat,
+				'dusun' => $dataLengkap->Dusun,
+				'rt'  => $dataLengkap->RT,
+				'rw'  => $dataLengkap->RW,
+				'kelurahan' => $dataLengkap->Kelurahan,
+				'kode_pos'  => $dataLengkap->KodePos,
+				'id_wilayah'  => (int) $dataLengkap->Kecamatan,
+				'id_jenis_tinggal'  => (int) $dataLengkap->JenisTinggal,
+				'id_alat_transportasi'  => (int) $dataLengkap->AlatTransportasi,
+				'telepon' => $dataLengkap->Phone,
+				'handphone' => $dataLengkap->HP,
+				'email' => $dataLengkap->Email,
+				'penerima_kps'  => $dataLengkap->penerimaKPS,
+				'nomor_kps' => $dataLengkap->nomorKPS,
+				'nik_ayah'  => '',
+				'nama_ayah' => $dataLengkap->NamaOT,
+				'tanggal_lahir_ayah'  => '',
+				'id_pendidikan_ayah'  => (int) $dataLengkap->PendidikanOT,
+				'id_pekerjaan_ayah' => (int) $dataLengkap->PekerjaanOT,
+				'id_penghasilan_ayah' => (int) $dataLengkap->HslAyah,
+				'nik_ibu' => '',
+				'nama_ibu_kandung'  => $dataLengkap->NamaIbu,
+				'tanggal_lahir_ibu' => '',
+				'id_pendidikan_ibu' => (int) $dataLengkap->PendidikanIbu,
+				'id_pekerjaan_ibu'  => (int) $dataLengkap->PendidikanIbu,
+				'id_penghasilan_ibu'  => (int) $dataLengkap->HslIbu,
+				'nama_wali' => $dataLengkap->NamaWali,
+				'tanggal_lahir_wali'  => '',
+				'id_pendidikan_wali'  => (int) $dataLengkap->PendidikanW,
+				'id_pekerjaan_wali' => (int) $dataLengkap->PekerjaanW,
+				'id_penghasilan_wali' => (int) $dataLengkap->HslW,
+				'id_kebutuhan_khusus_mahasiswa' => (int) '0',
+				'id_kebutuhan_khusus_ayah'  => (int) '0',
+				'id_kebutuhan_khusus_ibu' => (int) '0',
+			);
+			
+			$ibm = $this->feederRunWS->insert('InsertBiodataMahasiswa',$dataBiodataFeeder);
+			$resFeeder = $ibm;
+
+			if ($ibm->error_code==0 || $ibm->error_code==200) {
+				
+				$filter = "nama_mahasiswa='$dataLengkap->Name' and tempat_lahir='$dataLengkap->TempatLahir' and tanggal_lahir='$dataLengkap->TglLahir' and nama_ibu_kandung='$dataLengkap->NamaIbu'";
+				$mhswFdr = $this->feederRunWS->get('GetDataLengkapMahasiswaProdi',$filter)->data;
+				
+				if ( $ibm->error_code==0 || count($mhswFdr)==1) {
+					$this->profil->updateIdPD($dataLengkap->ID, $mhswFdr[0]->id_mahasiswa, '_v2_mhsw');
+		
+					$dataHistoryPendidikan = array(
+						'id_mahasiswa' => '',
+						'nim' => $dataLengkap->NIM,
+						'id_jenis_daftar' => ($dataLengkap->StatusAwal=='P') ? '2' : ($dataLengkap->StatusAwal=='J') ? '11' : "2",
+						'id_jalur_daftar' => '6',
+						'id_periode_masuk' => $dataLengkap->Semester,
+						'tanggal_daftar' => $dataLengkap->Tanggal,
+						'id_perguruan_tinggi' => '8e5d195a-0035-41aa-afef-db715a37b8da',
+						'id_prodi' => $dataLengkap->id_sms,
+						'id_bidang_minat' => '',
+						'sks_diakui' => round($dataLengkap->SKSditerima,2),
+						'id_perguruan_tinggi_asal' => $dataLengkap->UniversitasAsal,
+						'id_prodi_asal' => $dataLengkap->ProdiAsal,
+						'id_pembiayaan' => '1',
+						'biaya_masuk' => 175000,
+					);
+					$dataHistoryPendidikan['id_mahasiswa'] = $mhswFdr[0]->id_mahasiswa;
+					$irpm = $this->feederRunWS->insert('InsertRiwayatPendidikanMahasiswa',$dataHistoryPendidikan);
+					$resFeeder = $irpm;
+		
+					if ($irpm->error_code==0) {
+						$this->profil->updateIdREG($dataLengkap->ID, $irpm->data['id_registrasi_mahasiswa'], '_v2_mhsw');
+					}elseif($irpm->error_code==211){
+						$this->profil->updateIdREG($dataLengkap->ID, $mhswFdr[0]->id_registrasi_mahasiswa, '_v2_mhsw');
+						$msg = "$irpm->error_desc. error code($irpm->error_code)";
+					}else {
+						$msg = "$irpm->error_desc. error code($irpm->error_code)";
+					}
+				}
+
+			}else {
+				$msg = "$ibm->error_desc . error code($ibm->error_code)";
+			}
+		}else {
+			$msg = "biodata Mahasiswa Belum Lengkap";
+		}
+		$response['resFeeder'] = $resFeeder;
+		$response['msg'] = $msg;
+		$response['data'] = $dataLengkap;
+		echo json_encode($response);
+		
+	}
 }

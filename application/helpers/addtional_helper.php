@@ -87,8 +87,8 @@ function encode($plaintext = "")
 function decode($chipertext = "")
 {
 	$CI =& get_instance();
-	return str_replace(array('_', '~'), array('/', '='), $chipertext);
-	// return str_replace(array('-', '_', '~'), array('+', '/', '='), $chipertext); // fikri hapus setelah berdebat dengan fandu
+	// return str_replace(array('_', '~'), array('/', '='), $chipertext);
+	return str_replace(array('-', '_', '~'), array('+', '/', '='), $chipertext); // fikri hapus setelah berdebat dengan fandu
 }
 
 function limitKrs($kodeJurusan, $semester_aktif = "" )
@@ -140,7 +140,7 @@ function cleanName($name){
 /**
  * 
  */
-function sendMessage($data=[])
+function sendMessage($text=[])
 {
 	
 	$ci = get_instance();
@@ -150,12 +150,18 @@ function sendMessage($data=[])
 
 	$data = http_build_query(array(
 		'chat_id' => $bot_msg_id,
-		'text' => json_encode($data)
+		'parse_mode' => 'HTML'
 	));
-
+	$data .= (!is_array($text)) ? "&text=$text" : "&text=".json_encode($text);
 	$url = "https://api.telegram.org/bot$bot_key/sendMessage?$data";
-
-	return json_decode(file_get_contents($url));
+    $ch = curl_init(); 
+		curl_setopt($ch, CURLOPT_URL, $url);
+		// curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+		$output = curl_exec($ch); 
+    	curl_close($ch);      
+	return json_decode($output);
+	// return json_decode(file_get_contents($url, false, stream_context_create($options)));
 }
 
 /**
@@ -163,10 +169,55 @@ function sendMessage($data=[])
  */
 function getDevice($ua)
 {
-	$url = "http://api.userstack.com/api/detect?access_key=53c917b83cdfb44be0aadaee80ba6141&ua=$ua";
-	$data = json_decode(file_get_contents($url));
-	$device = $data->device->type.' '.$data->device->brand.' '.$data->device->name;
+	$url = "http://api.userstack.com/api/detect?access_key=ec1a48617e103c11ffd57cbeead9050b&ua=$ua";
+	// $options = array(
+	// 	"ssl"=>array(
+	// 		"allow_self_signed"=>true,
+	// 		"verify_peer"=>false,
+	// 		"verify_peer_name"=>false,
+	// 	),
+	// );
+	// $data = json_decode(file_get_contents($url, false, stream_context_create($options)));
+	
+    $ch = curl_init(); 
+		curl_setopt($ch, CURLOPT_URL, $url);
+		// curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+	$data = json_decode(curl_exec($ch)); 
+	curl_close($ch); 
+	$device = $data->device->type.' '.$data->device->brand.' '.$data->device->name." <a href='$url'>info</a>";
 
 	return $device;
 }
+
+/**
+ * function	: get_ip_client()
+ * @desc	: get ip client 
+ * @author	: Moh Dzulfikri
+ * @return	: string
+ */
+ function get_ip_client(){
+	$clientIP = '0.0.0.0';
+
+	if (isset($_SERVER['HTTP_CLIENT_IP'])) {
+		$clientIP = $_SERVER['HTTP_CLIENT_IP'];
+	} elseif (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+		# when behind cloudflare
+		$clientIP = $_SERVER['HTTP_CF_CONNECTING_IP']; 
+	} elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+		$clientIP = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	} elseif (isset($_SERVER['HTTP_X_FORWARDED'])) {
+		$clientIP = $_SERVER['HTTP_X_FORWARDED'];
+	} elseif (isset($_SERVER['HTTP_FORWARDED_FOR'])) {
+		$clientIP = $_SERVER['HTTP_FORWARDED_FOR'];
+	} elseif (isset($_SERVER['HTTP_FORWARDED'])) {
+		$clientIP = $_SERVER['HTTP_FORWARDED'];
+	} elseif (isset($_SERVER['REMOTE_ADDR'])) {
+		$clientIP = $_SERVER['REMOTE_ADDR'];
+	}
+
+	return $clientIP;
+ }
+
+
 ?>

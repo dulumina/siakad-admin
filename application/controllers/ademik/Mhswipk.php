@@ -858,6 +858,8 @@ class Mhswipk extends CI_Controller {
 						</tr>
 						<td class=ttl>Tahun Ajaran</td>
 						<td class=lst><input type=text name='thn' value='$ThnNext' size=5 maxlength=5></td>
+						<td class='ttl' >Kampus Merdekar</td>
+						<td class='lst'><select name='status'><option value='A'>Tidak</option><option value='KM'>Ya</option></select></td>
 						<td class=ttl>Sesi/Semester</td>
 						<td class=lst>
 							<input type=text name='ssi' value='$ssi' size=5 maxlength=5>
@@ -988,6 +990,7 @@ class Mhswipk extends CI_Controller {
 	public function PrcAddSesi() {
 		$thn = $this->input->post('thn');
 		$nim = $this->input->post('nim');
+		$status = $this->input->post('status');
 		$ssi = $this->input->post('ssi');
 		$sksmax = $this->input->post('maxsks');
 		if (!empty($thn)) {
@@ -995,7 +998,7 @@ class Mhswipk extends CI_Controller {
 			if ($ada==true) {
 				$msg = "Tahun ajaran $thn dan Sesi/Semester $ssi sudah ada.";
 			} else {
-			 	$data = array("NIM"=>$nim, "Tahun"=>$thn, "Sesi"=>$ssi, "Status"=>"A", "MaxSKS"=>$sksmax);
+			 	$data = array("NIM"=>$nim, "Tahun"=>$thn, "Sesi"=>$ssi, "Status"=>"$status", "MaxSKS"=>$sksmax);
 
 				$simpan = $this->ipk_model->insertKhs($data);
 
@@ -1005,7 +1008,7 @@ class Mhswipk extends CI_Controller {
 			 		$msg = "Data gagal tersimpan";
 			 	}
 
-			 	$update = $this->ipk_model->updateMhsw("A",$thn,$nim);
+			 	// $update = $this->ipk_model->updateMhsw("A",$thn,$nim);
 			}
 		}else{
 			$msg = "Tahun Belum Diisi";			
