@@ -127,12 +127,12 @@
                     <a type="button" class="btn btn-default float-right" data-toggle="modal" data-target="#exampleModalPreview"><i class="fa fa-plus"></i> Belanja KRS</a>
                   </div>
                   <div class="col-8">
-                    <a id="dwnldKrs" class="btn btn-block btn-social btn-twitter float-right" href="<?= base_url('ademik/Krs_pmmdn/cetakKrs/'.$token) ?>"><i class="fa fa-download"></i> Download KRS</a>
+                    <a  style="display: none;" id="dwnldKrs" class="btn btn-block btn-social btn-twitter float-right" href="<?= base_url('ademik/Krs_pmmdn/cetakKrs/'.$token) ?>"><i class="fa fa-download"></i> Download KRS</a>
                   </div>
                 </div>
               </div>
               <!-- /.box-header -->
-              <div class="box-body">
+              <div style="display: none;" id="tblKrs" class="box-body">
                 <table id="krs" class="table table-bordered table-hover display nowrap margin-top-10 table-responsive" cellspacing="0" width="100%">
                   <thead>
                     <tr>
