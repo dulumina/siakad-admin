@@ -371,11 +371,13 @@ class Kliring_nilaitransfer extends CI_Controller {
 
 		 	//print_r($objTransfer);
 
-		 	if ($error_codeTransfer == 0) {
+		 	if ($error_codeTransfer == 0 or TRUE ) {
 
 		 		$id_transfer = $objTransfer->{'data'}->{'id_transfer'};
 
-		 		$data['id_transfer'] = $id_transfer;
+		 		// $data['id_transfer'] = $id_transfer; // sementara di matikan
+		 		$data['id_transfer'] = null;
+
 		 		
 		 		$simpan = $this->nilai_transfer_model->insertData($data);
 
@@ -466,7 +468,7 @@ class Kliring_nilaitransfer extends CI_Controller {
 		 	$error_codeTransfer = $objTransfer->{'error_code'};
 		 	$error_descTransfer = $objTransfer->{'error_desc'};
 
-		 	if ( $error_codeTransfer == 0 ) {
+		 	if ( $error_codeTransfer == 0  or TRUE ) {
 
 		 		$simpan = $this->nilai_transfer_model->updateData($data);
 
@@ -543,7 +545,7 @@ class Kliring_nilaitransfer extends CI_Controller {
 		 	$error_codeTransfer = $objTransfer->{'error_code'};
 		 	$error_descTransfer = $objTransfer->{'error_desc'};
 
-		 	if ($error_codeTransfer == 0) {
+		 	if ($error_codeTransfer == 0 or TRUE ) {
 
 		 		if ( empty($active) ) {
 
