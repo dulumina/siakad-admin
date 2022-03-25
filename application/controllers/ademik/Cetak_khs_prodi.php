@@ -955,4 +955,74 @@ class Cetak_khs_prodi extends CI_Controller {
         echo json_encode($output);
 	}
 	
+	public function hitung_IPSK($semesterAkademik,$program,$jurusan,$angkatan,$nim=''){
+
+		if ($nim!=''){
+			$getDataIps = $this->cetak_khs_prodi_model->getDataIps($semesterAkademik,$jurusan,$program,$angkatan,$str);
+			foreach ($getDataIps as $show) {
+				$nim1 = $show->NIM;
+				$kdf = $show->KodeFakultas;
+				$this->proses($semesterAkademik, $nim1, $kdf, $jurusan);
+			}
+			
+			$getDataIpk = $this->ipk_model->getDataIpk($semesterAkademik,$jurusan,$program,$angkatan,$str);
+			foreach ($getDataIpk as $show) {
+				$nim1 = $show->NIM;
+				$kdf = $show->KodeFakultas;
+				$kdj = $show->KodeJurusan;
+				$this->prosesipk($semesterAkademik, $nim1, $kdf,$kdj);
+			}
+
+		} 
+ 		$data['semester']=$semesterAkademik;
+    	$data['program']=$program;
+    	$data['jur']=$jurusan;
+    	$data['angkatan']=$angkatan;    	
+		$data['fakultas'] = $this->ipk_model->getKdf($jurusan);
+		
+		if($this->session->ulevel=="7"){
+			$kdj=$this->session->kdj;
+			$data['jurusan'] = $this->cetak_khs_prodi_model->getJurusanKdj($kdj);
+		}elseif($this->session->ulevel=="5"){
+			$kdf=$this->session->kdf;
+			$data['jurusan'] = $this->cetak_khs_prodi_model->getJurusanKdf($kdf);
+		}else{
+			$data['jurusan'] = $this->cetak_khs_prodi_model->getJurusan();	
+		}
+		
+		$data['footerSection'] = "
+		    <script type='text/javascript'>
+ 
+            var save_method; //for save method string
+            var table;
+ 
+            $(document).ready(function() {
+				var dataku = 'semesterAkademik=".$semesterAkademik."&jurusan=".$jurusan."&program=".$program."&angkatan=".$angkatan."';
+            	var oTable = $('#tabel_cetak_khs').dataTable({
+		            'processing': true, 
+			            'serverSide': true, 
+			            'order': [], 
+			             
+			            'ajax': {
+			                'url': '".base_url('ademik/cetak_khs_prodi/dataMahasiswa/'.$semesterAkademik.'/'.$jurusan.'/'.$program.'/'.$angkatan)."',
+			                'type': 'POST'
+			            },
+			 
+			             
+			            'columnDefs': [
+			            { 
+			                'targets': [ 0 ], 
+			                'orderable': false, 
+			            },
+			            ]
+		       });
+            });
+        </script>"; 
+
+		$this->load->view('temp/head');
+		$this->load->view('ademik/cetak_khs_prodi', $data);
+		$this->load->view('temp/footers',$data);    
+
+	}
+
 }
