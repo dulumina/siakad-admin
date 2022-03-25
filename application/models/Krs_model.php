@@ -1738,7 +1738,7 @@ class Krs_model extends CI_Model{
 		$nim = $this->db->escape_str($nim);
 		$tahun = $this->db->escape_str($tahun);
 
-		$query = $this->db->query("SELECT k.ID,k.Tahun,k.NIM,m.Name,m.id_reg_pd,k.Status,k.st_feeder,k.IPS,k.SKS,k.IPK,k.TotalSKS from _v2_khs k,_v2_mhsw m where k.NIM=m.NIM and k.NIM='$nim' and k.Tahun='$tahun' limit 1");
+		$query = $this->db->query("SELECT k.ID,k.Tahun,k.NIM,m.Name,m.id_reg_pd,k.Status,k.st_feeder,k.IPS,k.SKS,k.IPK,k.TotalSKS,k.TotalSKSLulus from _v2_khs k,_v2_mhsw m where k.NIM=m.NIM and k.NIM='$nim' and k.Tahun='$tahun' limit 1");
 
 		return $query->row();
 	}
