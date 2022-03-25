@@ -962,7 +962,7 @@ class Cetak_khs_prodi extends CI_Controller {
 			$whr_nim="";
 		}
 		if ($nim!=''){
-			$str="$whr_nim and  stprc='0' order by k.NIM asc limit 50"
+			$str="$whr_nim and  stprc='0' order by k.NIM asc limit 50";
 			$getDataIps = $this->cetak_khs_prodi_model->getDataIps($semesterAkademik,$jurusan,$program,$angkatan,$str);
 			foreach ($getDataIps as $show) {
 				$nim1 = $show->NIM;
@@ -970,7 +970,7 @@ class Cetak_khs_prodi extends CI_Controller {
 				$this->proses($semesterAkademik, $nim1, $kdf, $jurusan);
 			}
 			
-			$str="$whr_nim and  stprc='1' order by k.NIM asc limit 50"
+			$str="$whr_nim and  stprc='1' order by k.NIM asc limit 50";
 			$getDataIpk = $this->ipk_model->getDataIpk($semesterAkademik,$jurusan,$program,$angkatan,$str);
 			foreach ($getDataIpk as $show) {
 				$nim1 = $show->NIM;
