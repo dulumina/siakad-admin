@@ -777,7 +777,7 @@ class Cetak_khs_prodi extends CI_Controller {
 			$record['ips'] 											= $data->IPS;
 			$record['sks_semester'] 						= $data->SKS;
 			$record['ipk'] 											= $data->IPK;
-			$record['total_sks'] 								= $data->TotalSKS;
+			$record['total_sks'] 								= $data->TotalSKSLulus;
 			$record['biaya_kuliah_smt'] 				= $spp;
 
 			$ID = $data->ID;
