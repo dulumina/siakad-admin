@@ -893,7 +893,7 @@ class Cetak_khs_prodi extends CI_Controller {
 				      <input style='float:left; margin-right:5px;' type='submit' name='import_khs' value='Kirim Ke dikti'>
 					</form>*/
 				} else if($field->st_feeder == -2){
-					$act_feeder = "<span style='color:red;'>IPS atau IPK Mahasiswa<br>Kosong (00.00)</span>";
+					$act_feeder = "<a hreff='".base_url('ademik/cetak_khs_prodi/hitung_IPSK/'.$semesterAkademik.'/'.$program.'/'.$jurusan.'/'.$angkatan.'/'.$field->NIM)."' class='btn btn-block btn-warning btn-xs'>Hitung</a><span style='color:red;'>IPS atau IPK Mahasiswa<br>Kosong (00.00)</span>";
 				} else {
 			  $act_feeder = "<div id='feeder-".$field->NIM."'>
 			  <button class='btn btn-$color' onclick='kirimDikti(\"".$field->NIM."\",\"".$field->Tahun."\")'>Kirim Dikti</button>
