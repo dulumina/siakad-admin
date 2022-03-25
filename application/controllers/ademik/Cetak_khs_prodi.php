@@ -905,7 +905,7 @@ class Cetak_khs_prodi extends CI_Controller {
 			  </form>*/
 				}
 			}else{
-			  $act_feeder = "<span style='color:orange;'>IPK/IPS/blum di prc masih kosong</span>";
+			  $act_feeder = "<a hreff='".base_url('ademik/cetak_khs_prodi/hitung_IPSK/'.$semesterAkademik.'/'.$program.'/'.$jurusan.'/'.$angkatan.'/'.$field->NIM)."' class='btn btn-block btn-warning btn-xs'>Hitung</a><span style='color:orange;'>IPK/IPS/blum di prc masih kosong</span>";
 			}
 
             $row = array();
