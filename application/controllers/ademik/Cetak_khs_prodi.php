@@ -41,6 +41,32 @@ class Cetak_khs_prodi extends CI_Controller {
 		//$this->load->view('dashbord');
 	}
 
+  function addKuliahmhs()
+  {
+	  $data = $_POST;
+    $url = 'http://feeder.untad.ac.id:3003/kuliahmhs/add';
+    $ch = curl_init();
+    $this->load->model('FeederRunWS');
+    curl_setopt($ch, CURLOPT_POST, 1);
+    
+    $headers = array();
+    $token = $this->FeederRunWS->tokenNEO();
+    $headers[] = 'Content-Type: application/json';
+    $headers[] = "Authorization: Bearer $token";
+    
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    
+    $data = json_encode($data);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $result = curl_exec($ch);
+    curl_close($ch);
+
+    echo json_encode( $result);
+  }
+
 	public function search(){
     	$semesterAkademik = $this->input->post('semesterAkademik');
     	$program = $this->input->post('program');
