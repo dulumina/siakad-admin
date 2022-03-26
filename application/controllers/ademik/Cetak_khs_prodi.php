@@ -825,9 +825,9 @@ class Cetak_khs_prodi extends CI_Controller {
 			$status=[];
 
 			if (count($cek->data)==0) {	// insert data ke feeder jika data belum ada
-				$rdikti = $this->addKuliahmhs($neoRecord);
-				// $rdikti = $this->FeederRunWS->insert('InsertPerkuliahanMahasiswa',$record);
-				var_dump($rdikti); die;
+				// $rdikti = $this->addKuliahmhs($neoRecord);
+				$rdikti = $this->FeederRunWS->insert('InsertPerkuliahanMahasiswa',$record);
+				// var_dump($rdikti); die;
 				$status['action'] = 'insert';
 				$status['error_code'] = $rdikti->error_code;
 				$status['error_desc'] = $rdikti->error_desc;
