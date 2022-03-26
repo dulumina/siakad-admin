@@ -41,9 +41,9 @@ class Cetak_khs_prodi extends CI_Controller {
 		//$this->load->view('dashbord');
 	}
 
-  function addKuliahmhs()
+  function addKuliahmhs($data)
   {
-	  $data = $_POST;
+	//   $data = $_POST;
     $url = 'http://feeder.untad.ac.id:3003/kuliahmhs/add';
     $ch = curl_init();
     $this->load->model('FeederRunWS');
@@ -64,7 +64,7 @@ class Cetak_khs_prodi extends CI_Controller {
     $result = curl_exec($ch);
     curl_close($ch);
 
-    echo json_encode( $result);
+    return $result;
   }
 
 	public function search(){
@@ -806,6 +806,17 @@ class Cetak_khs_prodi extends CI_Controller {
 			$record['total_sks'] 								= $data->TotalSKSLulus;
 			$record['biaya_kuliah_smt'] 				= $spp;
 
+			$neoRecord = array(
+				'biaya_smt' => $spp,
+				'ips' => $data->IPS,
+				'ipk' => $data->IPK,
+				'sks_smt' => $data->SKS,
+				'sks_total' => $data->TotalSKSLulus,
+				'id_reg_pd' => $data->id_reg_pd,
+				'id_stat_mhs' => $data->Status,
+				'id_smt' => $data->Tahun
+			);
+
 			$ID = $data->ID;
 
 			$this->load->model('FeederRunWS');
@@ -814,8 +825,9 @@ class Cetak_khs_prodi extends CI_Controller {
 			$status=[];
 
 			if (count($cek->data)==0) {	// insert data ke feeder jika data belum ada
-				$rdikti = $this->FeederRunWS->insert('InsertPerkuliahanMahasiswa',$record);
-				
+				$rdikti = $this->addKuliahmhs($neoRecord);
+				// $rdikti = $this->FeederRunWS->insert('InsertPerkuliahanMahasiswa',$record);
+				var_dump($rdikti); die;
 				$status['action'] = 'insert';
 				$status['error_code'] = $rdikti->error_code;
 				$status['error_desc'] = $rdikti->error_desc;
