@@ -14,11 +14,12 @@ class fakultas extends REST_Controller {
     //=================== Ambil Data ============================
 
     public function index_get(){
-        $Kode = $this->get('Kode');
-        $Nama_Indonesia = $this->get('Nama_Indonesia');
+        // $Kode = $this->get('Kode');
+        // $Nama_Indonesia = $this->get('Nama_Indonesia');
         // var_dump($Name);die;
 
-        $data = $this->fakultas_model->get_data($Kode,$Nama_Indonesia);
+        // $data = $this->fakultas_model->get_data($Kode,$Nama_Indonesia);
+        $data = $this->fakultas_model->get_data();
         if($data){
             $respon = array(
                 'status' => true,

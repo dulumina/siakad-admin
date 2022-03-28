@@ -2,16 +2,18 @@
 defined('BASEPATH') OR exit ('No direct script access allowed');
 class fakultas_model extends CI_Model{
 
-    public function get_data($Kode='',$Nama_Indonesia=''){
+    // public function get_data($Kode='',$Nama_Indonesia=''){
+    public function get_data(){
     
-    if ($Kode){
-        $this->db->where('Kode',$Kode);
-    }
-    if ($Nama_Indonesia){
-        $this->db->where('Nama_Indonesia',$Nama_Indonesia);
-    }
+    // if ($Kode){
+    //     $this->db->where('Kode',$Kode);
+    // }
+    // if ($Nama_Indonesia){
+    //     $this->db->where('Nama_Indonesia',$Nama_Indonesia);
+    // }
     
-    $this->db->select('Kode,Nama_Indonesia,Nama_English,Singkatan,dekan,nipdekan');
+    $this->db->select('Kode,Nama_Indonesia,Nama_English,Singkatan,dekan,nipdekan,NotActive');
+    $this->db->where('NotActive','N');
     return $this->db->get('fakultas')->result_array();
     
     }
