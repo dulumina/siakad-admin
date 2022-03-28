@@ -2,6 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 require APPPATH . '/libraries/REST_Controller.php';
+
 use Restserver\Libraries\REST_Controller;
 
 
@@ -18,7 +19,7 @@ class Mahasiswa extends REST_Controller
     public function index_get()
     {
         $nim = $this->get('NIM');
-        
+
         if ($nim === null) {
             $mahasiswa = $this->mahasiswa->getMahasiswa();
         } else {
@@ -69,16 +70,16 @@ class Mahasiswa extends REST_Controller
     //fungsi menambahkan data
     public function index_post()
     {
-        if (count($this->post_check())!=0) {
+        if (count($this->post_check()) != 0) {
             // print_r($this->post_check());
             // die;
             $this->response([
                 'status' => FALSE,
                 'message' => $this->post_check()
             ], REST_Controller::HTTP_NOT_FOUND);
-        }else {
+        } else {
 
-            $data=[];
+            $data = [];
             foreach ($this->fields as $field) {
                 $data[$field] = $this->post($field);
             }
@@ -96,7 +97,7 @@ class Mahasiswa extends REST_Controller
                     'DosenID' => $this->post('DosenID')
                 ];
             */
-    
+
             if ($this->mahasiswa->createMahasiswa($data) > 0) {
                 $this->response([
                     'status' => TRUE,
@@ -140,6 +141,7 @@ class Mahasiswa extends REST_Controller
         }
     }
 
+
     private function post_check()
     {
         // $this->CI =& get_instance();
@@ -148,75 +150,74 @@ class Mahasiswa extends REST_Controller
 
         $config = array(
             array(
-                    'field' => 'NIM',
-                    'label' => 'NIM',
-                    'rules' => 'required',
-                    'errors' => array(
-                            'required' => 'Anda harus mengisi kolom %s.',
-                    ),
+                'field' => 'NIM',
+                'label' => 'NIM',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Anda harus mengisi kolom %s.',
+                ),
             ),
             array(
-                    'field' => 'Name',
-                    'label' => 'Nama',
-                    'rules' => 'required',
-                    'errors' => array(
-                            'required' => 'Anda harus mengisi kolom %s.',
-                    ),
+                'field' => 'Name',
+                'label' => 'Nama',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Anda harus mengisi kolom %s.',
+                ),
             ),
             array(
-                    'field' => 'KodeFakultas',
-                    'label' => 'Kode Fakultas',
-                    'rules' => 'required',
-                    'errors' => array(
-                            'required' => 'Anda harus mengisi kolom %s.',
-                    ),
+                'field' => 'KodeFakultas',
+                'label' => 'Kode Fakultas',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Anda harus mengisi kolom %s.',
+                ),
             ),
             array(
-                    'field' => 'KodeJurusan',
-                    'label' => 'Kode jurusan',
-                    'rules' => 'required',
-                    'errors' => array(
-                            'required' => 'Anda harus mengisi kolom %s.',
-                    ),
+                'field' => 'KodeJurusan',
+                'label' => 'Kode jurusan',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Anda harus mengisi kolom %s.',
+                ),
             ),
             array(
-                    'field' => 'KodeProgram',
-                    'label' => 'Kode program',
-                    'rules' => 'required',
-                    'errors' => array(
-                            'required' => 'Anda harus mengisi kolom %s.',
-                    ),
+                'field' => 'KodeProgram',
+                'label' => 'Kode program',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Anda harus mengisi kolom %s.',
+                ),
             ),
             array(
-                    'field' => 'StatusAwal',
-                    'label' => 'Status awal',
-                    'rules' => 'required',
-                    'errors' => array(
-                            'required' => 'Anda harus mengisi kolom %s.',
-                    ),
+                'field' => 'StatusAwal',
+                'label' => 'Status awal',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Anda harus mengisi kolom %s.',
+                ),
             ),
             array(
-                    'field' => 'Semester',
-                    'label' => 'Semester/periode awal masuk',
-                    'rules' => 'required',
-                    'errors' => array(
-                            'required' => 'Anda harus mengisi kolom %s.',
-                    ),
+                'field' => 'Semester',
+                'label' => 'Semester/periode awal masuk',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Anda harus mengisi kolom %s.',
+                ),
             ),
             array(
-                    'field' => 'TahunAkademik',
-                    'label' => 'Tahun akademik/angkatan',
-                    'rules' => 'required',
-                    'errors' => array(
-                            'required' => 'Anda harus mengisi kolom %s.',
-                    ),
+                'field' => 'TahunAkademik',
+                'label' => 'Tahun akademik/angkatan',
+                'rules' => 'required',
+                'errors' => array(
+                    'required' => 'Anda harus mengisi kolom %s.',
+                ),
             )
         );
         $this->form_validation->set_rules($config);
-        if ($this->form_validation->run() == FALSE)
-        {
+        if ($this->form_validation->run() == FALSE) {
             return $this->form_validation->error_array();
-        }else {
+        } else {
             return false;
         }
     }

@@ -41,6 +41,32 @@ class Cetak_khs_prodi extends CI_Controller {
 		//$this->load->view('dashbord');
 	}
 
+  function addKuliahmhs($data)
+  {
+	//   $data = $_POST;
+    $url = 'http://feeder.untad.ac.id:3003/kuliahmhs/add';
+    $ch = curl_init();
+    $this->load->model('FeederRunWS');
+    curl_setopt($ch, CURLOPT_POST, 1);
+    
+    $headers = array();
+    $token = $this->FeederRunWS->tokenNEO();
+    $headers[] = 'Content-Type: application/json';
+    $headers[] = "Authorization: Bearer $token";
+    
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    
+    $data = json_encode($data);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $result = curl_exec($ch);
+    curl_close($ch);
+
+    return $result;
+  }
+
 	public function search(){
     	$semesterAkademik = $this->input->post('semesterAkademik');
     	$program = $this->input->post('program');
@@ -777,8 +803,19 @@ class Cetak_khs_prodi extends CI_Controller {
 			$record['ips'] 											= $data->IPS;
 			$record['sks_semester'] 						= $data->SKS;
 			$record['ipk'] 											= $data->IPK;
-			$record['total_sks'] 								= $data->TotalSKS;
+			$record['total_sks'] 								= $data->TotalSKSLulus;
 			$record['biaya_kuliah_smt'] 				= $spp;
+
+			$neoRecord = array(
+				'biaya_smt' => $spp,
+				'ips' => $data->IPS,
+				'ipk' => $data->IPK,
+				'sks_smt' => $data->SKS,
+				'sks_total' => $data->TotalSKSLulus,
+				'id_reg_pd' => $data->id_reg_pd,
+				'id_stat_mhs' => $data->Status,
+				'id_smt' => $data->Tahun
+			);
 
 			$ID = $data->ID;
 
@@ -788,8 +825,9 @@ class Cetak_khs_prodi extends CI_Controller {
 			$status=[];
 
 			if (count($cek->data)==0) {	// insert data ke feeder jika data belum ada
+				// $rdikti = $this->addKuliahmhs($neoRecord);
 				$rdikti = $this->FeederRunWS->insert('InsertPerkuliahanMahasiswa',$record);
-				
+				// var_dump($rdikti); die;
 				$status['action'] = 'insert';
 				$status['error_code'] = $rdikti->error_code;
 				$status['error_desc'] = $rdikti->error_desc;
@@ -893,7 +931,7 @@ class Cetak_khs_prodi extends CI_Controller {
 				      <input style='float:left; margin-right:5px;' type='submit' name='import_khs' value='Kirim Ke dikti'>
 					</form>*/
 				} else if($field->st_feeder == -2){
-					$act_feeder = "<span style='color:red;'>IPS atau IPK Mahasiswa<br>Kosong (00.00)</span>";
+					$act_feeder = "<a href='".base_url('ademik/cetak_khs_prodi/hitung_IPSK/'.$semesterAkademik.'/'.$program.'/'.$jurusan.'/'.$angkatan.'/'.$field->NIM)."' class='btn btn-block btn-warning btn-xs'>Hitung</a><span style='color:red;'>IPS atau IPK Mahasiswa<br>Kosong (00.00)</span>";
 				} else {
 			  $act_feeder = "<div id='feeder-".$field->NIM."'>
 			  <button class='btn btn-$color' onclick='kirimDikti(\"".$field->NIM."\",\"".$field->Tahun."\")'>Kirim Dikti</button>
@@ -905,7 +943,7 @@ class Cetak_khs_prodi extends CI_Controller {
 			  </form>*/
 				}
 			}else{
-			  $act_feeder = "<span style='color:orange;'>IPK/IPS/blum di prc masih kosong</span>";
+			  $act_feeder = "<a href='".base_url('ademik/cetak_khs_prodi/hitung_IPSK/'.$semesterAkademik.'/'.$program.'/'.$jurusan.'/'.$angkatan.'/'.$field->NIM)."' class='btn btn-block btn-warning btn-xs'>Hitung</a><span style='color:orange;'>IPK/IPS/blum di prc masih kosong</span>";
 			}
 
             $row = array();
@@ -955,4 +993,80 @@ class Cetak_khs_prodi extends CI_Controller {
         echo json_encode($output);
 	}
 	
+	public function hitung_IPSK($semesterAkademik,$program,$jurusan,$angkatan,$nim=''){
+		if ($nim!='all'){
+			$whr_nim="and m.nim='$nim'";
+		}else{
+			$whr_nim="";
+		}
+		if ($nim!=''){
+			$str="$whr_nim and  stprc='0' order by k.NIM asc limit 50";
+			$getDataIps = $this->cetak_khs_prodi_model->getDataIps($semesterAkademik,$jurusan,$program,$angkatan,$str);
+			foreach ($getDataIps as $show) {
+				$nim1 = $show->NIM;
+				$kdf = $show->KodeFakultas;
+				$this->proses($semesterAkademik, $nim1, $kdf, $jurusan);
+			}
+			
+			$str="$whr_nim and  stprc='1' order by k.NIM asc limit 50";
+			$getDataIpk = $this->ipk_model->getDataIpk($semesterAkademik,$jurusan,$program,$angkatan,$str);
+			foreach ($getDataIpk as $show) {
+				$nim1 = $show->NIM;
+				$kdf = $show->KodeFakultas;
+				$kdj = $show->KodeJurusan;
+				$this->prosesipk($semesterAkademik, $nim1, $kdf,$kdj);
+			}
+
+		} 
+ 		$data['semester']=$semesterAkademik;
+    	$data['program']=$program;
+    	$data['jur']=$jurusan;
+    	$data['angkatan']=$angkatan;    	
+		$data['fakultas'] = $this->ipk_model->getKdf($jurusan);
+		
+		if($this->session->ulevel=="7"){
+			$kdj=$this->session->kdj;
+			$data['jurusan'] = $this->cetak_khs_prodi_model->getJurusanKdj($kdj);
+		}elseif($this->session->ulevel=="5"){
+			$kdf=$this->session->kdf;
+			$data['jurusan'] = $this->cetak_khs_prodi_model->getJurusanKdf($kdf);
+		}else{
+			$data['jurusan'] = $this->cetak_khs_prodi_model->getJurusan();	
+		}
+		
+		$data['footerSection'] = "
+		    <script type='text/javascript'>
+ 
+            var save_method; //for save method string
+            var table;
+ 
+            $(document).ready(function() {
+				var dataku = 'semesterAkademik=".$semesterAkademik."&jurusan=".$jurusan."&program=".$program."&angkatan=".$angkatan."';
+            	var oTable = $('#tabel_cetak_khs').dataTable({
+		            'processing': true, 
+			            'serverSide': true, 
+			            'order': [], 
+			             
+			            'ajax': {
+			                'url': '".base_url('ademik/cetak_khs_prodi/dataMahasiswa/'.$semesterAkademik.'/'.$jurusan.'/'.$program.'/'.$angkatan)."',
+			                'type': 'POST'
+			            },
+			 
+			             
+			            'columnDefs': [
+			            { 
+			                'targets': [ 0 ], 
+			                'orderable': false, 
+			            },
+			            ]
+		       });
+            });
+        </script>"; 
+
+		$this->load->view('temp/head');
+		$this->load->view('ademik/cetak_khs_prodi', $data);
+		$this->load->view('temp/footers',$data);    
+
+	}
+
 }

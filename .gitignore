@@ -41,3 +41,7 @@ vendor/*
 
 ## Session
 cache/
+
+## Docker
+redis
+db
