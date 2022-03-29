@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit ('No direct script access allowed');
-class fakultas_model extends CI_Model{
+class Fakultas_model extends CI_Model{
 
     // public function get_data($Kode='',$Nama_Indonesia=''){
     public function get_data(){
