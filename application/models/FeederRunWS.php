@@ -42,6 +42,35 @@ class FeederRunWS extends CI_Model{
 
     return $result;
   }
+  
+  function tokenNEO()
+  {
+    $data = array(
+      'username'=> '001028p1',
+      'password'=> 'bakp2021@#$',
+      'semester'=> ['id_smt'=>'20211'],
+    );
+    $url = "http://feeder.untad.ac.id:3003/ws/user/login";
+    $ch = curl_init();
+      
+    curl_setopt($ch, CURLOPT_POST, 1);
+    
+    $headers = array();
+    
+    $headers[] = 'Content-Type: application/json';
+    
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    
+    $data = json_encode($data);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $result = curl_exec($ch);
+    curl_close($ch);
+
+    return json_decode( $result);
+  }
 
   public function token()
   {

@@ -41,6 +41,32 @@ class Cetak_khs_prodi extends CI_Controller {
 		//$this->load->view('dashbord');
 	}
 
+  function addKuliahmhs($data)
+  {
+	//   $data = $_POST;
+    $url = 'http://feeder.untad.ac.id:3003/kuliahmhs/add';
+    $ch = curl_init();
+    $this->load->model('FeederRunWS');
+    curl_setopt($ch, CURLOPT_POST, 1);
+    
+    $headers = array();
+    $token = $this->FeederRunWS->tokenNEO();
+    $headers[] = 'Content-Type: application/json';
+    $headers[] = "Authorization: Bearer $token";
+    
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    
+    $data = json_encode($data);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $result = curl_exec($ch);
+    curl_close($ch);
+
+    return $result;
+  }
+
 	public function search(){
     	$semesterAkademik = $this->input->post('semesterAkademik');
     	$program = $this->input->post('program');
@@ -780,6 +806,17 @@ class Cetak_khs_prodi extends CI_Controller {
 			$record['total_sks'] 								= $data->TotalSKSLulus;
 			$record['biaya_kuliah_smt'] 				= $spp;
 
+			$neoRecord = array(
+				'biaya_smt' => $spp,
+				'ips' => $data->IPS,
+				'ipk' => $data->IPK,
+				'sks_smt' => $data->SKS,
+				'sks_total' => $data->TotalSKSLulus,
+				'id_reg_pd' => $data->id_reg_pd,
+				'id_stat_mhs' => $data->Status,
+				'id_smt' => $data->Tahun
+			);
+
 			$ID = $data->ID;
 
 			$this->load->model('FeederRunWS');
@@ -788,8 +825,9 @@ class Cetak_khs_prodi extends CI_Controller {
 			$status=[];
 
 			if (count($cek->data)==0) {	// insert data ke feeder jika data belum ada
+				// $rdikti = $this->addKuliahmhs($neoRecord);
 				$rdikti = $this->FeederRunWS->insert('InsertPerkuliahanMahasiswa',$record);
-				
+				// var_dump($rdikti); die;
 				$status['action'] = 'insert';
 				$status['error_code'] = $rdikti->error_code;
 				$status['error_desc'] = $rdikti->error_desc;
