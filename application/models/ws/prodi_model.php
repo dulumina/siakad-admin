@@ -1,15 +1,15 @@
 <?php
 defined('BASEPATH') OR exit ('No direct script access allowed');
-class prodi_model extends CI_Model{
+class Prodi_model extends CI_Model{
 
-    public function get_data($KodeFakultas='',$Nama_Indonesia=''){
+    public function Get_data($KodeFakultas='',$Nama_Indonesia=''){
     
     if ($KodeFakultas){
         $this->db->where('KodeFakultas',$KodeFakultas);
     }
-    if ($Nama_Indonesia){
-        $this->db->where('Nama_Indonesia',$Nama_Indonesia);
-    }
+    // if ($Nama_Indonesia){
+    //     $this->db->where('Nama_Indonesia',$Nama_Indonesia);
+    // }
     
     $this->db->select('Kode,Nama_Indonesia,Nama_English,Jenjang');
     return $this->db->get('_v2_jurusan')->result_array();

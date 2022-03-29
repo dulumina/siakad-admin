@@ -4,11 +4,11 @@ require APPPATH . '/libraries/REST_Controller.php';
 
 use RestServer\Libraries\REST_Controller;
 
-class fakultas extends REST_Controller {
+class Fakultas extends REST_Controller {
     
     function __construct(){
         parent::__construct();
-        $this->load->model('ws/fakultas_model');
+        $this->load->model('ws/Fakultas_model');
     }
 
     //=================== Ambil Data ============================
@@ -38,7 +38,7 @@ class fakultas extends REST_Controller {
 
      // ======================= Input Data ================================
         
-     public function index_post(){
+     public function Index_Post(){
         $Kode = $this->post('Kode');
         $Nama_Indonesia = $this->post('Nama_Indonesia');
         $Nama_English = $this->post('Nama_English');
