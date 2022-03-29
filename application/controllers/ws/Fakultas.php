@@ -18,8 +18,8 @@ class Fakultas extends REST_Controller {
         // $Nama_Indonesia = $this->get('Nama_Indonesia');
         // var_dump($Name);die;
 
-        // $data = $this->fakultas_model->get_data($Kode,$Nama_Indonesia);
-        $data = $this->fakultas_model->get_data();
+        // $data = $this->Fakultas_model->get_data($Kode,$Nama_Indonesia);
+        $data = $this->Fakultas_model->get_data();
         if($data){
             $respon = array(
                 'status' => true,
@@ -56,7 +56,7 @@ class Fakultas extends REST_Controller {
             'nipdekan' => $nipdekan
         );
 
-        $affected_rows = $this->fakultas_model->input_data($data);
+        $affected_rows = $this->Fakultas_model->input_data($data);
         if($affected_rows > 0 ){
             $respons = array(
                 'status' => true,
