@@ -79,6 +79,7 @@
             <input type="hidden" name="IDJADWAL" value="<?php echo $data_absen_dosen[0]['IDJADWAL']?>">
             <input type="hidden" name="Tahun" value="<?php echo $data_absen_dosen[0]['Tahun']?>">
             <input type="hidden" name="kdj" value="<?php echo $data_absen_dosen[0]['KodeJurusan']?>">
+            <input type="hidden" name="kdf" value="<?php echo $data_absen_dosen[0]['KodeFakultas']?>">
             <button type="submit" class="btn btn-success">New Cetak DPNA</button>
           </form>
 

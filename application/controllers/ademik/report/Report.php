@@ -639,7 +639,8 @@ class Report extends CI_Controller {
 	public function new_cetak_cpna()
 	{
 		$this->load->model('Absensi_model');
-		$kdf 			= $this->session->userdata("kdf");
+		// $kdf 			= $this->session->userdata("kdf");
+		$kdf 			= $this->security->xss_clean($this->input->post('kdf'));
 
 		$IDJADWAL 		= $this->security->xss_clean($this->input->post('IDJADWAL'));
         $Tahun 	 		= $this->security->xss_clean($this->input->post('Tahun'));
