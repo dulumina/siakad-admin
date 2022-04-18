@@ -328,7 +328,7 @@ class Absensi_model extends CI_Model{
 		else{
 			$this->db->where("(KodeFakultas = '".$KodeFakultas."' OR KodeFakultas = 'All')");
 		}
-		
+		$this->db->group_by('Nilai')
 		return $this->db->get($table)->result_array();
 		// $this->db->get($table)->result_array();
 		// return $this->db->last_query(); 
