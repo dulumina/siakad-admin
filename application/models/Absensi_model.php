@@ -317,7 +317,7 @@ class Absensi_model extends CI_Model{
 
 		$this->db->where($where); 
 
-		if ($kdf == 'D' || $kdf == 'C' || $kdf =='A' || $kdf == 'F' || $kdf == 'B') {
+		if ($kdf == 'D' || $kdf == 'C' || $kdf =='A' || $kdf == 'F' ) {
 			$this->db->where("KodeFakultas",$KodeFakultas);
 			$this->db->where("KodeJurusan",$KodeJurusan);
 		}
