@@ -2616,7 +2616,7 @@ class Jdwlkuliah1 extends CI_Controller {
 			$data_raw = $this->db->query($query);
 
 			$count_data = $data_raw->num_rows();
-			$tahun = $data_raw['tahun'];
+			$tahun = $data_raw->row_array()['tahun'];
 			if ($count_data != 1) {
 				return "Kesalahan pada data yang dikirim, Periksa matakuliah perjenis / jadwal ";
 			}
