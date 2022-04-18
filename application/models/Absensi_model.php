@@ -317,7 +317,7 @@ class Absensi_model extends CI_Model{
 
 		$this->db->where($where); 
 
-		if ($kdf == 'D' || $kdf == 'C' || $kdf =='A' || $kdf == 'F') {
+		if ($kdf == 'D' || $kdf == 'C' || $kdf =='A' || $kdf == 'F' || $kdf == 'B') {
 			$this->db->where("KodeFakultas",$KodeFakultas);
 			$this->db->where("KodeJurusan",$KodeJurusan);
 		}
@@ -328,7 +328,7 @@ class Absensi_model extends CI_Model{
 		else{
 			$this->db->where("(KodeFakultas = '".$KodeFakultas."' OR KodeFakultas = 'All')");
 		}
-		$this->db->group_by('Nilai');
+		
 		return $this->db->get($table)->result_array();
 		// $this->db->get($table)->result_array();
 		// return $this->db->last_query(); 
