@@ -647,7 +647,7 @@ class Report extends CI_Controller {
 		
 		$this->db->join('_v2_jurusan','_v2_jurusan.KodeFakultas=fakultas.kode','inner');
 		$this->db->where('_v2_jurusan.kode', $Kodejurusan);
-		$kdf			= $this->app->getFakultas()[0]->kode;
+		$kdf			= $this->app->getFakultas()[0]->Kode;
 
         $dtDpna 		= $this->Absensi_model->cetak_cpna($Tahun, $IDJADWAL); 	
         $dtRange		= $this->Absensi_model->getRangeNilaiTester($kdf, $Kodejurusan);
