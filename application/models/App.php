@@ -236,6 +236,16 @@ class App extends CI_Model{
 		$this->db->join('fakultas','fakultas.kode=_v2_jurusan.kodeFakultas','inner');
 		return $this->db->get('_v2_jurusan')->result();
 	}
+	public function getFakultas(){
+		$this->db->select('fakultas.*');
+		$this->db->where('fakultas.NotActive','N');
+		// $this->db->join('_v2_jurusan',"_v2_jurusan.KodeFakultas=fakultas.kode","inner");
+		$this->db->group_by('fakultas.kode');
+		$res = $this->db->get('fakultas');
+
+		return $res->result();
+	}
+
 	public function getKelasPerkuliahan($prodi='',$periode='')
 	{
 		$select = "id_kelas_kuliah,IDJADWAL,id_mk,IDMK,NamaMK,SKS,IDDosen,Hari,JamMulai,JamSelesai,KodeRuang";

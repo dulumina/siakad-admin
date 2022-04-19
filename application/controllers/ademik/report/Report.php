@@ -640,11 +640,14 @@ class Report extends CI_Controller {
 	{
 		$this->load->model('Absensi_model');
 		// $kdf 			= $this->session->userdata("kdf");
-		$kdf 			= $this->security->xss_clean($this->input->post('kdf'));
 
 		$IDJADWAL 		= $this->security->xss_clean($this->input->post('IDJADWAL'));
         $Tahun 	 		= $this->security->xss_clean($this->input->post('Tahun'));
         $Kodejurusan 	= $this->security->xss_clean($this->input->post('kdj'));
+		
+		$this->db->join('_v2_jurusan','_v2_jurusan.KodeFakultas=fakultas.kode','inner');
+		$this->db->where('_v2_jurusan.kode', $KodeJurusan);
+		$kdf			= $this->app->getFakultas()->kode;
 
         $dtDpna 		= $this->Absensi_model->cetak_cpna($Tahun, $IDJADWAL); 	
         $dtRange		= $this->Absensi_model->getRangeNilaiTester($kdf, $Kodejurusan);
