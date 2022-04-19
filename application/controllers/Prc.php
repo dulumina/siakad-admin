@@ -82,7 +82,8 @@ class prc extends CI_Controller {
 			
 		// end count failed login
 
-		$is_valid = $this->recaptcha->is_valid();
+		// $is_valid = $this->recaptcha->is_valid();
+		$is_valid = array('success'=>true); // abaikan captcha karena banyak yang mengeluh
 		
 		if (!$is_valid['success'] && ENVIRONMENT =='production') { // jika validasi captcha false 
 		// if (false) { // matikan semestara karena error pada producrtion
