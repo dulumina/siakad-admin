@@ -2646,115 +2646,125 @@ class Jdwlkuliah1 extends CI_Controller {
 				$record = "id_smt ilike '$tahun' and id_sms='$prodi' and id_mk='$id_mk' and nm_kls='$nm_kls'";
 				$datb = $this->feeder->action_feeder_getRecord($temp_token,$temp_proxy,$action,$table,$record);
 				//var_dump($resultup);
-				// $datb = $this->FeederRunWS->get();
-				$id_kls = $datb['id_kls']; // ->result();
-
-			foreach($a as $val){
-				$IDJadwal = $val->IDJADWAL;
-
-				//$IDJadwal = "K2MF11120182F02171053REGA";
-
-				// mendapatkan token
-				$feeder = $this->feeder->getToken_feeder();
-				$temp_token = $feeder['temp_token'];
-				$temp_proxy = $feeder['temp_proxy'];
-
-				// tabel krs siakad
-				$tbl = '_v2_krs20182';
-
-				//query jadwal,mahasiswa,krs di siakad
-				$qkm = $this->db->query("select jr.id_sms, j.Tahun as id_smt, m.id_mk, left(j.Keterangan,4) as nm_kls, j.SKS as sks_mk, j.IDJADWAL from _v2_jadwal j, _v2_jurusan jr, _v2_matakuliah m where m.IDMK=j.IDMK and j.KodeJurusan= jr.Kode and j.IDJadwal like '$IDJadwal' limit 1")->row();
-
-				if ($qkm){
-
-					// pendeklarasian variabel
-
-					$IDJADWAL = $qkm->IDJADWAL;
-					$prodi = $qkm->id_sms;
-					$id_mk = $qkm->id_mk;
-					$tahun = $qkm->id_smt;
-					$nm_kls = $qkm->nm_kls;
-					$SKS = $qkm->sks_mk;
-
-					if($SKS =='2.0') $SKS  = "2";
-					else if($SKS =='3.0') $SKS  = "3";
-					else if($SKS =='4.0') $SKS  = "4";
-					else if($SKS =='5.0') $SKS  = "5";
-					else if($SKS =='6.0') $SKS  = "6";
-					else if($SKS =='1.0') $SKS  = "1";
-					else if($SKS =='1.5') $SKS  = "2";
-					else if($SKS =='2.5') $SKS  = "3";
-					else if($SKS =='3.5') $SKS  = "4";
-
-					// pendeklarasi variabel class
-					$record = new stdClass();
-					$record->id_sms = $prodi;
-					$record->id_smt = $tahun;
-					$record->id_mk = $id_mk;
-					$record->nm_kls = $nm_kls;
-					$record->sks_mk = $SKS;
-					$record->sks_tm = "0";
-					$record->sks_prak = "0";
-
-					$record->sks_prak_lap = "0";  //$w['sks_prak_lap'];
-					$record->sks_sim = "0";  //$w['sks_sim'];
-
-					$record->a_selenggara_pditt = "0";
-					$record->kuota_pditt = "0";
-					$record->a_pengguna_pditt = "0";
-
-					// tabel pada feeder
-					$table = 'kelas_kuliah';
-
-					// action insert ke feeder
-					$action = 'InsertRecord';
-
-					// insert tabel mahasiswa ke feeder
-					$datb = $this->feeder->action_feeder($temp_token,$temp_proxy,$action,$table,$record);
-					/* fungsi untuk upload ke feeder (action_feeder) dengan parameter :
-					$temp_token : callback token yang diberikan feeder
-					$temp_proxy : callback proxy yang diberikan feeder
-					$action : Aksi yang di berikan ke feeder. Ex : InsertRecord, UpdateRecord
-					$table : tabel yang ingin di akses oleh feeder
-					$record : parameter yang ingin di insert atau update pada feeder
-					*/
-
-					// deklarasi variabel error dari feeder
-
-					echo json_encode($datb)." - ".$IDJADWAL."<br>";
-
-					$id_kls = $datb['id_kls'];
-					$error_code = $datb['error_code'];
-					$error_desc = $datb['error_desc'];
-
-					if($id_kls != null){
-						$qupdate = "update _v2_jadwal set id_kelas_kuliah='$id_kls',st_feeder=2 where IDJADWAL='$IDJADWAL'";
-						$this->db->query($qupdate);
-						echo $qupdate;
-					}else if($error_code=='700'){ // Data kelas ini sudah ada == $error_status['700']
-						$action = "GetRecord";
-						$table = "kelas_kuliah.raw";
-						$record = "id_smt ilike '$tahun' and id_sms='$prodi' and id_mk='$id_mk' and nm_kls='$nm_kls'";
-						$datb = $this->feeder->action_feeder_getRecord($temp_token,$temp_proxy,$action,$table,$record);
-						//var_dump($resultup);
-						$id_kls = $datb['id_kls'];
-						$qupdate = "update _v2_jadwal set id_kelas_kuliah='$id_kls' ,st_feeder=-2 where IDJADWAL='$IDJADWAL'";
-						$this->db->query($qupdate);
-					} else{
-						$id_kls = "id kelas kosong";
-					}
-
-					echo "$id_kls - $error_code - $error_desc";
-
-				} else {
-					echo "data kosong - $IDJadwal";
-				}
-				
+				$id_kls = $datb['id_kls'];
+				$qupdate = "update _v2_jadwal set id_kelas_kuliah='$id_kls' ,st_feeder=-2 where IDJADWAL='$IDJADWAL'";
+				$this->db->query($qupdate);
+				return "dan Jadwal di Feeder Berhasil di Update";
+			} else {
+				return "dan Gagal ke Feeder : Message $id_kls - $error_code - $error_desc";
 			}
-
-
-
 		}
+
+	public function update_jadwal_feeder_lewat_proses(){ // proses sendiri
+
+		$a = $this->db->query("select * from _v2_jadwal where Tahun='20182' and KodeFakultas NOT IN ('B','G','L','O','N') and id_kelas_kuliah is NULL limit 100")->result();
+
+		foreach($a as $val){
+			$IDJadwal = $val->IDJADWAL;
+
+			//$IDJadwal = "K2MF11120182F02171053REGA";
+
+			// mendapatkan token
+			$feeder = $this->feeder->getToken_feeder();
+			$temp_token = $feeder['temp_token'];
+			$temp_proxy = $feeder['temp_proxy'];
+
+			// tabel krs siakad
+			$tbl = '_v2_krs20182';
+
+			//query jadwal,mahasiswa,krs di siakad
+			$qkm = $this->db->query("select jr.id_sms, j.Tahun as id_smt, m.id_mk, left(j.Keterangan,4) as nm_kls, j.SKS as sks_mk, j.IDJADWAL from _v2_jadwal j, _v2_jurusan jr, _v2_matakuliah m where m.IDMK=j.IDMK and j.KodeJurusan= jr.Kode and j.IDJadwal like '$IDJadwal' limit 1")->row();
+
+			if ($qkm){
+
+				// pendeklarasian variabel
+
+				$IDJADWAL = $qkm->IDJADWAL;
+				$prodi = $qkm->id_sms;
+				$id_mk = $qkm->id_mk;
+				$tahun = $qkm->id_smt;
+				$nm_kls = $qkm->nm_kls;
+				$SKS = $qkm->sks_mk;
+
+				if($SKS =='2.0') $SKS  = "2";
+				else if($SKS =='3.0') $SKS  = "3";
+				else if($SKS =='4.0') $SKS  = "4";
+				else if($SKS =='5.0') $SKS  = "5";
+				else if($SKS =='6.0') $SKS  = "6";
+				else if($SKS =='1.0') $SKS  = "1";
+				else if($SKS =='1.5') $SKS  = "2";
+				else if($SKS =='2.5') $SKS  = "3";
+				else if($SKS =='3.5') $SKS  = "4";
+
+				// pendeklarasi variabel class
+				$record = new stdClass();
+				$record->id_sms = $prodi;
+				$record->id_smt = $tahun;
+				$record->id_mk = $id_mk;
+				$record->nm_kls = $nm_kls;
+				$record->sks_mk = $SKS;
+				$record->sks_tm = "0";
+				$record->sks_prak = "0";
+
+				$record->sks_prak_lap = "0";  //$w['sks_prak_lap'];
+				$record->sks_sim = "0";  //$w['sks_sim'];
+
+				$record->a_selenggara_pditt = "0";
+				$record->kuota_pditt = "0";
+				$record->a_pengguna_pditt = "0";
+
+				// tabel pada feeder
+				$table = 'kelas_kuliah';
+
+				// action insert ke feeder
+				$action = 'InsertRecord';
+
+				// insert tabel mahasiswa ke feeder
+				$datb = $this->feeder->action_feeder($temp_token,$temp_proxy,$action,$table,$record);
+				/* fungsi untuk upload ke feeder (action_feeder) dengan parameter :
+				$temp_token : callback token yang diberikan feeder
+				$temp_proxy : callback proxy yang diberikan feeder
+				$action : Aksi yang di berikan ke feeder. Ex : InsertRecord, UpdateRecord
+				$table : tabel yang ingin di akses oleh feeder
+				$record : parameter yang ingin di insert atau update pada feeder
+				*/
+
+				// deklarasi variabel error dari feeder
+
+				echo json_encode($datb)." - ".$IDJADWAL."<br>";
+
+				$id_kls = $datb['id_kls'];
+				$error_code = $datb['error_code'];
+				$error_desc = $datb['error_desc'];
+
+				if($id_kls != null){
+					$qupdate = "update _v2_jadwal set id_kelas_kuliah='$id_kls',st_feeder=2 where IDJADWAL='$IDJADWAL'";
+					$this->db->query($qupdate);
+					echo $qupdate;
+				}else if($error_code=='700'){ // Data kelas ini sudah ada == $error_status['700']
+					$action = "GetRecord";
+					$table = "kelas_kuliah.raw";
+					$record = "id_smt ilike '$tahun' and id_sms='$prodi' and id_mk='$id_mk' and nm_kls='$nm_kls'";
+					$datb = $this->feeder->action_feeder_getRecord($temp_token,$temp_proxy,$action,$table,$record);
+					//var_dump($resultup);
+					$id_kls = $datb['id_kls'];
+					$qupdate = "update _v2_jadwal set id_kelas_kuliah='$id_kls' ,st_feeder=-2 where IDJADWAL='$IDJADWAL'";
+					$this->db->query($qupdate);
+				} else{
+					$id_kls = "id kelas kosong";
+				}
+
+				echo "$id_kls - $error_code - $error_desc";
+
+			} else {
+				echo "data kosong - $IDJadwal";
+			}
+			
+		}
+
+
+
+	}
 
 	/*function Fandu1 () {
 
