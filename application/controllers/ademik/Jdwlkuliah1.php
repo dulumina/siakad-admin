@@ -2630,7 +2630,7 @@ class Jdwlkuliah1 extends CI_Controller {
 			}else{
 				$res_feeder = $this->FeederRunWS->insert('InsertKelasKuliah',$record);
 			}
-			echo json_encode($res_feeder); die;
+			// echo json_encode($res_feeder); die;
 			$error_code = $res_feeder->error_code;
 			$error_desc = $res_feeder->error_desc;
 			
@@ -2640,11 +2640,18 @@ class Jdwlkuliah1 extends CI_Controller {
 				$this->db->query($qupdate);
 				
 				return "dan Jadwal Berhasil di Kirim Ke Feeder";
-			}else if($error_code=='700'){ // Data kelas ini sudah ada == $error_status['700']
-				$action = "GetRecord";
-				$table = "kelas_kuliah.raw";
-				$record = "id_smt ilike '$tahun' and id_sms='$prodi' and id_mk='$id_mk' and nm_kls='$nm_kls'";
-				$datb = $this->feeder->action_feeder_getRecord($temp_token,$temp_proxy,$action,$table,$record);
+			}else if($error_code=='15'){ // Data kelas ini sudah ada == $error_status['700']
+				// $action = "GetRecord";
+				// $table = "kelas_kuliah.raw";
+				// $record = "id_smt ilike '$tahun' and id_sms='$prodi' and id_mk='$id_mk' and nm_kls='$nm_kls'";
+				// $datb = $this->feeder->action_feeder_getRecord($temp_token,$temp_proxy,$action,$table,$record);
+				$id_semester = $data_raw->row()->id_semester;
+				$id_prodi = $data_raw->row()->id_prodi;
+				$id_matkul = $data_raw->row()->id_matkul;
+				$nama_kelas_kuliah = $data_raw->row()->nama_kelas_kuliah;
+				$filter = "id_semester='$id_semester' AND id_prodi='$id_prodi' AND id_matkul='$id_matkul' AND nama_kelas_kuliah='$nama_kelas_kuliah'";
+				$feeder = $this->FeederRunWS->get("GetDetailKelasKuliah",$filter );
+				$datb = $feeder->data;
 				//var_dump($resultup);
 				$id_kls = $datb['id_kls'];
 				$qupdate = "update _v2_jadwal set id_kelas_kuliah='$id_kls' ,st_feeder=-2 where IDJADWAL='$IDJADWAL'";
