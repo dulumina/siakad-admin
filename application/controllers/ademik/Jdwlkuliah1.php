@@ -2652,11 +2652,14 @@ class Jdwlkuliah1 extends CI_Controller {
 				$filter = "id_semester='$id_semester' AND id_prodi='$id_prodi' AND id_matkul='$id_matkul' AND nama_kelas_kuliah='$nama_kelas_kuliah'";
 				$feeder = $this->FeederRunWS->get("GetDetailKelasKuliah",$filter );
 				$datb = $feeder->data;
-				print_r($datb); die;
-				$id_kls = $datb['id_kls'];
-				$qupdate = "update _v2_jadwal set id_kelas_kuliah='$id_kls' ,st_feeder=-2 where IDJADWAL='$IDJADWAL'";
-				$this->db->query($qupdate);
-				return "dan Jadwal di Feeder Berhasil di Update";
+				if(count($datb) == 1 ){
+					$id_kls = $datb['id_kelas_kuliah'];
+					$qupdate = "update _v2_jadwal set id_kelas_kuliah='$id_kls' ,st_feeder=-2 where IDJADWAL='$IDJADWAL'";
+					$this->db->query($qupdate);
+					return "dan Jadwal di Feeder Berhasil di Update";
+				}else{
+					return "dan Gagal ke Feeder : Tidak ditemukan jadwal atau ditemukan jadwal lebih dari satu di feeder. ";
+				}
 			} else {
 				return "dan Gagal ke Feeder : Message $id_kls - $error_code - $error_desc";
 			}
