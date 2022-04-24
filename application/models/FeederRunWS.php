@@ -74,15 +74,47 @@ class FeederRunWS extends CI_Model{
 
   public function token()
   {
-   
-    $res = $this->runWS(array(
-     'act' => 'GetToken',
-     'username' => $this->feeder['username'],
-     'password' => $this->feeder['password']
-    ));
-    $data_token = json_decode($res);
+    if(isset($_SESSION['data_token'])){
+      $data_token = json_decode($_SESSION['data_token']);
 
-    $token = $data_token->data->token;
+      if( time() <= $data_token['exp'] ){
+        $token = $data_token['token'];
+      }else{
+        $res = $this->runWS(array(
+        'act' => 'GetToken',
+        'username' => $this->feeder['username'],
+        'password' => $this->feeder['password']
+        ));
+        $token_feeder = json_decode($res);
+        if($token_feeder->error_code = 0 ){
+          $token = $token_feeder->data->token;
+          $_SESSION['data_token'] = [
+            'exp' => strtotime("+28 minutes", time()),
+            'token' => $token ];
+        }else{
+          $token = "";
+          unset($_SESSION['data_token']);
+        }
+      }
+    }else{
+        $res = $this->runWS(array(
+        'act' => 'GetToken',
+        'username' => $this->feeder['username'],
+        'password' => $this->feeder['password']
+        ));
+        $token_feeder = json_decode($res);
+        if($token_feeder->error_code = 0 ){
+          $token = $token_feeder->data->token;
+          $_SESSION['data_token'] = [
+            'exp' => strtotime("+28 minutes", time()),
+            'token' => $token ];
+        }else{
+          $token = "";
+          unset($_SESSION['data_token']);
+        }
+      }
+    }
+
     return $token;
   }
   /**
