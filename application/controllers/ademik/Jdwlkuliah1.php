@@ -2599,7 +2599,7 @@ class Jdwlkuliah1 extends CI_Controller {
 				$record = "id_smt ilike '$tahun' and id_sms='$prodi' and id_mk='$id_mk' and nm_kls='$nm_kls'";
 				$datb = $this->feeder->action_feeder_getRecord($temp_token,$temp_proxy,$action,$table,$record);
 				//var_dump($resultup);
-				$id_kls = $datb['id_kls'];
+				$id_kls = $datb['id_kelas_kuliah'];
 				$qupdate = "update _v2_jadwal set id_kelas_kuliah='$id_kls' ,st_feeder=-2 where IDJADWAL='$IDJADWAL'";
 				$this->db->query($qupdate);
 				return "dan Jadwal di Feeder Berhasil di Update";
