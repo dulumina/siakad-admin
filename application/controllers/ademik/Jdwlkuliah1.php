@@ -2630,7 +2630,7 @@ class Jdwlkuliah1 extends CI_Controller {
 			}else{
 				$res_feeder = $this->FeederRunWS->insert('InsertKelasKuliah',$record);
 			}
-			
+			echo json_encode($res_feeder); die;
 			$error_code = $res_feeder->error_code;
 			$error_desc = $res_feeder->error_desc;
 			
