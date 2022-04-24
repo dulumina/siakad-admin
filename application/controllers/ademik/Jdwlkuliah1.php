@@ -2653,7 +2653,7 @@ class Jdwlkuliah1 extends CI_Controller {
 				$feeder = $this->FeederRunWS->get("GetDetailKelasKuliah",$filter );
 				$datb = $feeder->data;
 				if(count($datb) == 1 ){
-					$id_kls = $datb['id_kelas_kuliah'];
+					$id_kls = $datb[0]->id_kelas_kuliah;
 					$qupdate = "update _v2_jadwal set id_kelas_kuliah='$id_kls' ,st_feeder=-2 where IDJADWAL='$IDJADWAL'";
 					$this->db->query($qupdate);
 					return "dan Jadwal di Feeder Berhasil di Update";
