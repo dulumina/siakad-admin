@@ -2647,7 +2647,7 @@ class Jdwlkuliah1 extends CI_Controller {
 				$datb = $this->feeder->action_feeder_getRecord($temp_token,$temp_proxy,$action,$table,$record);
 				//var_dump($resultup);
 				// $datb = $this->FeederRunWS->get();
-				$id_kls = $datb['id_kls']; ->result();
+				$id_kls = $datb['id_kls']; // ->result();
 
 			foreach($a as $val){
 				$IDJadwal = $val->IDJADWAL;
