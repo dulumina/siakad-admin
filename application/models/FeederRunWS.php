@@ -82,8 +82,8 @@ class FeederRunWS extends CI_Model{
     ));
     $data_token = json_decode($res);
 
-    print_r($data_token); exit;
-    return $data_token->data->token;
+    $token = $data_token->data->token;
+    return $token;
   }
   /**
    * fungsi get data from feeder
