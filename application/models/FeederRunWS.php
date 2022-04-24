@@ -80,7 +80,7 @@ class FeederRunWS extends CI_Model{
      'username' => $this->feeder['username'],
      'password' => $this->feeder['password']
     ));
-    echo json_encode($res); die;
+    print_r($res); die;
     return json_decode($res)->data->token;
   }
   /**
