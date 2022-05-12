@@ -91,10 +91,16 @@ class Kliring_mhsw extends CI_Controller {
 				/*if ($tahun == "20161"){
 					$tahun = "";
 				}*/
-
-				$tahun_khs_baru = $this->app->GetField("ID,IDJadwal ,KodeMK, NamaMK, SKS, GradeNilai, Bobot, Tahun, Sesi, NotActive, NotActive_KRS, '$tahun' as tahun_tabel", "_v2_krs$tahun", "NIM='$dataSearch'", "(Tahun='$tahun_krs' or Tahun='TR')")->result(); // untuk pengecekan tahun di tabel _v2_khs
-				$data['detail_tahun'][$i] = $tahun_khs_baru;
-				$i++;
+				if ($this->db->table_exists("_v2_krs$tahun") )
+				{
+					// table exists
+					$tahun_khs_baru = $this->app->GetField("ID,IDJadwal ,KodeMK, NamaMK, SKS, GradeNilai, Bobot, Tahun, Sesi, NotActive, NotActive_KRS, '$tahun' as tahun_tabel", "_v2_krs$tahun", "NIM='$dataSearch'", "(Tahun='$tahun_krs' or Tahun='TR')")->result(); // untuk pengecekan tahun di tabel _v2_khs
+					$data['detail_tahun'][$i] = $tahun_khs_baru;
+					$i++;
+				}else{
+					$alert="Tahun Semester salah pada KHS : 
+					- $tahun";
+				}
 			}
 
 			// atas nilai transfer mahasiswa
