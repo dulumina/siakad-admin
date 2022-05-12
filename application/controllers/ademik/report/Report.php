@@ -658,7 +658,7 @@ class Report extends CI_Controller {
                         	'data_asdos'    => $dtAsdos,
                         	'data_range'	=> $dtRange
                       	  ];
-
+		echo json_encode($data_bind); die;
 		$html 			= $this->load->view('ademik/absensi_/new_cetak_dpna', $data_bind, TRUE);
 		
 		$this->load->view('ademik/absensi_/new_cetak_dpna');
