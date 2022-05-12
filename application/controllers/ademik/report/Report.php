@@ -651,7 +651,7 @@ class Report extends CI_Controller {
 
         $dtDpna 		= $this->Absensi_model->cetak_cpna($Tahun, $IDJADWAL); 	
         $dtRange		= $this->Absensi_model->getRangeNilaiTester($kdf, $Kodejurusan);
-		$query = $this->db->last_query();
+		// $query = $this->db->last_query();
         $dtAsdos		= $this->Absensi_model->data_asisten_dosen($IDJADWAL);
 
         $data_bind 		= [
@@ -659,8 +659,8 @@ class Report extends CI_Controller {
                         	'data_asdos'    => $dtAsdos,
                         	'data_range'	=> $dtRange
                       	  ];
-		$data_bind['query'] = $query;
-		echo json_encode($data_bind); die;
+		// $data_bind['query'] = $query;
+		// echo json_encode($data_bind); die;
 		$html 			= $this->load->view('ademik/absensi_/new_cetak_dpna', $data_bind, TRUE);
 		
 		$this->load->view('ademik/absensi_/new_cetak_dpna');
