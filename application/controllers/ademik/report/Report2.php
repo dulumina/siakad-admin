@@ -341,6 +341,11 @@ class Report2 extends CI_Controller {
 		$this->load->library('pdf');
 
 		$html=$this->load->view('ademik/report/cetak_transkrip_kliring', $a, TRUE);
+		if(ENVIRONMENT == 'development'){
+			echo $html;
+			exit(200);
+			die;
+		}
 		$filename = "Transkrip Nilai $dataSearch";
 		// $this->pdf->create($html, $filename, 'potrait');
 		$this->pdf->create_costum($html, $filename, 'potrait', 'legal');
