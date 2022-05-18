@@ -1534,7 +1534,7 @@ class Jdwlkuliah1 extends CI_Controller {
 			$status = $hasil->row();
 		}
 			
-		// kondisi untuk admin jurusan
+	// kondisi untuk admin jurusan
 		if(($hasil->num_rows() == 0) and $ulevel == 7){
 			// kondisi jika tidak ada di rule, maka tidak bisa akan memvalidasi
 			// maaf anda tidak di berikan akses untuk memvalidasi nilai
@@ -1542,7 +1542,7 @@ class Jdwlkuliah1 extends CI_Controller {
 		} else if (($hasil->num_rows() > 0) and $ulevel == 7) {
 			if ($status->user == $sessionunip and $status->Kodejurusan == $sessionjurusan and $status->point_4 == 1 and $ulevel == 7){
 				// kondisi jika ada di rule, denagan kondisi di atas maka akan divalidasi				
-				//bisa melakukan validasi nilai
+				// bisa melakukan validasi nilai
 				$pesan = true;
 			} else if ($status->user == $sessionunip and $status->Kodejurusan == $sessionjurusan and $status->point_4 == 0 and $ulevel == 7){
 				// tidak akan divalidasi
@@ -1551,7 +1551,7 @@ class Jdwlkuliah1 extends CI_Controller {
 			}
 		} 
 
-		// kondisi untuk admin fakultas
+	// kondisi untuk admin fakultas
 		if(($hasil->num_rows() == 0) and $ulevel == 5){
 			// kondisi jika tidak ada di rule, maka akan divalidasi
 			$pesan = true;
@@ -1566,13 +1566,20 @@ class Jdwlkuliah1 extends CI_Controller {
 			}
 		}
 
+	// kondisi untuk dosen
+		if($ulevel == 3){
+			// dosen di berikan akses untuk memvalidasi nilai
+			$message = true;
+		}
+			
+	// kondisi untuk admin pusat
 		if($ulevel == 1){
 			// maaf adminsuperuser tidak di berikan akses untuk memvalidasi nilai
 			$message = "maaf admin superuser tidak di berikan akses untuk input/edit nilai";
 		}
 			
 
-		// kondisi jika user di berikan akses untuk input/edit nilai
+	// kondisi jika user di berikan akses untuk input/edit nilai
 		if ($pesan){
 
 			// $jadId = encode($idjadwal);
