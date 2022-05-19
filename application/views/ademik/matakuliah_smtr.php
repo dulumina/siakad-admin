@@ -301,7 +301,7 @@
 </div>
 
 <script type="text/javascript">
-	console.log('<?= $kodejurusan ?>');
+
 	function simpan(act) {
 
 		var id = $('#id').val();

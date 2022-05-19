@@ -407,7 +407,10 @@ class Matakuliah_smtr extends CI_Controller {
 						'ket' => 'error',
 						'pesan' => 'Berhasil Terkirim Ke PDDIKTI, Gagal Tersimpan di Server Siakad'
 					);
-
+					if(ENVIRONMENT == 'development'){
+						$dataError['record'] = $dataMKK;
+						$dataError['response'] = $objMKK;
+					}
 					echo json_encode($dataError);
 
 		 		}
