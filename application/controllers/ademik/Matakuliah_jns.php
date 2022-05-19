@@ -636,7 +636,9 @@ class Matakuliah_jns extends CI_Controller {
 							'ket' => 'sukses',
 							'pesan' => 'Berhasil Terkirim Ke PDDIKTI dan Tersimpan'
 						);
-
+						if(ENVIRONMENT =='development'){
+							$dataSukses['res_feeder'] = $objMK;
+						}
 						echo json_encode($dataSukses);
 
 			 		} else {
@@ -646,6 +648,9 @@ class Matakuliah_jns extends CI_Controller {
 							'pesan' => 'Berhasil Terkirim Ke PDDIKTI, Gagal Tersimpan di Server Siakad'
 						);
 
+						if(ENVIRONMENT =='development'){
+							$dataError['res_feeder'] = $objMK;
+						}
 						echo json_encode($dataError);
 
 			 		}
@@ -657,6 +662,9 @@ class Matakuliah_jns extends CI_Controller {
 						'pesan' => $error_codeMK."-".$error_descMK
 					);
 
+					if(ENVIRONMENT =='development'){
+						$dataError['res_feeder'] = $objMK;
+					}
 					echo json_encode($dataError);
 
 			 	}
