@@ -355,7 +355,7 @@ class Matakuliah_smtr extends CI_Controller {
 		$tokenFeeder = $this->runWS($dataToken);
 		$obj = json_decode($tokenFeeder);
 		$token = $obj->data->token;
-
+		$wajib = 0;
 		if ( $act == 'insert' ) {
 
 			$matakuliah = explode(' ', $data['id']);
