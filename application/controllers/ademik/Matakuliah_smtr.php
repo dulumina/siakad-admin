@@ -355,16 +355,16 @@ class Matakuliah_smtr extends CI_Controller {
 		$tokenFeeder = $this->runWS($dataToken);
 		$obj = json_decode($tokenFeeder);
 		$token = $obj->data->token;
-		$wajib = 0;
+		$wajib = "0";
 		if ( $act == 'insert' ) {
 
 			$matakuliah = explode(' ', $data['id']);
 			$kurikulum = explode(' ', $data['kurikulum']);
 
 			if ( $data['wajib'] == 'Y' ) {
-				$wajib = 1;
+				$wajib = "1";
 			} else {
-				$wajib = 0;
+				$wajib = "0";
 			}
 
 			$dataMKK = array();
@@ -432,11 +432,11 @@ class Matakuliah_smtr extends CI_Controller {
 
 			if ( $data[0]['Wajib'] == 'Y' ) {
 
-				$wajib = 1;
+				$wajib = "1";
 
 			} else {
 
-				$wajib = 0;
+				$wajib = "0";
 
 			}
 			
