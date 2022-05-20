@@ -409,9 +409,6 @@ class Matakuliah_smtr extends CI_Controller {
 						$dataError['record'] = $dataMKK;
 						$dataError['response'] = $objMKK;
 					}
-					if(ENVIRONMENT == 'development'){
-						$dataError['record'] = $dataMKK;
-					}
 					echo json_encode($dataError);
 
 		 		}
@@ -423,6 +420,10 @@ class Matakuliah_smtr extends CI_Controller {
 					'pesan' => $error_codeMKK."-".$error_descMKK
 				);
 
+				if(ENVIRONMENT == 'development'){
+					$dataError['record'] = $dataMKK;
+					$dataError['response'] = $objMKK;
+				}
 				echo json_encode($dataError);
 
 		 	}
