@@ -362,13 +362,9 @@ class Matakuliah_smtr extends CI_Controller {
 			$kurikulum = explode(' ', $data['kurikulum']);
 
 			if ( $data['wajib'] == 'Y' ) {
-
 				$wajib = 1;
-
 			} else {
-
 				$wajib = 0;
-
 			}
 
 			$dataMKK = array();
@@ -398,7 +394,9 @@ class Matakuliah_smtr extends CI_Controller {
 						'ket' => 'sukses',
 						'pesan' => 'Berhasil Terkirim Ke PDDIKTI dan Tersimpan'
 					);
-
+					if(ENVIRONMENT == 'development'){
+						$dataSukses['record'] = $dataMKK;
+					}
 					echo json_encode($dataSukses);
 
 		 		} else {
@@ -410,6 +408,9 @@ class Matakuliah_smtr extends CI_Controller {
 					if(ENVIRONMENT == 'development'){
 						$dataError['record'] = $dataMKK;
 						$dataError['response'] = $objMKK;
+					}
+					if(ENVIRONMENT == 'development'){
+						$dataError['record'] = $dataMKK;
 					}
 					echo json_encode($dataError);
 
