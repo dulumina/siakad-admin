@@ -75,7 +75,8 @@ class FeederRunWS extends CI_Model{
   public function token()
   {
     $token = "";
-    if(isset($_SESSION['data_token'])){
+    if(false){
+    // if(isset($_SESSION['data_token'])){
       $data_token = json_decode($_SESSION['data_token']);
 
       if( time() <= $data_token['exp'] ){
