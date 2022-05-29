@@ -1320,6 +1320,7 @@ function batalvalidasi(kode, i, e){
 }
 
 function kirimnilaidikti(){
+  $body.addClass("loading");
   //alert("masuk");
   var data = $('#form-kirimnilaidikti').serialize();
   console.log(data);
@@ -1340,6 +1341,9 @@ function kirimnilaidikti(){
 			//console.log(response);
 			//$(e).attr("class","btn btn-block btn-social").html('Proses Pembatalan Berhasil');
 		}
+	})
+	.always(function() {
+		$body.removeClass("loading");
 	});
 }
 
