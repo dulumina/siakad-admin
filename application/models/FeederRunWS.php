@@ -104,13 +104,15 @@ class FeederRunWS extends CI_Model{
         'password' => $this->feeder['password']
         ));
         $token_feeder = json_decode($res);
-        if($token_feeder->error_code == 0 ){
-          $token = $token_feeder->data->token;
-          $_SESSION['data_token'] = [
-            'exp' => strtotime("+28 minutes", time()),
-            'token' => $token ];
-        }else{
-          unset($_SESSION['data_token']);
+        if (is_object($token_feeder)) {
+          if($token_feeder->error_code == 0 ){
+            $token = $token_feeder->data->token;
+            $_SESSION['data_token'] = [
+              'exp' => strtotime("+28 minutes", time()),
+              'token' => $token ];
+          }else{
+            unset($_SESSION['data_token']);
+          }
         }
     }
 
