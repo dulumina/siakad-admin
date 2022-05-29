@@ -2128,9 +2128,9 @@ class Jdwlkuliah1 extends CI_Controller {
 		$status = $hasil->num_rows();
 		echo $status;*/
 
-		$feeder = $this->feeder->getToken_feeder();
-		$temp_token = $feeder['temp_token'];
-		$temp_proxy = $feeder['temp_proxy'];
+		// $feeder = $this->feeder->getToken_feeder();
+		// $temp_token = $feeder['temp_token'];
+		// $temp_proxy = $feeder['temp_proxy'];
 
 		//echo $idjadwal;
 
