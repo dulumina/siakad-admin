@@ -2135,7 +2135,7 @@ class Jdwlkuliah1 extends CI_Controller {
 		//echo $idjadwal;
 
 		$message = ""; 
-
+		$dump = "";
 		$hasil = $this->db->query("SELECT n.ID, n.NIM, n.Tahun, n.nilai, n.GradeNilai, n.Bobot, n.KodeMK, n.enkripsi, j.id_kelas_kuliah, j.IDJADWAL, m.id_reg_pd, m.KodeFakultas FROM $tbl n left join _v2_jadwal j on n.IDJadwal=j.IDJADWAL left join _v2_mhsw m on n.NIM=m.NIM  WHERE n.Tahun = '$tahun' AND (n.st_feeder = 0 or n.st_feeder = 5 or n.st_feeder = -3) AND n.IDJadwal LIKE '$idjadwal' AND n.GradeNilai != ''");
 
 		foreach ($hasil->result() as $show) {
@@ -2246,6 +2246,7 @@ class Jdwlkuliah1 extends CI_Controller {
 						$this->load->view('ademik/cek_feeder',$data);
 						$this->load->view('temp/footers');*/
 						$message .= "Data Gagal di input stambuk $NIM <br>";
+						$dump = $this->db->last_query();
 					}
 				}else if($error_code == 800){ // error 800 data sudah ada di feeder
 					$recordup = array(
@@ -2290,6 +2291,7 @@ class Jdwlkuliah1 extends CI_Controller {
 							$this->load->view('ademik/cek_feeder',$data);
 							$this->load->view('temp/footers');*/
 							$message .= "Update - Data Gagal di input stambuk $NIM <br>";
+							$dump = $this->db->last_query();
 						}
 					}else{
 						/*$data['cekKrs']=$this->krs_model->getCekKrs($NIM,$tahun,$tbl);
@@ -2361,7 +2363,8 @@ class Jdwlkuliah1 extends CI_Controller {
 			"insPeserta" => $insPeserta,
 			"pesan" => $message,
 			"kirim_data" => $text,
-			"datanilai" => $data_record
+			"datanilai" => $data_record,
+			"dump" => $dump
 		);
 
 		echo json_encode($result);
