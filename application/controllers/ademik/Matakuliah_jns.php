@@ -623,7 +623,7 @@ class Matakuliah_jns extends CI_Controller {
 
 			 	if ($error_codeMK == 0) {
 
-			 		$id_matkul = $objMK->{'data'}->{'id_mk'};
+			 		$id_matkul = $objMK->{'data'}->{'id_matkul'};
 
 			 		$data['id_mk'] = $id_matkul;
 			 		$data['feeder'] = 1;
