@@ -55,8 +55,8 @@ $ipClient = $_SERVER['REMOTE_ADDR'];
  * NOTE: If you change these, also change the error_reporting() code below
  */
 
-	$env = 'development';
-	//$env = 'production';
+	//$env = 'development';
+	$env = 'production';
 	if($ipClient == '172.16.100.14' or $ipClient == '172.16.100.5' or $ipClient == '172.16.100.25'){
 		$env = 'development';
 	}
