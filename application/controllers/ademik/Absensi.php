@@ -147,20 +147,20 @@ class Absensi extends CI_Controller {
 
     public function absenKumulatifMahasiswa()
     {
-        $IDJadwal 		= htmlspecialchars($this->input->post('IDJadwal',true));
-        $semester 		= htmlspecialchars($this->input->post('semester',true));
-        
-        $data_absen_mahasiswa = $this->Absensi_model->getDataAbsenMahasiswa($IDJadwal, $semester);
+			$IDJadwal 		= htmlspecialchars($this->input->post('IDJadwal',true));
+			$semester 		= htmlspecialchars($this->input->post('semester',true));
+			
+			$data_absen_mahasiswa = $this->Absensi_model->getDataAbsenMahasiswa($IDJadwal, $semester);
 
-		$data_bind				= array(
-										'data_absen_mahasiswa' 	=> $data_absen_mahasiswa,
-										'semester'				=> $semester,
-										);
+			$data_bind				= array(
+											'data_absen_mahasiswa' 	=> $data_absen_mahasiswa,
+											'semester'				=> $semester,
+											);
 
-        $data = $this->load->view('ademik/absensi_/absensiKumulatifMahasiswa', $data_bind, TRUE);
-        
-		$this->output->set_output($data); 
-	}
+					$data = $this->load->view('ademik/absensi_/absensiKumulatifMahasiswa', $data_bind, TRUE);
+					
+			$this->output->set_output($data); 
+		}
 	
 	public function sendDataAbsenKumulatif()
 	{
@@ -388,7 +388,7 @@ class Absensi extends CI_Controller {
 	{
 		$semester 					= $_POST['semester'];
 
-		$status_absen 				= $_POST['status_absen'];
+		$status_absen 			= $_POST['status_absen'];
 
 		$pertemuan 					= $_POST['pertemuan'];
 
@@ -405,7 +405,8 @@ class Absensi extends CI_Controller {
 			$this->reload($id_jadwal, $pertemuan, $semester);
 		}
 		else{
-			echo 0;
+			$this->reload($id_jadwal, $pertemuan, $semester);
+			// echo 0;
 		}
 	}
 
@@ -634,10 +635,10 @@ class Absensi extends CI_Controller {
 //cetak view
     public function dpnaView()
     {
-		$this->load->model('Absensi_model');
-		$kdf 		= $this->session->userdata("kdf");
+			$this->load->model('Absensi_model');
+			$kdf 		= $this->session->userdata("kdf");
 
-		$IDJADWAL 	= $this->security->xss_clean($this->input->post('IDJADWAL'));
+			$IDJADWAL 	= $this->security->xss_clean($this->input->post('IDJADWAL'));
         $Tahun 	 	= $this->security->xss_clean($this->input->post('Tahun'));
 
         $dtDpna 	= $this->Absensi_model->cetak_cpna($Tahun, $IDJADWAL); 	
